@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using GamesDatabase.Data;
+using GamesDatabase.Data.Models;
 
 namespace GamesDatabase.Web
 {
@@ -38,7 +39,7 @@ namespace GamesDatabase.Web
             services.AddDbContext<GamesDatabaseContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<GamesDatabaseUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<GamesDatabaseContext>();
 

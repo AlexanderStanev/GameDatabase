@@ -10,11 +10,14 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Data\GameDatabase.Data\GameDatabase.Data.csproj" />
+    <ProjectReference Include="..\..\Data\GamesDatabase.Data.Models\GamesDatabase.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\GamesDatabase.Data\GamesDatabase.Data.csproj" />
+    <ProjectReference Include="..\..\Services\GamesDatabase.Services.ViewModels\GamesDatabase.Services.ViewModels.csproj" />
   </ItemGroup>
 
 

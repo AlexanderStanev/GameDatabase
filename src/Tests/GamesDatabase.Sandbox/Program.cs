@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using GameDatabase.Data.Core;
+using GamesDatabase.Data.Core;
 using GamesDatabase.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

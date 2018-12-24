@@ -1,6 +1,7 @@
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@using Microsoft.AspNetCore.Identity;
+@using GamesDatabase.Data.Models;
+@inject SignInManager<GamesDatabaseUser> SignInManager
+@inject UserManager<GamesDatabaseUser> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))

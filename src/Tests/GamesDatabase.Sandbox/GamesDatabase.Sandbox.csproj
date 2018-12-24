@@ -21,8 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Data\GameDatabase.Data.Models\GameDatabase.Data.Models.csproj" />
-    <ProjectReference Include="..\..\Data\GameDatabase.Data\GameDatabase.Data.csproj" />
+    <ProjectReference Include="..\..\Data\GamesDatabase.Data.Models\GamesDatabase.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\GamesDatabase.Data\GamesDatabase.Data.csproj" />
   </ItemGroup>
 
 </Project>
