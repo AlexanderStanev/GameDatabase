@@ -3,7 +3,7 @@ using System;
 
 namespace GamesDatabase.Data.Models
 {
-    public class Review : BaseModel<Guid>
+    public class Review : BaseModel<int>
     {
         public Game Game { get; set; }
 

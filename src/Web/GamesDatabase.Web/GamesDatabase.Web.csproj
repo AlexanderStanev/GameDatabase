@@ -11,12 +11,15 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
+	<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
   </ItemGroup>
 
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\GamesDatabase.Data.Models\GamesDatabase.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\GamesDatabase.Data\GamesDatabase.Data.csproj" />
+    <ProjectReference Include="..\..\Services\GamesDatabase.Services.DataServices\GamesDatabase.Services.DataServices.csproj" />
+    <ProjectReference Include="..\..\Services\GamesDatabase.Services.Mapping\GamesDatabase.Services.Mapping.csproj" />
     <ProjectReference Include="..\..\Services\GamesDatabase.Services.ViewModels\GamesDatabase.Services.ViewModels.csproj" />
   </ItemGroup>
 

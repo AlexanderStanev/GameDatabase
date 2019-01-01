@@ -1,11 +1,11 @@
-﻿using GamesDatabase.Data.Core;
+﻿using GamesDatabase.Data.Models;
+using GamesDatabase.Services.Mapping;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace GamesDatabase.Data.Models
+namespace GamesDatabase.Services.ViewModels
 {
-    public class Game : BaseModel<int>
+    public class GameViewModel : IMapFrom<Game>
     {
         public GamesDatabaseUser Author { get; set; }
 
@@ -22,7 +22,5 @@ namespace GamesDatabase.Data.Models
         public IEnumerable<Review> Reviews { get; set; }
 
         public IEnumerable<Genre> Genres { get; set; }
-
-        // public IEnumerable<Game> RelatedGames { get; set; } 
     }
 }

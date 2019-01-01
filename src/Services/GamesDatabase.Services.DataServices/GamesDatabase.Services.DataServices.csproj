@@ -1,7 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\GamesDatabase.Data.Core\GamesDatabase.Data.Core.csproj" />
+    <ProjectReference Include="..\..\Data\GamesDatabase.Data.Models\GamesDatabase.Data.Models.csproj" />
+    <ProjectReference Include="..\GamesDatabase.Services.Mapping\GamesDatabase.Services.Mapping.csproj" />
+    <ProjectReference Include="..\GamesDatabase.Services.ViewModels\GamesDatabase.Services.ViewModels.csproj" />
+  </ItemGroup>
 
 </Project>
