@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamesDatabase.Data.Migrations
 {
     [DbContext(typeof(GamesDatabaseContext))]
-    [Migration("20181225123035_GamesGenresReviews")]
-    partial class GamesGenresReviews
+    [Migration("20190107215132_Games")]
+    partial class Games
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,24 +23,21 @@ namespace GamesDatabase.Data.Migrations
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Game", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AuthorId");
+                    b.Property<DateTime>("DateReleased");
 
                     b.Property<string>("Description");
 
-                    b.Property<double>("Raiting");
-
-                    b.Property<int>("ReviewsCount");
+                    b.Property<string>("Developer");
 
                     b.Property<string>("Title");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
-
-                    b.ToTable("Game");
+                    b.ToTable("Games");
                 });
 
             modelBuilder.Entity("GamesDatabase.Data.Models.GamesDatabaseUser", b =>
@@ -92,48 +89,6 @@ namespace GamesDatabase.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("GamesDatabase.Data.Models.Genre", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Description");
-
-                    b.Property<Guid?>("GameId");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GameId");
-
-                    b.ToTable("Genre");
-                });
-
-            modelBuilder.Entity("GamesDatabase.Data.Models.Review", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AuthorId");
-
-                    b.Property<string>("Content");
-
-                    b.Property<Guid?>("GameId");
-
-                    b.Property<double>("Rating");
-
-                    b.Property<string>("Title");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
-
-                    b.HasIndex("GameId");
-
-                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -244,31 +199,6 @@ namespace GamesDatabase.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("GamesDatabase.Data.Models.Game", b =>
-                {
-                    b.HasOne("GamesDatabase.Data.Models.GamesDatabaseUser", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId");
-                });
-
-            modelBuilder.Entity("GamesDatabase.Data.Models.Genre", b =>
-                {
-                    b.HasOne("GamesDatabase.Data.Models.Game")
-                        .WithMany("Genres")
-                        .HasForeignKey("GameId");
-                });
-
-            modelBuilder.Entity("GamesDatabase.Data.Models.Review", b =>
-                {
-                    b.HasOne("GamesDatabase.Data.Models.GamesDatabaseUser", "Author")
-                        .WithMany("Reviews")
-                        .HasForeignKey("AuthorId");
-
-                    b.HasOne("GamesDatabase.Data.Models.Game", "Game")
-                        .WithMany("Reviews")
-                        .HasForeignKey("GameId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

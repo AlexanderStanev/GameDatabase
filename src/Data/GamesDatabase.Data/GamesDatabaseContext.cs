@@ -15,10 +15,10 @@ namespace GamesDatabase.Data
         }
 
         public DbSet<Genre> Genres { get; set; }
-
+        
         public DbSet<Game> Games { get; set; }
-
-        public DbSet<Review> Reviews { get; set; }
+        
+        //public DbSet<Review> Reviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
