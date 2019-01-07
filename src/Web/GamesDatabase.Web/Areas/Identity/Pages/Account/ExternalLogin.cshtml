@@ -4,7 +4,7 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h2>@ViewData["Title"]</h2>
 <h4>Associate your @Model.LoginProvider account.</h4>
 <hr />
 
@@ -23,7 +23,7 @@
                 <input asp-for="Input.Email" class="form-control" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-default">Register</button>
         </form>
     </div>
 </div>
@@ -31,3 +31,4 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+

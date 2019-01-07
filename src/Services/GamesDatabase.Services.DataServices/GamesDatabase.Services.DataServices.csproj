@@ -11,8 +11,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\GamesDatabase.Data.Core\GamesDatabase.Data.Core.csproj" />
     <ProjectReference Include="..\..\Data\GamesDatabase.Data.Models\GamesDatabase.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\GamesDatabase.Data\GamesDatabase.Data.csproj" />
     <ProjectReference Include="..\GamesDatabase.Services.Mapping\GamesDatabase.Services.Mapping.csproj" />
-    <ProjectReference Include="..\GamesDatabase.Services.ViewModels\GamesDatabase.Services.ViewModels.csproj" />
+    <ProjectReference Include="..\GamesDatabase.Services.ViewModels\GamesDatabase.Services.Models.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,8 +7,6 @@ namespace GamesDatabase.Data.Models
 {
     public class Game : BaseModel<int>
     {
-        public GamesDatabaseUser Author { get; set; }
-
         public string Title { get; set; }
 
         public string Description { get; set; }
@@ -22,6 +20,10 @@ namespace GamesDatabase.Data.Models
         public IEnumerable<Review> Reviews { get; set; }
 
         public IEnumerable<Genre> Genres { get; set; }
+
+        public DateTime DateReleased { get; set; }
+
+        public string Developer { get; set; }
 
         // public IEnumerable<Game> RelatedGames { get; set; } 
     }

@@ -1,19 +1,14 @@
-﻿using GamesDatabase.Data.Models;
+﻿using System.Collections.Generic;
+using GamesDatabase.Data.Models;
 using GamesDatabase.Services.Mapping;
-using System;
-using System.Collections.Generic;
 
-namespace GamesDatabase.Services.ViewModels
+namespace GamesDatabase.Services.Models.ViewModels.Game
 {
-    public class GameViewModel : IMapFrom<Game>
+    public class GameDetailsViewModel : IMapFrom<Data.Models.Game>
     {
-        public GamesDatabaseUser Author { get; set; }
-
         public string Title { get; set; }
 
         public string Description { get; set; }
-
-        public Byte[] Image { get; set; }
 
         public double Raiting { get; set; }
 

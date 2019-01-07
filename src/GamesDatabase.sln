@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamesDatabase.Web", "Web\GamesDatabase.Web\GamesDatabase.Web.csproj", "{EE992807-1E30-4BFF-BC76-A4CE135716D9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamesDatabase.Services.ViewModels", "Services\GamesDatabase.Services.ViewModels\GamesDatabase.Services.ViewModels.csproj", "{B0AF0227-B976-4A76-BEC0-206008EED0AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamesDatabase.Services.Models", "Services\GamesDatabase.Services.ViewModels\GamesDatabase.Services.Models.csproj", "{B0AF0227-B976-4A76-BEC0-206008EED0AD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{D8CDBC6A-660F-46B7-ADE8-9FC1C2527021}"
 EndProject

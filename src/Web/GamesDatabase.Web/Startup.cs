@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -13,7 +14,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using GamesDatabase.Data;
+using GamesDatabase.Data.Core;
 using GamesDatabase.Data.Models;
+using GamesDatabase.Data.Seeding;
+using GamesDatabase.Services.DataServices;
+using GamesDatabase.Services.DataServices.Interfaces;
+using GamesDatabase.Services.DataServices.Services;
+using GamesDatabase.Services.Mapping;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
 
 namespace GamesDatabase.Web
 {
@@ -29,6 +38,8 @@ namespace GamesDatabase.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            AutoMapperConfig.RegisterMappings();
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -39,16 +50,60 @@ namespace GamesDatabase.Web
             services.AddDbContext<GamesDatabaseContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<GamesDatabaseUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
+
+            services.AddIdentity<GamesDatabaseUser, IdentityRole>(
+                o =>
+                {
+                    o.SignIn.RequireConfirmedEmail = false;
+                    o.Password.RequireLowercase = false;
+                    o.Password.RequireUppercase = false;
+                    o.Password.RequireNonAlphanumeric = false;
+                    o.Password.RequireDigit = false;
+                    o.Password.RequiredUniqueChars = 0;
+                    o.Password.RequiredLength = 3;
+
+                })
+                .AddDefaultTokenProviders()
+                .AddDefaultUI()
                 .AddEntityFrameworkStores<GamesDatabaseContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddLogging();
+            services.AddAutoMapper();
+
+            //services.Configure<RouteOptions>(routeOptions =>
+            //{
+            //    routeOptions.ConstraintMap.Add("code", typeof(CustomRouteConstraint));
+            //});
+
+            // Application services
+            services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
+            services.AddScoped<IGamesService, GamesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IHostingEnvironment env
+            )
         {
+
+            // Seed data on application startup
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                var dbContext = serviceScope.ServiceProvider.GetRequiredService<GamesDatabaseContext>();
+
+                if (env.IsDevelopment())
+                {
+                    dbContext.Database.Migrate();
+                }
+
+                if (!dbContext.Users.Any())
+                {
+                    new GamesDatabaseContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
+                }
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

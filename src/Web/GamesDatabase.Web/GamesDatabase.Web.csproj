@@ -6,6 +6,10 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="InitialUsers.json" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -20,7 +24,7 @@
     <ProjectReference Include="..\..\Data\GamesDatabase.Data\GamesDatabase.Data.csproj" />
     <ProjectReference Include="..\..\Services\GamesDatabase.Services.DataServices\GamesDatabase.Services.DataServices.csproj" />
     <ProjectReference Include="..\..\Services\GamesDatabase.Services.Mapping\GamesDatabase.Services.Mapping.csproj" />
-    <ProjectReference Include="..\..\Services\GamesDatabase.Services.ViewModels\GamesDatabase.Services.ViewModels.csproj" />
+    <ProjectReference Include="..\..\Services\GamesDatabase.Services.ViewModels\GamesDatabase.Services.Models.csproj" />
   </ItemGroup>
 
 
@@ -28,6 +32,19 @@
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Update="Areas\Administration\Views\Game\Edit.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Views\Review\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Include="InitialUsers.json" />
   </ItemGroup>
 
 </Project>

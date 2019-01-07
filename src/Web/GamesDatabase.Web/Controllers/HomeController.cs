@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesDatabase.Services.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using GamesDatabase.Services.ViewModels;
 
 namespace GamesDatabase.Web.Controllers
 {
@@ -12,7 +12,7 @@ namespace GamesDatabase.Web.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Game");
         }
 
         public IActionResult Privacy()

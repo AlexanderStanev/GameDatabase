@@ -1,6 +1,4 @@
-using System;
-
-namespace GamesDatabase.Services.ViewModels {
+namespace GamesDatabase.Services.Models.ViewModels {
 
     public class ErrorViewModel
     {
