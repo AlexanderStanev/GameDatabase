@@ -1,22 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading;
-using CommandLine;
 using GamesDatabase.Data;
 using GamesDatabase.Data.Core;
-using GamesDatabase.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
-namespace Sandbox
+namespace GamesDatabase.Sandbox
 {
     public static class Program
     {

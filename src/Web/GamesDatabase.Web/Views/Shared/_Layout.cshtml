@@ -30,21 +30,28 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Games" asp-action="Index">Games</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Game" asp-action="List">Games</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Games" asp-action="Explore">Explore</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Genre" asp-action="Index">Genres</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Genres" asp-action="Index">Genres</a>
                         </li>
+
+                        @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Administrator"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="Administration" asp-controller="Admin" asp-action="Index">Administration</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
     <div class="container">
-        <partial name="_CookieConsentPartial" />
+        @*<partial name="_CookieConsentPartial" />*@
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

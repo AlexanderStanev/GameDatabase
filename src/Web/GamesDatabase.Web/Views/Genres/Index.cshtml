@@ -1,0 +1,26 @@
+﻿@using GamesDatabase.Services.DataServices.Interfaces
+@using GamesDatabase.Services.DataServices.Services
+@inject IGenresService GenresService
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var genres = GenresService.GetAllGenres();
+                foreach (var genre in genres)
+                {
+                    <tr>
+                        <td>@genre.Name</td>
+                        <td>@genre.Description</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

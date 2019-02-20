@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GamesDatabase.Services.Models.InputModels;
-using Microsoft.AspNetCore.Mvc;
-
-namespace GamesDatabase.Web.Areas.Administration.Controllers
+﻿namespace GamesDatabase.Web.Areas.Administration.Controllers
 {
-    public class ReviewController : AdministrationController
+    public class ReviewsController : AdministrationBaseController
     {
         //public IActionResult Edit()
         //{

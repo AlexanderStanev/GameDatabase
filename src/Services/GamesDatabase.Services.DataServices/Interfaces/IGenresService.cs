@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesDatabase.Services.Models.InputModels;
-using GamesDatabase.Services.Models.ViewModels.Game;
+using GamesDatabase.Services.Models.ViewModels;
 
 namespace GamesDatabase.Services.DataServices.Interfaces
 {
@@ -9,10 +9,13 @@ namespace GamesDatabase.Services.DataServices.Interfaces
     {
         TViewModel GetGenreById<TViewModel>(int id);
 
-        IEnumerable<GameDetailsViewModel> GetAllGenres();
+        IEnumerable<GenreViewModel> GetAllGenres();
 
         Task<int> Create(GenreInputModel input);
 
+        bool IsGenreIdValid(int categoryId);
+
         int GetCount();
+
     }
 }

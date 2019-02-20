@@ -32,14 +32,14 @@
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="Areas\Administration\Views\Game\Edit.cshtml">
+    <Content Update="Areas\Administration\Views\Games\Edit.cshtml">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
 
 
   <ItemGroup>
-    <Folder Include="Views\Review\" />
+    <Folder Include="Views\Reviews\" />
   </ItemGroup>
 
 

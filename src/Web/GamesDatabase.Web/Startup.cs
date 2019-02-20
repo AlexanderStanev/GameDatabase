@@ -1,28 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using AutoMapper;
 using GamesDatabase.Data;
 using GamesDatabase.Data.Core;
 using GamesDatabase.Data.Models;
 using GamesDatabase.Data.Seeding;
-using GamesDatabase.Services.DataServices;
 using GamesDatabase.Services.DataServices.Interfaces;
 using GamesDatabase.Services.DataServices.Services;
 using GamesDatabase.Services.Mapping;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 
 namespace GamesDatabase.Web
 {
@@ -79,6 +72,7 @@ namespace GamesDatabase.Web
             // Application services
             services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
             services.AddScoped<IGamesService, GamesService>();
+            services.AddScoped<IGenresService, GenresService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -93,10 +87,10 @@ namespace GamesDatabase.Web
             {
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<GamesDatabaseContext>();
 
-                if (env.IsDevelopment())
-                {
-                    dbContext.Database.Migrate();
-                }
+                //if (env.IsDevelopment())
+                //{
+                //    dbContext.Database.Migrate();
+                //}
 
                 if (!dbContext.Users.Any())
                 {
@@ -124,6 +118,10 @@ namespace GamesDatabase.Web
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller}/{action}/{id?}");
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

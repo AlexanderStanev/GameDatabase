@@ -1,0 +1,32 @@
+﻿@using Services.DataServices.Interfaces
+@inject IGenresService GenresService
+@inject IGamesService GamesService
+
+<h2>Administration Panel</h2>
+
+<div class="row py-2">
+    <div class="col-sm-6">
+        <div class="py-2">
+            Currently there are <a asp-area="" asp-action="Index" asp-controller="Games">@GamesService.GetCount()</a> Games
+        </div>
+        <div class="py-2">
+
+            Currently there are <a asp-area="" asp-action="Index" asp-controller="Genres">@GenresService.GetCount()</a> Genres
+        </div>
+        <div class="py-2">
+
+            Currently there are <a>REVIWSCOUNTHERE</a> Reviews
+        </div>
+        <div class="py-2">
+            Currently there are <a>ARTICLESCOUNTEHRE</a> Articles
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <a asp-area="Administration" asp-action="Create" asp-controller="Games" class="btn btn-dark py-2">
+            Create a new Game
+        </a>
+        <a asp-area="Administration" asp-action="Create" asp-controller="Genres" class="btn btn-dark py-2">
+            Create a new Genre
+        </a>
+    </div>
+</div>

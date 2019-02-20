@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using GamesDatabase.Services.Models.ViewModels;
+﻿using GamesDatabase.Services.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace GamesDatabase.Web.Controllers
 {
@@ -12,7 +8,7 @@ namespace GamesDatabase.Web.Controllers
     {
         public IActionResult Index()
         {
-            return RedirectToAction("Index", "Game");
+            return RedirectToAction("Index", "Games");
         }
 
         public IActionResult Privacy()

@@ -4,14 +4,16 @@ using GamesDatabase.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GamesDatabase.Data.Migrations
 {
     [DbContext(typeof(GamesDatabaseContext))]
-    partial class GamesDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190107223451_GenreForGame")]
+    partial class GenreForGame
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,7 +33,7 @@ namespace GamesDatabase.Data.Migrations
 
                     b.Property<string>("Developer");
 
-                    b.Property<int>("GenreId");
+                    b.Property<int?>("GenreId");
 
                     b.Property<string>("Title");
 
@@ -222,8 +224,7 @@ namespace GamesDatabase.Data.Migrations
                 {
                     b.HasOne("GamesDatabase.Data.Models.Genre", "Genre")
                         .WithMany()
-                        .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("GenreId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

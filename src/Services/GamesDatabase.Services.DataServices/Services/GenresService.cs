@@ -6,7 +6,7 @@ using GamesDatabase.Data.Models;
 using GamesDatabase.Services.DataServices.Interfaces;
 using GamesDatabase.Services.Mapping;
 using GamesDatabase.Services.Models.InputModels;
-using GamesDatabase.Services.Models.ViewModels.Game;
+using GamesDatabase.Services.Models.ViewModels;
 
 namespace GamesDatabase.Services.DataServices.Services
 {
@@ -21,17 +21,25 @@ namespace GamesDatabase.Services.DataServices.Services
 
         public TViewModel GetGenreById<TViewModel>(int id)
         {
-            return genresRepository.All().Where(x => x.Id == id).To<TViewModel>().SingleOrDefault();
+            return genresRepository.All()
+                .Where(x => x.Id == id)
+                .To<TViewModel>()
+                .SingleOrDefault();
         }
 
-        public IEnumerable<GameDetailsViewModel> GetAllGenres()
+        public IEnumerable<GenreViewModel> GetAllGenres()
         {
-            return genresRepository.All().To<GameDetailsViewModel>();
+            return genresRepository.All()
+                .To<GenreViewModel>();
         }
 
         public async Task<int> Create(GenreInputModel input)
         { 
-            var genre = AutoMapper.Mapper.Map<Genre>(input);
+            var genre = new Genre()
+            {
+                Description = input.Description,
+                Name = input.Name
+            };
 
             await genresRepository.AddAsync(genre);
             await genresRepository.SaveChangesAsync();
@@ -39,9 +47,15 @@ namespace GamesDatabase.Services.DataServices.Services
             return genre.Id;
         }
 
+        public bool IsGenreIdValid(int genreId)
+        {
+            return this.genresRepository.All().Any(x => x.Id == genreId);
+        }
+
         public int GetCount()
         {
-            return genresRepository.All().Count();
+            return genresRepository.All()
+                .Count();
         }
     }
 }

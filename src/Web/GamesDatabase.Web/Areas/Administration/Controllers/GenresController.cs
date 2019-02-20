@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GamesDatabase.Services.DataServices;
+﻿using System.Threading.Tasks;
 using GamesDatabase.Services.DataServices.Interfaces;
 using GamesDatabase.Services.Models.InputModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamesDatabase.Web.Areas.Administration.Controllers
 {
-    public class GenreController : AdministrationController
+    public class GenresController : AdministrationBaseController
     {
         private readonly IGamesService gamesService;
         private readonly IGenresService genresService;
 
-        public GenreController(IGamesService gamesService, IGenresService genresService)
+        public GenresController(IGamesService gamesService, IGenresService genresService)
         {
             this.gamesService = gamesService;
             this.genresService = genresService;
@@ -28,13 +24,13 @@ namespace GamesDatabase.Web.Areas.Administration.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(GenreInputModel input)
         {
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return this.View(input);
+                return View(input);
             }
 
-            var id = await this.genresService.Create(input);
-            return RedirectToAction("Details", "Genre", new { id = id });
+            var id = await genresService.Create(input);
+            return RedirectToAction("Details", "Genres", new { id });
         }
 
         public IActionResult Edit()
@@ -51,7 +47,7 @@ namespace GamesDatabase.Web.Areas.Administration.Controllers
         [HttpPost]
         public IActionResult Delete()
         {
-            return RedirectToAction("Index", "Game");
+            return RedirectToAction("Index", "Games");
         }
     }
 }

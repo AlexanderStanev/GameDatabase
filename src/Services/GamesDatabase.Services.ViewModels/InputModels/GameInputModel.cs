@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using GamesDatabase.Data.Models;
+using GamesDatabase.Services.Mapping;
 
 namespace GamesDatabase.Services.Models.InputModels
 {
-    public class GameInputModel
+    public class GameInputModel : IMapTo<Game>
     {
         [Required]
         [MinLength(2)]
@@ -14,10 +14,11 @@ namespace GamesDatabase.Services.Models.InputModels
 
         [Required]
         [MinLength(5)]
-        [MaxLength(100)]
+        [MaxLength(3000)]
         public string Description { get; set; }
 
-        public IEnumerable<Genre> Genres { get; set; }
+        [Required]
+        public string GenreId { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime DateReleased { get; set; }
