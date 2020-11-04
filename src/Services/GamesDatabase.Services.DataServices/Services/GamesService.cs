@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Threading.Tasks;
 using GamesDatabase.Data.Core;
 using GamesDatabase.Data.Models;
 using GamesDatabase.Services.DataServices.Interfaces;
 using GamesDatabase.Services.Mapping;
-using GamesDatabase.Services.Models.InputModels;
-using GamesDatabase.Services.Models.ViewModels;
+using GamesDatabase.Web.Models.InputModels;
+using GamesDatabase.Web.Models.ViewModels;
 
 namespace GamesDatabase.Services.DataServices.Services
 {
@@ -18,12 +17,12 @@ namespace GamesDatabase.Services.DataServices.Services
         private readonly IGenresService genresService;
 
         public GamesService(
-            IRepository<Game> gamesRepository,
-            IGenresService genresService)
+            IRepository<Game> gamesRepository)
+            //,IGenresService genresService)
 
         {
             this.gamesRepository = gamesRepository;
-            this.genresService = genresService;
+            //this.genresService = genresService;
         }
 
         public IEnumerable<DetailedGameViewModel> GetRandomGames(int count)
@@ -37,17 +36,15 @@ namespace GamesDatabase.Services.DataServices.Services
             return games;
         }
 
-        public IEnumerable<DetailedGameViewModel> GetAllGamesByGenreId(int id)
+        public IEnumerable<DetailedGameViewModel> GetAllGamesByGenreId(string id)
         {
-            return gamesRepository.All()
-                .Where(x => x.GenreId == id)
-                .To<DetailedGameViewModel>();
+            throw new NotImplementedException();
         }
 
         public IEnumerable<DetailedGameViewModel> GetLatestReleasedGames(int count)
         {
             return gamesRepository.All()
-                .OrderByDescending(x => x.DateReleased)
+                .OrderByDescending(x => x.Releases)
                 .Take(count)
                 .To<DetailedGameViewModel>();
         }
@@ -63,15 +60,12 @@ namespace GamesDatabase.Services.DataServices.Services
             return gamesRepository.All().Count();
         }
 
-        public async Task<int> Create(GameInputModel input)
+        public async Task<string> Create(GameInputModel input)
         {
             var game = new Game()
             {
                 Title = input.Title,
-                DateReleased = input.DateReleased,
-                Description = input.Description,
-                Developer = input.Developer,
-                GenreId = int.Parse(input.GenreId)
+
             };
 
             await gamesRepository.AddAsync(game);
@@ -80,7 +74,7 @@ namespace GamesDatabase.Services.DataServices.Services
             return game.Id;
         }
 
-        public TViewModel GetGameById<TViewModel>(int id)
+        public TViewModel GetGameById<TViewModel>(string id)
         {
             var game = this.gamesRepository.All()
                 .Where(x => x.Id == id)

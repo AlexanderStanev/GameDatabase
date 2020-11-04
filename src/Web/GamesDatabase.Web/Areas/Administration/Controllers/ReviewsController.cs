@@ -2,21 +2,21 @@
 {
     public class ReviewsController : AdministrationBaseController
     {
-        //public IActionResult Edit()
-        //{
+        // public IActionResult Edit()
+        // {
         //    return View();
-        //}
+        // }
 
-        //[HttpPost]
-        //public IActionResult Edit(GameInputModel game)
-        //{
+        // [HttpPost]
+        // public IActionResult Edit(GameInputModel game)
+        // {
         //    return View();
-        //}
+        // }
 
-        //[HttpPost]
-        //public IActionResult Delete()
-        //{
+        // [HttpPost]
+        // public IActionResult Delete()
+        // {
         //    return RedirectToAction("Index", "Game");
-        //}
+        // }
     }
 }

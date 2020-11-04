@@ -1,32 +1,45 @@
 ﻿using GamesDatabase.Data.Core;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace GamesDatabase.Data.Models
 {
-    public class Game : BaseModel<int>
+    public class Game : BaseModel
     {
+        [Required]
+        [MaxLength(32)]
         public string Title { get; set; }
-        
+
+        [Required]
+        [MaxLength(4096)]
         public string Description { get; set; }
 
-        //public Byte[] Image { get; set; }
+        public virtual ICollection<Genre> Genres { get; set; }
 
-        //public double Raiting { get; set; }
+        public virtual ICollection<Image> Images { get; set; }
 
-        //public int ReviewsCount { get; set; }
+        public virtual ICollection<Video> Videos { get; set; }
 
-        //public IEnumerable<Review> Reviews { get; set; }
+        public virtual ICollection<Release> Releases { get; set; }
 
-        public int GenreId { get; set; }
+        public virtual ICollection<Developer> Developers { get; set; }
 
-        //public virtual Genre Genre { get; set; }
-        
-        public DateTime DateReleased { get; set; }
-        
-        public string Developer { get; set; }
+        public virtual ICollection<Publisher> Publishers { get; set; }
 
-        //public IEnumerable<Game> RelatedGames { get; set; } 
+        public virtual ICollection<Platform> Platforms { get; set; }
+
+        public virtual ICollection<Review> Reviews { get; set; }
+
+        public virtual ICollection<Tag> Tags { get; set; }
+
+        [Required]
+        [MaxLength(36)]
+        public string GameEngineId { get; set; }
+
+        public virtual GameEngine GameEngine { get; set; }
+
+        [MaxLength(2048)]
+        public string OfficialWebsite { get; set; }
     }
 }

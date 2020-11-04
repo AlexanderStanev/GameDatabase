@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using GamesDatabase.Data.Models;
+﻿using GamesDatabase.Data.Models;
 using GamesDatabase.Services.Mapping;
+using System;
+using System.Collections.Generic;
 
-namespace GamesDatabase.Services.Models.ViewModels
+namespace GamesDatabase.Web.Models.ViewModels
 {
     public class DetailedGameViewModel : IMapFrom<Game>
     {

@@ -1,9 +1,9 @@
-﻿using GamesDatabase.Services.DataServices.Interfaces;
-using GamesDatabase.Services.Models.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-
-namespace GamesDatabase.Web.Controllers
+﻿namespace GamesDatabase.Web.Controllers
 {
+    using GamesDatabase.Services.DataServices.Interfaces;
+    using GamesDatabase.Web.Models.ViewModels;
+    using Microsoft.AspNetCore.Mvc;
+
     public class GenresController : BaseController
     {
         private readonly IGenresService genresService;
@@ -15,13 +15,14 @@ namespace GamesDatabase.Web.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return this.View();
         }
 
-        public IActionResult Details(int id)
+        public IActionResult Details(string id)
         {
-            var genre = genresService.GetGenreById<DetailedGameViewModel>(id);
-            return View(genre);
+            // TODO: Genre view model needed
+            var genre = this.genresService.GetGenreById<DetailedGameViewModel>(id);
+            return this.View(genre);
         }
     }
 }

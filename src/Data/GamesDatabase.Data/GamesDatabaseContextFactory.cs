@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace GamesDatabase.Data
 {
@@ -19,13 +16,8 @@ namespace GamesDatabase.Data
                 .Build();
 
             var builder = new DbContextOptionsBuilder<GamesDatabaseContext>();
-
             var connectionString = configuration.GetConnectionString("DefaultConnection");
-
             builder.UseSqlServer(connectionString);
-
-            // Stop client query evaluation
-            builder.ConfigureWarnings(w => w.Throw(RelationalEventId.QueryClientEvaluationWarning));
 
             return new GamesDatabaseContext(builder.Options);
         }

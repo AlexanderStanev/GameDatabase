@@ -1,11 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace GamesDatabase.Data.Core
 {
-    public class BaseModel<T>
+    public class BaseModel
     {
-        public T Id { get; set; }
+        public BaseModel()
+        {
+            this.Id = Guid.NewGuid().ToString();
+        }
+
+        [Required]
+        [MaxLength(36)]
+        public string Id { get; set; }
     }
 }

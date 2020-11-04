@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using GamesDatabase.Data.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 
 namespace GamesDatabase.Web.Areas.Identity.Pages.Account
@@ -16,24 +20,27 @@ namespace GamesDatabase.Web.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
-        private readonly SignInManager<GamesDatabaseUser> _signInManager;
-        private readonly UserManager<GamesDatabaseUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
 
         public ExternalLoginModel(
-            SignInManager<GamesDatabaseUser> signInManager,
-            UserManager<GamesDatabaseUser> userManager,
-            ILogger<ExternalLoginModel> logger)
+            SignInManager<ApplicationUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            ILogger<ExternalLoginModel> logger,
+            IEmailSender emailSender)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
+            _emailSender = emailSender;
         }
 
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public string LoginProvider { get; set; }
+        public string ProviderDisplayName { get; set; }
 
         public string ReturnUrl { get; set; }
 
@@ -90,7 +97,7 @@ namespace GamesDatabase.Web.Areas.Identity.Pages.Account
             {
                 // If the user does not have an account, then ask the user to create an account.
                 ReturnUrl = returnUrl;
-                LoginProvider = info.LoginProvider;
+                ProviderDisplayName = info.ProviderDisplayName;
                 if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
                 {
                     Input = new InputModel
@@ -115,15 +122,36 @@ namespace GamesDatabase.Web.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new GamesDatabaseUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+
+                        var userId = await _userManager.GetUserIdAsync(user);
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                        var callbackUrl = Url.Page(
+                            "/Account/ConfirmEmail",
+                            pageHandler: null,
+                            values: new { area = "Identity", userId = userId, code = code },
+                            protocol: Request.Scheme);
+
+                        await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                        // If account confirmation is required, we need to show the link if we don't have a real email sender
+                        if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                        {
+                            return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email });
+                        }
+
+                        await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
+
                         return LocalRedirect(returnUrl);
                     }
                 }
@@ -133,7 +161,7 @@ namespace GamesDatabase.Web.Areas.Identity.Pages.Account
                 }
             }
 
-            LoginProvider = info.LoginProvider;
+            ProviderDisplayName = info.ProviderDisplayName;
             ReturnUrl = returnUrl;
             return Page();
         }

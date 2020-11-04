@@ -1,5 +1,5 @@
-namespace GamesDatabase.Services.Models.ViewModels {
-
+namespace GamesDatabase.Web.Models.ViewModels
+{
     public class ErrorViewModel
     {
         public string RequestId { get; set; }

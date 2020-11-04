@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GamesDatabase.Services.Mapping
+﻿namespace GamesDatabase.Services.Mapping
 {
+    // ReSharper disable once UnusedTypeParameter
     public interface IMapFrom<T>
     {
     }

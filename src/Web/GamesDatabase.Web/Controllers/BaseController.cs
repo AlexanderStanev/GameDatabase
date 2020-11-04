@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace GamesDatabase.Web.Controllers
+﻿namespace GamesDatabase.Web.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+
     public class BaseController : Controller
     {
     }

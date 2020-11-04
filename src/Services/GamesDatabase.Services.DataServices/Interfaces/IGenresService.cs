@@ -1,19 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using GamesDatabase.Web.Models.InputModels;
+using GamesDatabase.Web.Models.ViewModels;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using GamesDatabase.Services.Models.InputModels;
-using GamesDatabase.Services.Models.ViewModels;
 
 namespace GamesDatabase.Services.DataServices.Interfaces
 {
     public interface IGenresService
     {
-        TViewModel GetGenreById<TViewModel>(int id);
+        TViewModel GetGenreById<TViewModel>(string id);
 
         IEnumerable<GenreViewModel> GetAllGenres();
 
-        Task<int> Create(GenreInputModel input);
+        Task<string> Create(GenreInputModel input);
 
-        bool IsGenreIdValid(int categoryId);
+        bool IsGenreIdValid(string categoryId);
 
         int GetCount();
 

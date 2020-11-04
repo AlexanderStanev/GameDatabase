@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GamesDatabase.Data.Core;
-using GamesDatabase.Data;                                                                                                                                                                                                                                                                                                                     
+﻿using GamesDatabase.Data.Core;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GamesDatabase.Data
 {
@@ -23,7 +20,7 @@ namespace GamesDatabase.Data
 
         public Task AddAsync(TEntity entity)
         {
-            return dbSet.AddAsync(entity);
+            return dbSet.AddAsync(entity).AsTask();
         }
 
         public IQueryable<TEntity> All()

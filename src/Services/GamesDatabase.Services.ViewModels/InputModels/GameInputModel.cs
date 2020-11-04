@@ -1,9 +1,9 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using GamesDatabase.Data.Models;
+﻿using GamesDatabase.Data.Models;
 using GamesDatabase.Services.Mapping;
+using System;
+using System.ComponentModel.DataAnnotations;
 
-namespace GamesDatabase.Services.Models.InputModels
+namespace GamesDatabase.Web.Models.InputModels
 {
     public class GameInputModel : IMapTo<Game>
     {

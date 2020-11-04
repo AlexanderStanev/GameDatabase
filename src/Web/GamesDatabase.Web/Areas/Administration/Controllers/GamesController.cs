@@ -1,12 +1,12 @@
-﻿using GamesDatabase.Services.DataServices.Interfaces;
-using GamesDatabase.Services.Models.InputModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace GamesDatabase.Web.Areas.Administration.Controllers
+﻿namespace GamesDatabase.Web.Areas.Administration.Controllers
 {
+    using System.Linq;
+    using System.Threading.Tasks;
+    using GamesDatabase.Services.DataServices.Interfaces;
+    using GamesDatabase.Web.Models.InputModels;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+
     public class GamesController : AdministrationBaseController
     {
         private readonly IGamesService gamesService;
@@ -22,45 +22,44 @@ namespace GamesDatabase.Web.Areas.Administration.Controllers
 
         public IActionResult Create()
         {
-            ViewData["Genres"] = genresService.GetAllGenres()
+            this.ViewData["Genres"] = this.genresService.GetAllGenres()
                 .Select(x => new SelectListItem
                 {
                     Text = x.Name,
-                    Value = x.Id.ToString()
+                    Value = x.Id.ToString(),
                 });
 
-            return View();
+            return this.View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(GameInputModel input)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return View(input);
+                return this.View(input);
             }
 
-            var id = await gamesService.Create(input);
-            return RedirectToAction("Details", "Games", new { id });
+            var id = await this.gamesService.Create(input);
+            return this.RedirectToAction("Details", "Games", new { id });
         }
 
         public IActionResult Edit(int id)
         {
-            return View($"Edit/{id}");
+            return this.View($"Edit/{id}");
         }
 
         [HttpPost]
         public IActionResult Edit(GameInputModel game)
         {
-
             var id = 0;
-            return RedirectToAction($"Details/{id}", "Games");
+            return this.RedirectToAction($"Details/{id}", "Games");
         }
 
         [HttpPost]
         public IActionResult Delete()
         {
-            return RedirectToAction("Index", "Games");
+            return this.RedirectToAction("Index", "Games");
         }
     }
 }

@@ -1,0 +1,71 @@
+{
+  "Users": [
+    {
+      "username": "Admin",
+      "email": "Admin@gmail.com",
+      "password": "Admin123",
+      "role": "Administrator"
+    },
+
+    {
+      "username": "Moderator",
+      "email": "Moderator@gmail.com",
+      "password": "Moderator123",
+      "role": "Moderator"
+    },
+
+    {
+      "username": "Gamer",
+      "email": "Gamer@gmail.com",
+      "password": "Gamer123",
+      "role": "Gamer"
+    }
+  ],
+
+  "Genres": [
+    {
+      "name": "RPG",
+      "description": "TODO"
+    },
+
+    {
+      "name": "MMORPG",
+      "description": "TODO"
+    },
+
+    {
+      "name": "FPS",
+      "description": "TODO"
+    },
+
+    {
+      "name": "Action",
+      "description": "TODO"
+    },
+
+    {
+      "name": "Puzzle",
+      "description": "TODO"
+    },
+
+    {
+      "name": "RTS",
+      "description": "TODO"
+    },
+
+    {
+      "name": "Sports",
+      "description": "TODO"
+    },
+
+    {
+      "name": "Adventure",
+      "description": "TODO"
+    },
+
+    {
+      "name": "Simulation",
+      "description": "TODO"
+    }
+  ]
+}

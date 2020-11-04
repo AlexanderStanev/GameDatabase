@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace GamesDatabase.Web.Areas.Administration.Controllers
+﻿namespace GamesDatabase.Web.Areas.Administration.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+
     public class AdminController : AdministrationBaseController
     {
         [Route("Administration")]
         public IActionResult Index()
         {
-            return View("../Index");
+            return this.View("../Index");
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
-using GamesDatabase.Data.Models;
 using GamesDatabase.Data;
+using GamesDatabase.Data.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;

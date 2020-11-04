@@ -1,10 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using GamesDatabase.Services.DataServices.Interfaces;
-using GamesDatabase.Services.Models.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-
-namespace GamesDatabase.Web.Controllers
+﻿namespace GamesDatabase.Web.Controllers
 {
+    using GamesDatabase.Services.DataServices.Interfaces;
+    using GamesDatabase.Web.Models.ViewModels;
+    using Microsoft.AspNetCore.Mvc;
+
     public class GamesController : BaseController
     {
         private readonly IGamesService gamesService;
@@ -16,24 +15,24 @@ namespace GamesDatabase.Web.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return this.View();
         }
 
-        public IActionResult ByCategory(int id)
+        public IActionResult ByCategory(string id)
         {
             var games = this.gamesService.GetAllGamesByGenreId(id);
-            return View(games);
+            return this.View(games);
         }
 
-        public IActionResult Details(int id)
+        public IActionResult Details(string id)
         {
             var game = this.gamesService.GetGameById<DetailedGameViewModel>(id);
-            return View(game);
+            return this.View(game);
         }
 
         public IActionResult Explore()
         {
-            return View();
+            return this.View();
         }
     }
 }

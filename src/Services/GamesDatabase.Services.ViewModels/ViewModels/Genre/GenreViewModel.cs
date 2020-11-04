@@ -1,7 +1,7 @@
 ﻿using GamesDatabase.Data.Models;
 using GamesDatabase.Services.Mapping;
 
-namespace GamesDatabase.Services.Models.ViewModels
+namespace GamesDatabase.Web.Models.ViewModels
 {
     public class GenreViewModel : IMapFrom<Genre>
     {

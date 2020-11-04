@@ -12,13 +12,13 @@ namespace GamesDatabase.Web.Areas.Identity.Pages.Account.Manage
 {
     public class ChangePasswordModel : PageModel
     {
-        private readonly UserManager<GamesDatabaseUser> _userManager;
-        private readonly SignInManager<GamesDatabaseUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
 
         public ChangePasswordModel(
-            UserManager<GamesDatabaseUser> userManager,
-            SignInManager<GamesDatabaseUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             ILogger<ChangePasswordModel> logger)
         {
             _userManager = userManager;

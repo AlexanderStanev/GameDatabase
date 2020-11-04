@@ -1,15 +1,18 @@
-﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-
-namespace GamesDatabase.Services.Mapping
+﻿namespace GamesDatabase.Services.Mapping
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
+    using AutoMapper;
+    using AutoMapper.Configuration;
+
     public static class AutoMapperConfig
     {
         private static bool initialized;
+
+        public static IMapper MapperInstance { get; set; }
 
         public static void RegisterMappings(params Assembly[] assemblies)
         {
@@ -21,29 +24,34 @@ namespace GamesDatabase.Services.Mapping
             initialized = true;
 
             var types = assemblies.SelectMany(a => a.GetExportedTypes()).ToList();
-            Mapper.Initialize(configuration =>
-            {
-                // IMapFrom<>
-                foreach (var map in GetFromMaps(types))
-                {
-                    configuration.CreateMap(map.Source, map.Destination);
-                }
 
-                // IMapTo<>
-                foreach (var map in GetToMaps(types))
+            var config = new MapperConfigurationExpression();
+            config.CreateProfile(
+                "ReflectionProfile",
+                configuration =>
                 {
-                    configuration.CreateMap(map.Source, map.Destination);
-                }
+                    // IMapFrom<>
+                    foreach (var map in GetFromMaps(types))
+                    {
+                        configuration.CreateMap(map.Source, map.Destination);
+                    }
 
-                // IHaveCustomMappings
-                foreach (var map in GetCustomMappings(types))
-                {
-                    map.CreateMappings(configuration);
-                }
-            });
+                    // IMapTo<>
+                    foreach (var map in GetToMaps(types))
+                    {
+                        configuration.CreateMap(map.Source, map.Destination);
+                    }
+
+                    // IHaveCustomMappings
+                    foreach (var map in GetCustomMappings(types))
+                    {
+                        map.CreateMappings(configuration);
+                    }
+                });
+            MapperInstance = new Mapper(new MapperConfiguration(config));
         }
-        private static IEnumerable<TypesMap> GetFromMaps(
-            IEnumerable<Type> types)
+
+        private static IEnumerable<TypesMap> GetFromMaps(IEnumerable<Type> types)
         {
             var fromMaps = from t in types
                            from i in t.GetTypeInfo().GetInterfaces()

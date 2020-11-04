@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace GamesDatabase.Data.Seeding
 {
-    public class GamesDatabaseContextSeeder : ISeeder
+    public class GamesDatabaseContextSeeder
     {
         public async Task SeedAsync(GamesDatabaseContext dbContext, IServiceProvider serviceProvider)
         {
@@ -20,18 +20,26 @@ namespace GamesDatabase.Data.Seeding
                 throw new ArgumentNullException(nameof(serviceProvider));
             }
 
-            var logger = serviceProvider.GetService<ILoggerFactory>().CreateLogger(typeof(GamesDatabaseContextSeeder));
+            //var logger = serviceProvider.GetService<ILoggerFactory>().CreateLogger(typeof(GamesDatabaseContextSeeder));
 
             var seeders = new List<ISeeder>
             {
-                new RolesAndUsersSeeder(),
+                new RolesSeeder(),
+                new UsersSeeder(),
+                //new GamesSeeder(),
+                //new GenresSeeder(),
+                //new DevelopersSeeder(),
+                //new PublishersSeeder(),
+                //new GameEnginesSeeder(),
+                //new PlatformsSeeder(),
+                //new TagsSeeder(),
             };
 
             foreach (var seeder in seeders)
             {
                 await seeder.SeedAsync(dbContext, serviceProvider);
                 await dbContext.SaveChangesAsync();
-                logger.LogInformation($"Seeder {seeder.GetType().Name} done.");
+                // logger.LogInformation($"Seeder {seeder.GetType().Name} done.");
             }
         }
     }

@@ -1,12 +1,9 @@
-﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GamesDatabase.Services.Mapping
+﻿namespace GamesDatabase.Services.Mapping
 {
+    using AutoMapper;
+
     public interface IHaveCustomMappings
     {
-        void CreateMappings(IMapperConfigurationExpression configuration);
+        void CreateMappings(IProfileExpression configuration);
     }
 }

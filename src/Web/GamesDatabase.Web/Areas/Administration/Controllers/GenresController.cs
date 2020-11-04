@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using GamesDatabase.Services.DataServices.Interfaces;
-using GamesDatabase.Services.Models.InputModels;
-using Microsoft.AspNetCore.Mvc;
-
-namespace GamesDatabase.Web.Areas.Administration.Controllers
+﻿namespace GamesDatabase.Web.Areas.Administration.Controllers
 {
+    using System.Threading.Tasks;
+    using GamesDatabase.Services.DataServices.Interfaces;
+    using GamesDatabase.Web.Models.InputModels;
+    using Microsoft.AspNetCore.Mvc;
+
     public class GenresController : AdministrationBaseController
     {
         private readonly IGamesService gamesService;
@@ -18,36 +18,36 @@ namespace GamesDatabase.Web.Areas.Administration.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            return this.View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(GenreInputModel input)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return View(input);
+                return this.View(input);
             }
 
-            var id = await genresService.Create(input);
-            return RedirectToAction("Details", "Genres", new { id });
+            var id = await this.genresService.Create(input);
+            return this.RedirectToAction("Details", "Genres", new { id });
         }
 
         public IActionResult Edit()
         {
-            return View();
+            return this.View();
         }
 
         [HttpPost]
         public IActionResult Edit(GameInputModel game)
         {
-            return View();
+            return this.View();
         }
 
         [HttpPost]
         public IActionResult Delete()
         {
-            return RedirectToAction("Index", "Games");
+            return this.RedirectToAction("Index", "Games");
         }
     }
 }

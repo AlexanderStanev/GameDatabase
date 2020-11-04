@@ -5,8 +5,8 @@ using GamesDatabase.Data.Core;
 using GamesDatabase.Data.Models;
 using GamesDatabase.Services.DataServices.Interfaces;
 using GamesDatabase.Services.Mapping;
-using GamesDatabase.Services.Models.InputModels;
-using GamesDatabase.Services.Models.ViewModels;
+using GamesDatabase.Web.Models.InputModels;
+using GamesDatabase.Web.Models.ViewModels;
 
 namespace GamesDatabase.Services.DataServices.Services
 {
@@ -19,7 +19,7 @@ namespace GamesDatabase.Services.DataServices.Services
             this.genresRepository = genresRepository;
         }
 
-        public TViewModel GetGenreById<TViewModel>(int id)
+        public TViewModel GetGenreById<TViewModel>(string id)
         {
             return genresRepository.All()
                 .Where(x => x.Id == id)
@@ -33,8 +33,8 @@ namespace GamesDatabase.Services.DataServices.Services
                 .To<GenreViewModel>();
         }
 
-        public async Task<int> Create(GenreInputModel input)
-        { 
+        public async Task<string> Create(GenreInputModel input)
+        {
             var genre = new Genre()
             {
                 Description = input.Description,
@@ -47,7 +47,7 @@ namespace GamesDatabase.Services.DataServices.Services
             return genre.Id;
         }
 
-        public bool IsGenreIdValid(int genreId)
+        public bool IsGenreIdValid(string genreId)
         {
             return this.genresRepository.All().Any(x => x.Id == genreId);
         }

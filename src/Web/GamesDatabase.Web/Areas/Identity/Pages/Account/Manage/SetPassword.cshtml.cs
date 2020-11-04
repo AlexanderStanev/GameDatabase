@@ -12,12 +12,12 @@ namespace GamesDatabase.Web.Areas.Identity.Pages.Account.Manage
 {
     public class SetPasswordModel : PageModel
     {
-        private readonly UserManager<GamesDatabaseUser> _userManager;
-        private readonly SignInManager<GamesDatabaseUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public SetPasswordModel(
-            UserManager<GamesDatabaseUser> userManager,
-            SignInManager<GamesDatabaseUser> signInManager)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

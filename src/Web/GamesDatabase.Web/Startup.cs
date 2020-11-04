@@ -1,29 +1,32 @@
-﻿using AutoMapper;
-using GamesDatabase.Data;
-using GamesDatabase.Data.Core;
-using GamesDatabase.Data.Models;
-using GamesDatabase.Data.Seeding;
-using GamesDatabase.Services.DataServices.Interfaces;
-using GamesDatabase.Services.DataServices.Services;
-using GamesDatabase.Services.Mapping;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
-
-namespace GamesDatabase.Web
+﻿namespace GamesDatabase.Web
 {
+    using System.Reflection;
+    using System.Threading.Tasks;
+    using GamesDatabase.Data;
+    using GamesDatabase.Data.Core;
+    using GamesDatabase.Data.Models;
+    using GamesDatabase.Data.Seeding;
+    using GamesDatabase.Services.DataServices.Interfaces;
+    using GamesDatabase.Services.DataServices.Services;
+    using GamesDatabase.Services.Mapping;
+    using GamesDatabase.Web.Models.ViewModels;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+
     public class Startup
     {
+        private readonly IConfiguration configuration;
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -31,71 +34,61 @@ namespace GamesDatabase.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            AutoMapperConfig.RegisterMappings();
+            services.AddDbContext<GamesDatabaseContext>(
+                options => options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
 
-            services.Configure<CookiePolicyOptions>(options =>
+            services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
+                options.User.RequireUniqueEmail = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+            }).AddDefaultUI()
+              .AddEntityFrameworkStores<GamesDatabaseContext>()
+              .AddDefaultTokenProviders();
 
-            services.AddDbContext<GamesDatabaseContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddIdentity<GamesDatabaseUser, IdentityRole>(
-                o =>
+            services.Configure<CookiePolicyOptions>(
+                options =>
                 {
-                    o.SignIn.RequireConfirmedEmail = false;
-                    o.Password.RequireLowercase = false;
-                    o.Password.RequireUppercase = false;
-                    o.Password.RequireNonAlphanumeric = false;
-                    o.Password.RequireDigit = false;
-                    o.Password.RequiredUniqueChars = 0;
-                    o.Password.RequiredLength = 3;
+                    options.CheckConsentNeeded = context => true;
+                    options.MinimumSameSitePolicy = SameSiteMode.None;
+                });
 
-                })
-                .AddDefaultTokenProviders()
-                .AddDefaultUI()
-                .AddEntityFrameworkStores<GamesDatabaseContext>();
+            services.AddControllersWithViews(
+                options =>
+                {
+                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                }).AddRazorRuntimeCompilation();
+            services.AddRazorPages();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddLogging();
-            services.AddAutoMapper();
+            services.AddSingleton(this.configuration);
 
-            //services.Configure<RouteOptions>(routeOptions =>
-            //{
-            //    routeOptions.ConstraintMap.Add("code", typeof(CustomRouteConstraint));
-            //});
+            // Data repositories
+            // services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
+            services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
+            // services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
-            services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
-            services.AddScoped<IGamesService, GamesService>();
-            services.AddScoped<IGenresService, GenresService>();
+            services.AddTransient<IGamesService, GamesService>();
+            services.AddTransient<IGenresService, GenresService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(
-            IApplicationBuilder app,
-            IHostingEnvironment env
-            )
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
 
             // Seed data on application startup
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<GamesDatabaseContext>();
+                dbContext.Database.Migrate();
 
-                //if (env.IsDevelopment())
-                //{
-                //    dbContext.Database.Migrate();
-                //}
-
-                if (!dbContext.Users.Any())
-                {
-                    new GamesDatabaseContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
-                }
+                // Could be optimized to be executed only if the database has just been created
+                new GamesDatabaseContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
             }
 
             if (env.IsDevelopment())
@@ -106,7 +99,6 @@ namespace GamesDatabase.Web
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -114,18 +106,18 @@ namespace GamesDatabase.Web
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseRouting();
+
             app.UseAuthentication();
+            app.UseAuthorization();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "areas",
-                    template: "{area:exists}/{controller}/{action}/{id?}");
-
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseEndpoints(
+                endpoints =>
+                {
+                    endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                    endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                    endpoints.MapRazorPages();
+                });
         }
     }
 }
