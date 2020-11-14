@@ -13,7 +13,7 @@ namespace GamesDatabase.Web.Models.InputModels
 
         [Required]
         [MinLength(5)]
-        [MaxLength(1000)]
+        [MaxLength(200)]
         public string Description { get; set; }
     }
 }

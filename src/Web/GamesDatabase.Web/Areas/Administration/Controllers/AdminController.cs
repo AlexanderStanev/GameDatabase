@@ -4,10 +4,10 @@
 
     public class AdminController : AdministrationBaseController
     {
-        [Route("Administration")]
+        [HttpGet("Administration/")]
         public IActionResult Index()
         {
-            return this.View("../Index");
+            return this.View();
         }
     }
 }

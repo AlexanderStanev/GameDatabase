@@ -17,10 +17,6 @@ namespace GamesDatabase.Web.Models.ViewModels
 
         public IEnumerable<Review> Reviews { get; set; }
 
-        public string Genre { get; set; }
-
         public DateTime DateReleased { get; set; }
-
-        public string Developer { get; set; }
     }
 }

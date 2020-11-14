@@ -1,6 +1,4 @@
-﻿@using GamesDatabase.Services.DataServices.Interfaces
-@*@using GamesDatabase.Services.DataServices.Services*@
-@inject IGenresService GenresService
+﻿@model IEnumerable<GamesDatabase.Web.Models.ViewModels.GenreViewModel>
 
 <div class="container">
     <table class="table">
@@ -12,8 +10,8 @@
         </thead>
         <tbody>
             @{
-                var genres = GenresService.GetAllGenres();
-                foreach (var genre in genres)
+
+                foreach (var genre in Model)
                 {
                     <tr>
                         <td>@genre.Name</td>

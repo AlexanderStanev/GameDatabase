@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamesDatabase.Data.Migrations
 {
     [DbContext(typeof(GamesDatabaseContext))]
-    [Migration("20201104003906_Initial")]
+    [Migration("20201104183342_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -195,6 +195,31 @@ namespace GamesDatabase.Data.Migrations
                     b.ToTable("GameEngines");
                 });
 
+            modelBuilder.Entity("GamesDatabase.Data.Models.GameGenre", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(36)")
+                        .HasMaxLength(36);
+
+                    b.Property<string>("GameId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(36)")
+                        .HasMaxLength(36);
+
+                    b.Property<string>("GenreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(36)")
+                        .HasMaxLength(36);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("GenreId");
+
+                    b.ToTable("GameGenre");
+                });
+
             modelBuilder.Entity("GamesDatabase.Data.Models.Genre", b =>
                 {
                     b.Property<string>("Id")
@@ -206,17 +231,12 @@ namespace GamesDatabase.Data.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<string>("GameId")
-                        .HasColumnType("nvarchar(36)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(32)")
                         .HasMaxLength(32);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GameId");
 
                     b.ToTable("Genres");
                 });
@@ -536,11 +556,19 @@ namespace GamesDatabase.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("GamesDatabase.Data.Models.Genre", b =>
+            modelBuilder.Entity("GamesDatabase.Data.Models.GameGenre", b =>
                 {
-                    b.HasOne("GamesDatabase.Data.Models.Game", null)
-                        .WithMany("Genres")
-                        .HasForeignKey("GameId");
+                    b.HasOne("GamesDatabase.Data.Models.Game", "Game")
+                        .WithMany("GameGenres")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GamesDatabase.Data.Models.Genre", "Genre")
+                        .WithMany("GameGenres")
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Image", b =>

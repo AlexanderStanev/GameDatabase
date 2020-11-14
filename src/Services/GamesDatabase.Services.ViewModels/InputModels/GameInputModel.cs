@@ -14,18 +14,10 @@ namespace GamesDatabase.Web.Models.InputModels
 
         [Required]
         [MinLength(5)]
-        [MaxLength(3000)]
+        [MaxLength(4000)]
         public string Description { get; set; }
 
-        [Required]
-        public string GenreId { get; set; }
-
         [DataType(DataType.Date)]
-        public DateTime DateReleased { get; set; }
-
-        [Required]
-        [MinLength(2)]
-        [MaxLength(30)]
-        public string Developer { get; set; }
+        public DateTime? Announced { get; set; }
     }
 }

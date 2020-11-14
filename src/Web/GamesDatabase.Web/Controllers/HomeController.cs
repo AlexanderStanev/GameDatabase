@@ -8,7 +8,7 @@
     {
         public IActionResult Index()
         {
-            return this.RedirectToAction("Index", "Games");
+            return this.Redirect("/Games/All");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

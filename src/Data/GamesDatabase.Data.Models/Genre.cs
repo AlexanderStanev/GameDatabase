@@ -14,5 +14,7 @@ namespace GamesDatabase.Data.Models
         [Required]
         [MaxLength(256)]
         public string Description { get; set; }
+
+        public virtual ICollection<GameGenre> GameGenres { get; set; }
     }
 }

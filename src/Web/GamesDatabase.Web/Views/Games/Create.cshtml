@@ -1,14 +1,13 @@
-﻿@model Web.Models.InputModels.GameInputModel
+﻿@model GamesDatabase.Web.Models.InputModels.GameInputModel
 
 @{
     ViewData["Title"] = "View";
-    var genres = this.ViewData["Genres"] as IEnumerable<SelectListItem>;
 }
 
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control"></>
@@ -20,19 +19,9 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="GenreId" class="control-label"></label>
-                <select asp-for="GenreId" class="form-control" asp-items="genres"></select>
-                <span asp-validation-for="GenreId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Developer" class="control-label"></label>
-                <input asp-for="Developer" class="form-control"></>
-                <span asp-validation-for="Developer" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateReleased" class="control-label"></label>
-                <input asp-for="DateReleased" class="form-control"></>
-                <span asp-validation-for="DateReleased" class="text-danger"></span>
+                <label asp-for="Announced" class="control-label"></label>
+                <input asp-for="Announced" class="form-control"></>
+                <span asp-validation-for="Announced" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -44,3 +33,7 @@
 <div>
     <a class="btn btn-primary" asp-area="Administration" asp-action="Index" asp-controller="Admin">Back to the Administration Panel</a>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />;
+}

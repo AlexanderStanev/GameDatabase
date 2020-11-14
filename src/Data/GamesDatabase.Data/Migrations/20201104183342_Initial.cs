@@ -60,6 +60,19 @@ namespace GamesDatabase.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Genres",
+                columns: table => new
+                {
+                    Id = table.Column<string>(maxLength: 36, nullable: false),
+                    Name = table.Column<string>(maxLength: 32, nullable: false),
+                    Description = table.Column<string>(maxLength: 256, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Genres", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -208,23 +221,28 @@ namespace GamesDatabase.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Genres",
+                name: "GameGenre",
                 columns: table => new
                 {
                     Id = table.Column<string>(maxLength: 36, nullable: false),
-                    Name = table.Column<string>(maxLength: 32, nullable: false),
-                    Description = table.Column<string>(maxLength: 256, nullable: false),
-                    GameId = table.Column<string>(nullable: true)
+                    GameId = table.Column<string>(maxLength: 36, nullable: false),
+                    GenreId = table.Column<string>(maxLength: 36, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Genres", x => x.Id);
+                    table.PrimaryKey("PK_GameGenre", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Genres_Games_GameId",
+                        name: "FK_GameGenre_Games_GameId",
                         column: x => x.GameId,
                         principalTable: "Games",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GameGenre_Genres_GenreId",
+                        column: x => x.GenreId,
+                        principalTable: "Genres",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -427,14 +445,19 @@ namespace GamesDatabase.Data.Migrations
                 column: "GameId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GameGenre_GameId",
+                table: "GameGenre",
+                column: "GameId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GameGenre_GenreId",
+                table: "GameGenre",
+                column: "GenreId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Games_GameEngineId",
                 table: "Games",
                 column: "GameEngineId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Genres_GameId",
-                table: "Genres",
-                column: "GameId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Images_GameId",
@@ -503,7 +526,7 @@ namespace GamesDatabase.Data.Migrations
                 name: "Developers");
 
             migrationBuilder.DropTable(
-                name: "Genres");
+                name: "GameGenre");
 
             migrationBuilder.DropTable(
                 name: "Images");
@@ -525,6 +548,9 @@ namespace GamesDatabase.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Genres");
 
             migrationBuilder.DropTable(
                 name: "Platforms");

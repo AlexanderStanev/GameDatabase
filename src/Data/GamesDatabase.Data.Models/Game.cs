@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GamesDatabase.Data.Models
 {
@@ -15,7 +16,7 @@ namespace GamesDatabase.Data.Models
         [MaxLength(4096)]
         public string Description { get; set; }
 
-        public virtual ICollection<Genre> Genres { get; set; }
+        public virtual ICollection<GameGenre> GameGenres { get; set; }
 
         public virtual ICollection<Image> Images { get; set; }
 
@@ -38,6 +39,8 @@ namespace GamesDatabase.Data.Models
         public string GameEngineId { get; set; }
 
         public virtual GameEngine GameEngine { get; set; }
+
+        public DateTime? Announced { get; set; }
 
         [MaxLength(2048)]
         public string OfficialWebsite { get; set; }
