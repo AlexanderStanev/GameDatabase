@@ -27,7 +27,7 @@ namespace GamesDatabase.Data.Seeding
                 new RolesSeeder(),
                 new UsersSeeder(),
                 //new GamesSeeder(),
-                //new GenresSeeder(),
+                new GenresSeeder(),
                 //new DevelopersSeeder(),
                 //new PublishersSeeder(),
                 //new GameEnginesSeeder(),

@@ -11,12 +11,12 @@ namespace GamesDatabase.Web.Models.ViewModels
 
         public string Description { get; set; }
 
-        public double Raiting { get; set; }
+        //public double Raiting { get; set; }
 
-        public int ReviewsCount { get; set; }
+        //public int ReviewsCount { get; set; }
 
-        public IEnumerable<Review> Reviews { get; set; }
+        //public IEnumerable<Review> Reviews { get; set; }
 
-        public DateTime DateReleased { get; set; }
+        //public DateTime DateReleased { get; set; }
     }
 }

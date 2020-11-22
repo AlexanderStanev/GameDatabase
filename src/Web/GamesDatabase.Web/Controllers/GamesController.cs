@@ -18,9 +18,11 @@
             this.gamesService = gamesService;
         }
 
+        [HttpGet("/")]
         public IActionResult Index()
         {
-            return this.View();
+            var games = gamesService.GetLatestReleasedGames<DetailedGameViewModel>(6);
+            return this.View(games);
         }
 
         public IActionResult All()
@@ -42,19 +44,19 @@
             }
 
             var id = await this.gamesService.Create(input);
-            return this.RedirectToAction("Details", "Games", new { id });
+            return this.RedirectToAction(nameof(Details), id);
         }
 
         public IActionResult Edit(int id)
         {
-            return this.View($"Edit/{id}");
+            return this.View(id);
         }
 
         [HttpPost]
         public IActionResult Edit(GameInputModel game)
         {
-            var id = 0;
-            return this.RedirectToAction($"Details/{id}", "Games");
+            var id = "";
+            return this.RedirectToAction(nameof(Details), id);
         }
 
         [HttpPost]
@@ -65,7 +67,7 @@
 
         public IActionResult ByCategory(string id)
         {
-            var games = this.gamesService.GetAllGamesByGenreId(id);
+            var games = this.gamesService.GetAllGamesByGenreId<DetailedGameViewModel>(id);
             return this.View(games);
         }
 
@@ -77,7 +79,8 @@
 
         public IActionResult Explore()
         {
-            return this.View();
+            var games = gamesService.GetLatestReleasedGames<DetailedGameViewModel>(6);
+            return this.View(games);
         }
     }
 }

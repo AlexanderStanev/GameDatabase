@@ -22,15 +22,15 @@ namespace GamesDatabase.Services.DataServices.Services
         public TViewModel GetGenreById<TViewModel>(string id)
         {
             return genresRepository.All()
-                .Where(x => x.Id == id)
-                .To<TViewModel>()
-                .SingleOrDefault();
+                                   .Where(x => x.Id == id)
+                                   .To<TViewModel>()
+                                   .SingleOrDefault();
         }
 
-        public IEnumerable<GenreViewModel> GetAllGenres()
+        public IEnumerable<TViewModel> GetAllGenres<TViewModel>()
         {
             return genresRepository.All()
-                .To<GenreViewModel>();
+                                   .To<TViewModel>();
         }
 
         public async Task<string> Create(GenreInputModel input)
@@ -49,13 +49,14 @@ namespace GamesDatabase.Services.DataServices.Services
 
         public bool IsGenreIdValid(string genreId)
         {
-            return this.genresRepository.All().Any(x => x.Id == genreId);
+            return this.genresRepository.All()
+                                        .Any(x => x.Id == genreId);
         }
 
         public int GetCount()
         {
             return genresRepository.All()
-                .Count();
+                                   .Count();
         }
     }
 }

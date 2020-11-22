@@ -17,10 +17,15 @@
             this.genresService = genresService;
         }
 
-        public async Task<IActionResult> All()
+        public IActionResult All()
         {
-            var genres = genresService.GetAllGenres();
+            var genres = genresService.GetAllGenres<DetailedGameViewModel>();
             return this.View(genres);
+        }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            return this.View(id);
         }
 
         public async Task<IActionResult> Create()
@@ -40,18 +45,19 @@
             return this.RedirectToAction(nameof(All));
         }
 
-        public async Task<IActionResult> Edit()
+        public async Task<IActionResult> Edit(string id)
         {
-            return this.View();
+            return this.View(id);
         }
 
-        //[HttpPost]
-        //  {  
-        // TODO: Genre view model needed
-        //public async Task<IActionResult> Edit( )
-        //{
-        //    return this.View();
-        //}
+        [HttpPost]
+        public async Task<IActionResult> Edit()
+        {
+
+            var id = "";
+            // TODO: Genre view model needed
+            return this.RedirectToAction(nameof(Details), id);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Delete()

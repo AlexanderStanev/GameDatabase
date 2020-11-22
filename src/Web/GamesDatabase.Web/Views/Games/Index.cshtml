@@ -1,8 +1,4 @@
-﻿@using GamesDatabase.Services.DataServices.Interfaces
-@*@using GamesDatabase.Services.DataServices.Services*@
-
-@inject IGamesService GamesService
-@inject IGenresService GenresService
+﻿@model IEnumerable<GamesDatabase.Web.Models.ViewModels.DetailedGameViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -22,19 +18,18 @@
         </thead>
         <tbody>
             @{
-                var games = GamesService.GetAllGames();
-                foreach (var game in games)
+                foreach (var game in Model)
                 {
-            <tr>
-                <td>
-                    <img class="img-thumbnail w-50" src="https://cdn.pixabay.com/photo/2017/12/29/18/47/nature-3048299__340.jpg" />
-                </td>
-                <td>@game.Title</td>
-                <td>Should display Genre</td>
-                <td>@game.Raiting</td>
-                <td>@game.ReviewsCount</td>
-                <td>@game.DateReleased.ToShortDateString()</td>
-            </tr>
+                    <tr>
+                        <td>
+                            <img class="img-thumbnail w-50" src="https://cdn.pixabay.com/photo/2017/12/29/18/47/nature-3048299__340.jpg" />
+                        </td>
+                        <td>@game.Title</td>
+                        <td>Should display Genre</td>
+                        @*<td>@game.Raiting</td>
+                        <td>@game.ReviewsCount</td>
+                        <td>@game.DateReleased.ToShortDateString()</td>*@
+                    </tr>
                 }
             }
         </tbody>

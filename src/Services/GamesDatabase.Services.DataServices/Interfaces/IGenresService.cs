@@ -9,11 +9,9 @@ namespace GamesDatabase.Services.DataServices.Interfaces
     {
         TViewModel GetGenreById<TViewModel>(string id);
 
-        IEnumerable<GenreViewModel> GetAllGenres();
+        IEnumerable<TViewModel> GetAllGenres<TViewModel>();
 
         Task<string> Create(GenreInputModel input);
-
-        bool IsGenreIdValid(string categoryId);
 
         int GetCount();
 

@@ -41,10 +41,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Home\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Areas\Identity\Pages\_ViewStart.cshtml" />
     <None Include="SeedingData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

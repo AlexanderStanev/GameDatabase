@@ -8,12 +8,5 @@ namespace GamesDatabase.Web.Models.ViewModels
     {
         public string Title { get; set; }
 
-        public double Raiting { get; set; }
-
-        public int ReviewsCount { get; set; }
-
-        public DateTime DateReleased { get; set; }
-
-        public string Developer { get; set; }
     }
 }

@@ -1,5 +1,5 @@
-﻿@using GamesDatabase.Services.DataServices.Services
-@inject GamesService GamesService
+﻿@model IEnumerable<GamesDatabase.Web.Models.ViewModels.DetailedGameViewModel>
+
 
 @{
     ViewData["Title"] = "Index";
@@ -11,8 +11,7 @@
         <h4 class="card-title text-center">Recently Released</h4>
         <div class="row py-3">
             @{
-                var games = GamesService.GetLatestReleasedGames(6);
-                foreach (var game in games)
+                foreach (var game in Model)
                 {
                     <div class="col-md-2">
                         <div class="card mb-4 shadow-sm">
@@ -34,8 +33,7 @@
         <h4 class="card-title text-center">Random</h4>
         <div class="row">
             @{
-                games = GamesService.GetRandomGames(6);
-                foreach (var game in games)
+                foreach (var game in Model)
                 {
                     <div class="col-md-2">
                         <div class="card mb-4 shadow-sm">

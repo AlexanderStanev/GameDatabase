@@ -9,13 +9,13 @@ namespace GamesDatabase.Services.DataServices.Interfaces
     {
         TViewModel GetGameById<TViewModel>(string id);
 
-        IEnumerable<DetailedGameViewModel> GetRandomGames(int count);
+        IEnumerable<TViewModel> GetRandomGames<TViewModel>(int count);
 
-        IEnumerable<DetailedGameViewModel> GetAllGamesByGenreId(string id);
+        IEnumerable<TViewModel> GetAllGamesByGenreId<TViewModel>(string id);
 
-        IEnumerable<DetailedGameViewModel> GetLatestReleasedGames(int count);
+        IEnumerable<TViewModel> GetLatestReleasedGames<TViewModel>(int count);
 
-        IEnumerable<DetailedGameViewModel> GetAllGames();
+        IEnumerable<TViewModel> GetAllGames<TViewModel>();
 
         Task<string> Create(GameInputModel input);
 

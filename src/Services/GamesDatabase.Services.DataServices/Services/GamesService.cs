@@ -25,39 +25,40 @@ namespace GamesDatabase.Services.DataServices.Services
             //this.genresService = genresService;
         }
 
-        public IEnumerable<DetailedGameViewModel> GetRandomGames(int count)
+        public IEnumerable<TViewModel> GetRandomGames<TViewModel>(int count)
         {
             var games = gamesRepository.All()
-                .OrderBy(x => Guid.NewGuid())
-                .To<DetailedGameViewModel>()
-                .Take(count)
-                .ToList();
+                                       .OrderBy(x => Guid.NewGuid())
+                                       .To<TViewModel>()
+                                       .Take(count)
+                                       .ToList();
 
             return games;
         }
 
-        public IEnumerable<DetailedGameViewModel> GetAllGamesByGenreId(string id)
+        public IEnumerable<TViewModel> GetAllGamesByGenreId<TViewModel>(string id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<DetailedGameViewModel> GetLatestReleasedGames(int count)
+        public IEnumerable<TViewModel> GetLatestReleasedGames<TViewModel>(int count)
         {
             return gamesRepository.All()
-                .OrderByDescending(x => x.Releases)
-                .Take(count)
-                .To<DetailedGameViewModel>();
+                                  .OrderByDescending(x => x.Releases)
+                                  .Take(count)
+                                  .To<TViewModel>();
         }
 
-        public IEnumerable<DetailedGameViewModel> GetAllGames()
+        public IEnumerable<TViewModel> GetAllGames<TViewModel>()
         {
             return gamesRepository.All()
-                .To<DetailedGameViewModel>();
+                .To<TViewModel>();
         }
 
         public int GetCount()
         {
-            return gamesRepository.All().Count();
+            return gamesRepository.All()
+                                  .Count();
         }
 
         public async Task<string> Create(GameInputModel input)
@@ -77,9 +78,9 @@ namespace GamesDatabase.Services.DataServices.Services
         public TViewModel GetGameById<TViewModel>(string id)
         {
             var game = this.gamesRepository.All()
-                .Where(x => x.Id == id)
-                .To<TViewModel>()
-                .SingleOrDefault();
+                                           .Where(x => x.Id == id)
+                                           .To<TViewModel>()
+                                           .SingleOrDefault();
 
             return game;
         }
