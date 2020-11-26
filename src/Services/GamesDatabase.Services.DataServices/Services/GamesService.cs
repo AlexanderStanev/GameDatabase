@@ -44,7 +44,7 @@ namespace GamesDatabase.Services.DataServices.Services
         public IEnumerable<TViewModel> GetLatestReleasedGames<TViewModel>(int count)
         {
             return gamesRepository.All()
-                                  .OrderByDescending(x => x.Releases)
+                                  //.OrderByDescending(x => x.Releases)
                                   .Take(count)
                                   .To<TViewModel>();
         }
