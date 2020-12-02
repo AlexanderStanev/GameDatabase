@@ -1,20 +1,35 @@
 ﻿@model IEnumerable<GamesDatabase.Web.Models.ViewModels.SimpleGameViewModel>
 
+@{
+    ViewData["Title"] = "All";
+}
+
 <div class="container">
     <table class="table">
         <thead>
             <tr>
+                <th scope="col">Image</th>
                 <th scope="col">Title</th>
-                <th scope="col">Description</th>
+                <th scope="col">Genre</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Reviews</th>
+                <th scope="col">Announced</th>
+                <th scope="col">First Released</th>
             </tr>
         </thead>
         <tbody>
             @{
-
-                foreach (var genre in Model)
+                foreach (var game in Model)
                 {
                     <tr>
-                        <td>@genre.Title</td>
+                        <td>
+                            <img class="img-thumbnail img-fluid w-25" src="https://static.raru.co.za/cover/2014/06/29/1784728-l.jpg?v=1404044687" />
+                        </td>
+                        <td>@game.Title</td>
+                        <td>Should display Genre</td>
+                        @*<td>@game.Raiting</td>
+                            <td>@game.ReviewsCount</td>
+                            <td>@game.DateReleased.ToShortDateString()</td>*@
                     </tr>
                 }
             }

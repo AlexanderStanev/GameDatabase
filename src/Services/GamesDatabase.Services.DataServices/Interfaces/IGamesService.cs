@@ -7,17 +7,21 @@ namespace GamesDatabase.Services.DataServices.Interfaces
 {
     public interface IGamesService
     {
-        TViewModel GetGameById<TViewModel>(string id);
+        TViewModel GetGameById<TViewModel>(int id);
 
         IEnumerable<TViewModel> GetRandomGames<TViewModel>(int count);
 
-        IEnumerable<TViewModel> GetAllGamesByGenreId<TViewModel>(string id);
+        IEnumerable<TViewModel> GetAllGamesByGenreId<TViewModel>(int id);
 
         IEnumerable<TViewModel> GetLatestReleasedGames<TViewModel>(int count);
 
-        IEnumerable<TViewModel> GetAllGames<TViewModel>();
+        IEnumerable<TViewModel> GetAllGames<TViewModel>(int page, int itemsPerPage);
 
-        Task<string> Create(GameInputModel input);
+        Task<int> Create(GameInputModel input);
+
+        Task<int> Update(GameInputModel input);
+
+        Task Delete(int id);
 
         int GetCount();
     }

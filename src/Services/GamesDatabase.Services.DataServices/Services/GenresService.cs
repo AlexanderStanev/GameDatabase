@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GameDatabase.Data.Common.Repositories;
 using GamesDatabase.Data.Core;
 using GamesDatabase.Data.Models;
 using GamesDatabase.Services.DataServices.Interfaces;
@@ -12,14 +13,14 @@ namespace GamesDatabase.Services.DataServices.Services
 {
     public class GenresService : IGenresService
     {
-        private readonly IRepository<Genre> genresRepository;
+        private readonly IDeletableEntityRepository<Genre> genresRepository;
 
-        public GenresService(IRepository<Genre> genresRepository)
+        public GenresService(IDeletableEntityRepository<Genre> genresRepository)
         {
             this.genresRepository = genresRepository;
         }
 
-        public TViewModel GetGenreById<TViewModel>(string id)
+        public TViewModel GetGenreById<TViewModel>(int id)
         {
             return genresRepository.All()
                                    .Where(x => x.Id == id)
@@ -29,16 +30,15 @@ namespace GamesDatabase.Services.DataServices.Services
 
         public IEnumerable<TViewModel> GetAllGenres<TViewModel>()
         {
-            return genresRepository.All()
-                                   .To<TViewModel>();
+            return genresRepository.All().To<TViewModel>();
         }
 
-        public async Task<string> Create(GenreInputModel input)
+        public async Task<int> Create(GenreInputModel input)
         {
             var genre = new Genre()
             {
                 Description = input.Description,
-                Name = input.Name
+                Name = input.Name,
             };
 
             await genresRepository.AddAsync(genre);
@@ -47,16 +47,9 @@ namespace GamesDatabase.Services.DataServices.Services
             return genre.Id;
         }
 
-        public bool IsGenreIdValid(string genreId)
-        {
-            return this.genresRepository.All()
-                                        .Any(x => x.Id == genreId);
-        }
-
         public int GetCount()
         {
-            return genresRepository.All()
-                                   .Count();
+            return genresRepository.All().Count();
         }
     }
 }

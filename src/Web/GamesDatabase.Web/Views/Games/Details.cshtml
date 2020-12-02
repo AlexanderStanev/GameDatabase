@@ -1,8 +1,16 @@
-﻿@{
+﻿@model GamesDatabase.Web.Models.ViewModels.DetailedGameViewModel
+
+@{
     ViewData["Title"] = "View";
 }
 
 <div class="align-content-center container">
     <h2>@Model.Title</h2>
 
+
+    <div class="row">
+        <div class="col-md-4">
+             <img class="img-fluid card-img" src="https://images.igdb.com/igdb/image/upload/t_cover_big/co2hm2.jpg"/>
+        </div>
+    </div>
 </div>

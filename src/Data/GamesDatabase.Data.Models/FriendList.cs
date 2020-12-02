@@ -1,11 +1,13 @@
-﻿using GamesDatabase.Data.Models;
+﻿using GameDatabase.Data.Common.Models;
+using GamesDatabase.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace GamesDatabase.Data.Core
 {
-    public class FriendList : BaseModel
+    public class FriendList : BaseDeletableModel<int>
+
     {
         //public string FirstUserId { get; set; }
 

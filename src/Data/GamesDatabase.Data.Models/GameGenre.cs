@@ -1,4 +1,5 @@
-﻿using GamesDatabase.Data.Core;
+﻿using GameDatabase.Data.Common.Models;
+using GamesDatabase.Data.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace GamesDatabase.Data.Models
 {
-    public class GameGenre : BaseModel
+    public class GameGenre : BaseDeletableModel<int>
     {
         [Required]
         [MaxLength(36)]

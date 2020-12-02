@@ -7,11 +7,11 @@ namespace GamesDatabase.Services.DataServices.Interfaces
 {
     public interface IGenresService
     {
-        TViewModel GetGenreById<TViewModel>(string id);
+        TViewModel GetGenreById<TViewModel>(int id);
 
         IEnumerable<TViewModel> GetAllGenres<TViewModel>();
 
-        Task<string> Create(GenreInputModel input);
+        Task<int> Create(GenreInputModel input);
 
         int GetCount();
 

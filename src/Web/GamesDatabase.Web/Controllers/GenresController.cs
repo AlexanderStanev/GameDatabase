@@ -19,7 +19,7 @@
 
         public IActionResult All()
         {
-            var genres = genresService.GetAllGenres<DetailedGameViewModel>();
+            var genres = genresService.GetAllGenres<GenreViewModel>();
             return this.View(genres);
         }
 
@@ -42,7 +42,7 @@
             }
 
             var id = await this.genresService.Create(input);
-            return this.RedirectToAction(nameof(All));
+            return this.RedirectToAction(nameof(this.All));
         }
 
         public async Task<IActionResult> Edit(string id)
@@ -56,13 +56,13 @@
 
             var id = "";
             // TODO: Genre view model needed
-            return this.RedirectToAction(nameof(Details), id);
+            return this.RedirectToAction(nameof(this.Details), new { id });
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete()
         {
-            return this.RedirectToAction("Index", "Games");
+            return this.RedirectToAction(nameof(this.All));
         }
     }
 }

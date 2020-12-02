@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using GameDatabase.Data.Common.Repositories;
 using GamesDatabase.Data.Core;
 using GamesDatabase.Data.Models;
 using GamesDatabase.Services.DataServices.Interfaces;
@@ -13,61 +15,67 @@ namespace GamesDatabase.Services.DataServices.Services
 {
     public class GamesService : IGamesService
     {
-        private readonly IRepository<Game> gamesRepository;
+        private readonly IDeletableEntityRepository<Game> gamesRepository;
         private readonly IGenresService genresService;
 
-        public GamesService(
-            IRepository<Game> gamesRepository)
-            //,IGenresService genresService)
+        public GamesService(IDeletableEntityRepository<Game> gamesRepository,
+            IGenresService genresService)
 
         {
             this.gamesRepository = gamesRepository;
-            //this.genresService = genresService;
+            this.genresService = genresService;
+        }
+
+        public TViewModel GetGameById<TViewModel>(int id)
+        {
+            var game = this.gamesRepository.AllAsNoTracking()
+                                           .Where(x => x.Id == id)
+                                           .To<TViewModel>()
+                                           .SingleOrDefault();
+            return game;
         }
 
         public IEnumerable<TViewModel> GetRandomGames<TViewModel>(int count)
         {
-            var games = gamesRepository.All()
+            var games = gamesRepository.AllAsNoTracking()
                                        .OrderBy(x => Guid.NewGuid())
                                        .To<TViewModel>()
                                        .Take(count)
                                        .ToList();
-
             return games;
         }
 
-        public IEnumerable<TViewModel> GetAllGamesByGenreId<TViewModel>(string id)
+        public IEnumerable<TViewModel> GetAllGamesByGenreId<TViewModel>(int id)
         {
             throw new NotImplementedException();
         }
 
         public IEnumerable<TViewModel> GetLatestReleasedGames<TViewModel>(int count)
         {
-            return gamesRepository.All()
+            return gamesRepository.AllAsNoTracking()
                                   //.OrderByDescending(x => x.Releases)
                                   .Take(count)
                                   .To<TViewModel>();
         }
 
-        public IEnumerable<TViewModel> GetAllGames<TViewModel>()
+        public IEnumerable<TViewModel> GetAllGames<TViewModel>(int page, int itemsPerPage = 12)
         {
-            return gamesRepository.All()
-                .To<TViewModel>();
+            return gamesRepository.AllAsNoTracking()
+                                  .OrderByDescending(x => x.Id)
+                                  .Skip((page - 1) * itemsPerPage)
+                                  .Take(itemsPerPage)
+                                  .To<TViewModel>();
         }
 
         public int GetCount()
         {
-            return gamesRepository.All()
+            return gamesRepository.AllAsNoTracking()
                                   .Count();
         }
 
-        public async Task<string> Create(GameInputModel input)
+        public async Task<int> Create(GameInputModel input)
         {
-            var game = new Game()
-            {
-                Title = input.Title,
-
-            };
+            var game = AutoMapperConfig.MapperInstance.Map<Game>(input);
 
             await gamesRepository.AddAsync(game);
             await gamesRepository.SaveChangesAsync();
@@ -75,14 +83,31 @@ namespace GamesDatabase.Services.DataServices.Services
             return game.Id;
         }
 
-        public TViewModel GetGameById<TViewModel>(string id)
+        public async Task<int> Update(GameInputModel input)
         {
-            var game = this.gamesRepository.All()
-                                           .Where(x => x.Id == id)
-                                           .To<TViewModel>()
-                                           .SingleOrDefault();
+            var game = await gamesRepository.GetByIdWithDeletedAsync(input.Id);
+            if (game == null)
+            {
+                throw new InvalidOperationException("The game could not be found");
+            }
 
-            return game;
+            game = AutoMapperConfig.MapperInstance.Map<Game>(input);
+
+            // Todo currently thorws 404.11 
+
+            await gamesRepository.SaveChangesAsync();
+            return game.Id;
+        }
+
+        public async Task Delete(int id)
+        {
+            var game = await gamesRepository.GetByIdWithDeletedAsync(id);
+            if (game == null)
+            {
+                throw new InvalidOperationException("The game could not be found");
+            }
+
+            gamesRepository.Delete(game);
         }
     }
 }

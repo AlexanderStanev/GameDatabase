@@ -1,37 +1,73 @@
 ﻿@model IEnumerable<GamesDatabase.Web.Models.ViewModels.DetailedGameViewModel>
 
+
 @{
     ViewData["Title"] = "Index";
 }
 
-<div class="container">
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Image</th>
-                <th scope="col">Title</th>
-                <th scope="col">Genre</th>
-                <th scope="col">Rating</th>
-                <th scope="col">Reviews</th>
-                <th scope="col" style="width: 125px">Date Released</th>
-            </tr>
-        </thead>
-        <tbody>
+<h1 class="py-2">Games</h1>
+<div class="py-1 bg-light">
+    <div class="container">
+        <h4 class="card-title text-center">Recently Released</h4>
+        <div class="row py-3">
             @{
                 foreach (var game in Model)
                 {
-                    <tr>
-                        <td>
-                            <img class="img-thumbnail w-50" src="https://cdn.pixabay.com/photo/2017/12/29/18/47/nature-3048299__340.jpg" />
-                        </td>
-                        <td>@game.Title</td>
-                        <td>Should display Genre</td>
-                        @*<td>@game.Raiting</td>
-                        <td>@game.ReviewsCount</td>
-                        <td>@game.DateReleased.ToShortDateString()</td>*@
-                    </tr>
+                    <div class="col-md-2">
+                        <div class="card mb-4 shadow-sm">
+                            @*Image*@
+                            <img class="card-img" src="https://static.raru.co.za/cover/2014/06/29/1784728-l.jpg?v=1404044687" alt="text" style="height: 175px; width: 100%; display: block;">
+                            <div class="card-body">
+                                <h5 class="card-title">@game.Title</h5>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    @*Genres*@
+                                    <small class="text-muted">RPG, Action</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 }
             }
-        </tbody>
-    </table>
+        </div>
+
+        <h4 class="card-title text-center">Random</h4>
+        <div class="row">
+            @{
+                foreach (var game in Model)
+                {
+                    <div class="col-md-2">
+                        <div class="card mb-4 shadow-sm">
+                            @*Image*@
+                            <img class="card-img" src="https://static.raru.co.za/cover/2014/06/29/1784728-l.jpg?v=1404044687" alt="text" style="height: 175px; width: 100%; display: block;">
+                            <div class="card-body">
+                                <h5 class="card-title">@game.Title</h5>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    @*Genres*@
+                                    <small class="text-muted">RPG, Action</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        @*<h4 class="card-title text-center">Recommended</h4>
+            <div class="row">
+                @for (int i = 0; i < 6; i++)
+                {
+                    <div class="col-md-2">
+                        <div class="card mb-4 shadow-sm">
+                            <img class="card-img" src="https://static.raru.co.za/cover/2014/06/29/1784728-l.jpg?v=1404044687" alt="text" style="height: 175px; width: 100%; display: block;">
+                            <div class="card-body">
+                                <h5 class="card-title">{Witcher 3}</h5>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">{RPG}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>*@
+    </div>
 </div>

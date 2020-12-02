@@ -12,8 +12,7 @@
     {
         private readonly IGamesService gamesService;
 
-        public GamesController(
-            IGamesService gamesService)
+        public GamesController(IGamesService gamesService)
         {
             this.gamesService = gamesService;
         }
@@ -25,9 +24,16 @@
             return this.View(games);
         }
 
-        public IActionResult All()
+        public IActionResult All(int page = 1)
         {
-            return this.View();
+            if (page <= 0)
+            {
+                return this.NotFound();
+            }
+
+            const int ItemsPerPage = 12;
+            var games = gamesService.GetAllGames<SimpleGameViewModel>(page, ItemsPerPage);
+            return this.View(games);
         }
 
         public IActionResult Create()
@@ -44,40 +50,43 @@
             }
 
             var id = await this.gamesService.Create(input);
-            return this.RedirectToAction(nameof(Details), id);
+            return this.RedirectToAction(nameof(Details), new { id });
         }
 
         public IActionResult Edit(int id)
         {
-            return this.View(id);
+            // Currently 
+
+            var game = this.gamesService.GetGameById<GameInputModel>(id);
+            return this.View(game);
         }
 
         [HttpPost]
-        public IActionResult Edit(GameInputModel game)
+        public IActionResult Edit(GameInputModel input)
         {
-            var id = "";
-            return this.RedirectToAction(nameof(Details), id);
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+
+            var id = this.gamesService.Update(input);
+            return this.RedirectToAction(nameof(Details), new { id });
         }
 
         [HttpPost]
-        public IActionResult Delete()
+        public IActionResult Delete(int id)
         {
+            this.gamesService.Delete(id);
             return this.RedirectToAction(nameof(All));
         }
 
-        public IActionResult ByCategory(string id)
-        {
-            var games = this.gamesService.GetAllGamesByGenreId<DetailedGameViewModel>(id);
-            return this.View(games);
-        }
-
-        public IActionResult Details(string id)
+        public IActionResult Details(int id)
         {
             var game = this.gamesService.GetGameById<DetailedGameViewModel>(id);
             return this.View(game);
         }
 
-        public IActionResult Explore()
+        public IActionResult Search()
         {
             var games = gamesService.GetLatestReleasedGames<DetailedGameViewModel>(6);
             return this.View(games);

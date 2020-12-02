@@ -1,11 +1,12 @@
-﻿using GamesDatabase.Data.Core;
+﻿using GameDatabase.Data.Common.Models;
+using GamesDatabase.Data.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace GamesDatabase.Data.Models
 {
-    public class Genre : BaseModel
+    public class Genre : BaseDeletableModel<int>
     {
         [Required]
         [MaxLength(32)]

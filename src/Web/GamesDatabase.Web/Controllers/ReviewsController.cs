@@ -23,7 +23,7 @@
             return this.View(await gamesDatabaseContext.ToListAsync());
         }
 
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int id)
         {
             if (id == null)
             {
@@ -89,7 +89,7 @@
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("GameId,AuthorId,Rating,Title,Content,CreatedOn,EditedOn,Id")] Review review)
+        public async Task<IActionResult> Edit(int id, [Bind("GameId,AuthorId,Rating,Title,Content,CreatedOn,EditedOn,Id")] Review review)
         {
             if (id != review.Id)
             {
@@ -122,7 +122,7 @@
         }
 
         // GET: Administration/Reviews/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null)
             {
@@ -152,7 +152,7 @@
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ReviewExists(string id)
+        private bool ReviewExists(int id)
         {
             return context.Reviews.Any(e => e.Id == id);
         }

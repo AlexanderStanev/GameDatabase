@@ -5,8 +5,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GamesDatabase.Web.Models.InputModels
 {
-    public class GameInputModel : IMapTo<Game>
+    public class GameInputModel : IMapTo<Game>, IMapFrom<Game>
     {
+        public int Id { get; set; }
+
         [Required]
         [MinLength(2)]
         [MaxLength(30)]
@@ -19,5 +21,9 @@ namespace GamesDatabase.Web.Models.InputModels
 
         [DataType(DataType.Date)]
         public DateTime? Announced { get; set; }
+
+        [Required]
+        [MaxLength(2048)]
+        public string OfficialWebsite { get; set; }
     }
 }

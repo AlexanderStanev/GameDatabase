@@ -99,7 +99,7 @@ namespace GamesDatabase.Sandbox
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
+            //services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
         }
 
         private static void WebRequest()

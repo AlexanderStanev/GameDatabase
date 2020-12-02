@@ -15,9 +15,9 @@ namespace GamesDatabase.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.9")
+                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "5.0.0");
 
             modelBuilder.Entity("GamesDatabase.Data.Models.ApplicationRole", b =>
                 {
@@ -29,18 +29,18 @@ namespace GamesDatabase.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
+                        .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
@@ -59,8 +59,8 @@ namespace GamesDatabase.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
@@ -72,12 +72,12 @@ namespace GamesDatabase.Data.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -95,17 +95,17 @@ namespace GamesDatabase.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
+                        .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex")
+                        .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
@@ -113,22 +113,36 @@ namespace GamesDatabase.Data.Migrations
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Developer", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(36)
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
-                    b.Property<string>("GameId")
-                        .HasColumnType("nvarchar(36)");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -142,51 +156,85 @@ namespace GamesDatabase.Data.Migrations
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Game", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(36)
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime?>("Announced")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasMaxLength(4096);
+                        .HasMaxLength(4096)
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GameEngineId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<int?>("GameEngineId1")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("OfficialWebsite")
-                        .HasColumnType("nvarchar(2048)")
-                        .HasMaxLength(2048);
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(32)")
-                        .HasMaxLength(32);
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameEngineId");
+                    b.HasIndex("GameEngineId1");
 
                     b.ToTable("Games");
                 });
 
             modelBuilder.Entity("GamesDatabase.Data.Models.GameEngine", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(36)
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Language")
                         .IsRequired()
-                        .HasColumnType("nvarchar(32)")
-                        .HasMaxLength(32);
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("Id");
 
@@ -195,44 +243,78 @@ namespace GamesDatabase.Data.Migrations
 
             modelBuilder.Entity("GamesDatabase.Data.Models.GameGenre", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(36)
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("GameId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<int?>("GameId1")
+                        .HasColumnType("int");
 
                     b.Property<string>("GenreId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<int?>("GenreId1")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameId");
+                    b.HasIndex("GameId1");
 
-                    b.HasIndex("GenreId");
+                    b.HasIndex("GenreId1");
 
                     b.ToTable("GameGenre");
                 });
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Genre", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(36)
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(32)")
-                        .HasMaxLength(32);
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
 
                     b.HasKey("Id");
 
@@ -241,43 +323,74 @@ namespace GamesDatabase.Data.Migrations
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Image", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(36)
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("GameId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<int?>("GameId1")
+                        .HasColumnType("int");
 
                     b.Property<int>("ImageType")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Path")
                         .IsRequired()
-                        .HasColumnType("nvarchar(2048)")
-                        .HasMaxLength(2048);
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameId");
+                    b.HasIndex("GameId1");
 
                     b.ToTable("Images");
                 });
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Platform", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(36)
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
 
-                    b.Property<string>("GameId")
-                        .HasColumnType("nvarchar(36)");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(64)")
-                        .HasMaxLength(64);
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.HasKey("Id");
 
@@ -288,22 +401,36 @@ namespace GamesDatabase.Data.Migrations
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Publisher", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(36)
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
-                    b.Property<string>("GameId")
-                        .HasColumnType("nvarchar(36)");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -317,52 +444,77 @@ namespace GamesDatabase.Data.Migrations
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Release", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(36)
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("GameId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<int?>("GameId1")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PlatformId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<int?>("PlatformId1")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Version")
                         .IsRequired()
-                        .HasColumnType("nvarchar(64)")
-                        .HasMaxLength(64);
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameId");
+                    b.HasIndex("GameId1");
 
-                    b.HasIndex("PlatformId");
+                    b.HasIndex("PlatformId1");
 
                     b.ToTable("Releases");
                 });
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Review", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(36)
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
 
                     b.Property<string>("AuthorId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasMaxLength(4096);
+                        .HasMaxLength(4096)
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("EditedOn")
@@ -370,39 +522,62 @@ namespace GamesDatabase.Data.Migrations
 
                     b.Property<string>("GameId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<int?>("GameId1")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<byte>("Rating")
                         .HasColumnType("tinyint");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(64)")
-                        .HasMaxLength(64);
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("GameId");
+                    b.HasIndex("GameId1");
 
                     b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Tag", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(36)
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
 
-                    b.Property<string>("GameId")
-                        .HasColumnType("nvarchar(36)");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(16)")
-                        .HasMaxLength(16);
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
 
                     b.HasKey("Id");
 
@@ -413,23 +588,40 @@ namespace GamesDatabase.Data.Migrations
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Video", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(36)
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("GameId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<int?>("GameId1")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Path")
                         .IsRequired()
-                        .HasColumnType("nvarchar(2048)")
-                        .HasMaxLength(2048);
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameId");
+                    b.HasIndex("GameId1");
 
                     b.ToTable("Videos");
                 });
@@ -439,7 +631,7 @@ namespace GamesDatabase.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -463,7 +655,7 @@ namespace GamesDatabase.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -549,33 +741,33 @@ namespace GamesDatabase.Data.Migrations
                 {
                     b.HasOne("GamesDatabase.Data.Models.GameEngine", "GameEngine")
                         .WithMany()
-                        .HasForeignKey("GameEngineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GameEngineId1");
+
+                    b.Navigation("GameEngine");
                 });
 
             modelBuilder.Entity("GamesDatabase.Data.Models.GameGenre", b =>
                 {
                     b.HasOne("GamesDatabase.Data.Models.Game", "Game")
                         .WithMany("GameGenres")
-                        .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GameId1");
 
                     b.HasOne("GamesDatabase.Data.Models.Genre", "Genre")
                         .WithMany("GameGenres")
-                        .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GenreId1");
+
+                    b.Navigation("Game");
+
+                    b.Navigation("Genre");
                 });
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Image", b =>
                 {
                     b.HasOne("GamesDatabase.Data.Models.Game", "Game")
                         .WithMany("Images")
-                        .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GameId1");
+
+                    b.Navigation("Game");
                 });
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Platform", b =>
@@ -596,15 +788,15 @@ namespace GamesDatabase.Data.Migrations
                 {
                     b.HasOne("GamesDatabase.Data.Models.Game", "Game")
                         .WithMany("Releases")
-                        .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GameId1");
 
                     b.HasOne("GamesDatabase.Data.Models.Platform", "Platform")
                         .WithMany()
-                        .HasForeignKey("PlatformId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PlatformId1");
+
+                    b.Navigation("Game");
+
+                    b.Navigation("Platform");
                 });
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Review", b =>
@@ -615,9 +807,11 @@ namespace GamesDatabase.Data.Migrations
 
                     b.HasOne("GamesDatabase.Data.Models.Game", "Game")
                         .WithMany("Reviews")
-                        .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GameId1");
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Game");
                 });
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Tag", b =>
@@ -631,9 +825,9 @@ namespace GamesDatabase.Data.Migrations
                 {
                     b.HasOne("GamesDatabase.Data.Models.Game", "Game")
                         .WithMany("Videos")
-                        .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GameId1");
+
+                    b.Navigation("Game");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -685,6 +879,32 @@ namespace GamesDatabase.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("GamesDatabase.Data.Models.Game", b =>
+                {
+                    b.Navigation("Developers");
+
+                    b.Navigation("GameGenres");
+
+                    b.Navigation("Images");
+
+                    b.Navigation("Platforms");
+
+                    b.Navigation("Publishers");
+
+                    b.Navigation("Releases");
+
+                    b.Navigation("Reviews");
+
+                    b.Navigation("Tags");
+
+                    b.Navigation("Videos");
+                });
+
+            modelBuilder.Entity("GamesDatabase.Data.Models.Genre", b =>
+                {
+                    b.Navigation("GameGenres");
                 });
 #pragma warning restore 612, 618
         }

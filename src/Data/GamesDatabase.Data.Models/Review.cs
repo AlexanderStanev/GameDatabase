@@ -1,10 +1,11 @@
-﻿using GamesDatabase.Data.Core;
+﻿using GameDatabase.Data.Common.Models;
+using GamesDatabase.Data.Core;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace GamesDatabase.Data.Models
 {
-    public class Review : BaseModel
+    public class Review : BaseDeletableModel<int>
     {
         [Required]
         [MaxLength(36)]

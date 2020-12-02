@@ -2,8 +2,13 @@
 {
     using System.Reflection;
     using System.Threading.Tasks;
+    using AutoMapper;
+    using GameDatabase.Data;
+    using GameDatabase.Data.Common;
+    using GameDatabase.Data.Common.Repositories;
     using GamesDatabase.Data;
     using GamesDatabase.Data.Core;
+    using GamesDatabase.Data.Core.Repositories;
     using GamesDatabase.Data.Models;
     using GamesDatabase.Data.Seeding;
     using GamesDatabase.Services.DataServices.Interfaces;
@@ -37,16 +42,8 @@
             services.AddDbContext<GamesDatabaseContext>(
                 options => options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
-            {
-                options.User.RequireUniqueEmail = true;
-                options.Password.RequiredLength = 6;
-                options.Password.RequiredUniqueChars = 0;
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-            }).AddDefaultUI()
+            services.AddIdentity<ApplicationUser, ApplicationRole>(IdentityOptionsProvider.GetIdentityOptions)
+               .AddDefaultUI()
               .AddEntityFrameworkStores<GamesDatabaseContext>()
               .AddDefaultTokenProviders();
 
@@ -57,19 +54,16 @@
                     options.MinimumSameSitePolicy = SameSiteMode.None;
                 });
 
-            services.AddControllersWithViews(
-                options =>
-                {
-                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-                }).AddRazorRuntimeCompilation();
+            services.AddControllersWithViews(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())).AddRazorRuntimeCompilation();
             services.AddRazorPages();
+            services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddSingleton(this.configuration);
 
             // Data repositories
-            // services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
-            services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
-            // services.AddScoped<IDbQueryRunner, DbQueryRunner>();
+            services.AddScoped(typeof(IDeletableEntityRepository<Game>), typeof(EfDeletableEntityRepository<Game>));
+            services.AddScoped(typeof(IDeletableEntityRepository<Genre>), typeof(EfDeletableEntityRepository<Genre>));
+            services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
             services.AddTransient<IGamesService, GamesService>();
@@ -87,14 +81,12 @@
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<GamesDatabaseContext>();
                 dbContext.Database.Migrate();
 
-                // Could be optimized to be executed only if the database has just been created
                 new GamesDatabaseContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
             }
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -104,7 +96,9 @@
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
+
+            // Temporary
+            // app.UseCookiePolicy();
 
             app.UseRouting();
 

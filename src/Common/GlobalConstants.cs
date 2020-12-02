@@ -9,5 +9,8 @@
         public const string ModeratorRoleName = "Moderator";
 
         public const string GamerRoleName = "Gamer";
+
+        public const int DefaultItemsPerPage = 24;
+
     }
 }

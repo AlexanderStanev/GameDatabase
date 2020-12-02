@@ -7,6 +7,5 @@ namespace GamesDatabase.Web.Models.ViewModels
     public class SimpleGameViewModel : IMapFrom<Game>
     {
         public string Title { get; set; }
-
     }
 }

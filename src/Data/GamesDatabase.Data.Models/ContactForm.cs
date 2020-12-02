@@ -1,11 +1,12 @@
-﻿using GamesDatabase.Data.Core;
+﻿using GameDatabase.Data.Common.Models;
+using GamesDatabase.Data.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace GamesDatabase.Data.Models
 {
-    public class ContactForm : BaseModel
+    public class ContactForm : BaseDeletableModel<int>
     {
         public string Title { get; set; }
 

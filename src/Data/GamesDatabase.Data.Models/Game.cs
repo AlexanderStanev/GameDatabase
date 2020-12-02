@@ -1,4 +1,5 @@
-﻿using GamesDatabase.Data.Core;
+﻿using GameDatabase.Data.Common.Models;
+using GamesDatabase.Data.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GamesDatabase.Data.Models
 {
-    public class Game : BaseModel
+    public class Game : BaseDeletableModel<int>
     {
         [Required]
         [MaxLength(32)]
@@ -34,7 +35,6 @@ namespace GamesDatabase.Data.Models
 
         public virtual ICollection<Tag> Tags { get; set; }
 
-        [Required]
         [MaxLength(36)]
         public string GameEngineId { get; set; }
 
@@ -42,6 +42,7 @@ namespace GamesDatabase.Data.Models
 
         public DateTime? Announced { get; set; }
 
+        [Required]
         [MaxLength(2048)]
         public string OfficialWebsite { get; set; }
     }
