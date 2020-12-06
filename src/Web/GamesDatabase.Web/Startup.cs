@@ -43,7 +43,7 @@
                 options => options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, ApplicationRole>(IdentityOptionsProvider.GetIdentityOptions)
-               .AddDefaultUI()
+              .AddDefaultUI()
               .AddEntityFrameworkStores<GamesDatabaseContext>()
               .AddDefaultTokenProviders();
 

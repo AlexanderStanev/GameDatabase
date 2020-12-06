@@ -1,7 +1,10 @@
 ﻿using GamesDatabase.Data.Models;
 using GamesDatabase.Services.Mapping;
+using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 
 namespace GamesDatabase.Web.Models.InputModels
 {
@@ -24,6 +27,10 @@ namespace GamesDatabase.Web.Models.InputModels
 
         [Required]
         [MaxLength(2048)]
+        [Display(Description = "Official Website")]
         public string OfficialWebsite { get; set; }
+
+        [Display(Description = "Upload Media Files")]
+        public List<IFormFile> MediaFiles { get; set; }
     }
 }

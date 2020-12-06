@@ -35,10 +35,9 @@ namespace GamesDatabase.Data.Models
 
         public virtual ICollection<Tag> Tags { get; set; }
 
-        [MaxLength(36)]
-        public string GameEngineId { get; set; }
+        //public int GameEngineId { get; set; }
 
-        public virtual GameEngine GameEngine { get; set; }
+        //public virtual GameEngine GameEngine { get; set; }
 
         public DateTime? Announced { get; set; }
 

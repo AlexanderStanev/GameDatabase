@@ -5,16 +5,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GamesDatabase.Data.Models
 {
-    public abstract class Media : BaseDeletableModel<int>
+    public abstract class Media : BaseDeletableModel<string>
     {
+        public Media()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
         [Required]
-        [MaxLength(36)]
-        public string GameId { get; set; }
+        public string Path { get; set; }
+
+        [Required]
+        public int GameId { get; set; }
 
         public virtual Game Game { get; set; }
-
-        [Required]
-        [MaxLength(2048)]
-        public string Path { get; set; }
     }
 }

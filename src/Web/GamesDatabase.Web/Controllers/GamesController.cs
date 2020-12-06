@@ -1,20 +1,30 @@
 ﻿namespace GamesDatabase.Web.Controllers
 {
+    using GameDatabase.Data.Common.Repositories;
+    using GamesDatabase.Data.Models;
     using GamesDatabase.Services.DataServices.Interfaces;
     using GamesDatabase.Web.Models.InputModels;
     using GamesDatabase.Web.Models.ViewModels;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
 
     public class GamesController : BaseController
     {
+        private readonly IDeletableEntityRepository<Game> gamesRepository;
         private readonly IGamesService gamesService;
+        private readonly IWebHostEnvironment environment;
 
-        public GamesController(IGamesService gamesService)
+        public GamesController(IDeletableEntityRepository<Game> gamesRepository,
+            IGamesService gamesService,
+            IWebHostEnvironment environment)
         {
+            this.gamesRepository = gamesRepository;
             this.gamesService = gamesService;
+            this.environment = environment;
         }
 
         [HttpGet("/")]
@@ -49,28 +59,30 @@
                 return this.View(input);
             }
 
-            var id = await this.gamesService.Create(input);
+            // Validate images format and size
+            var rootPath = this.environment.WebRootPath;
+
+            var id = await this.gamesService.Create(input, rootPath);
             return this.RedirectToAction(nameof(Details), new { id });
         }
 
         public IActionResult Edit(int id)
         {
-            // Currently 
-
             var game = this.gamesService.GetGameById<GameInputModel>(id);
             return this.View(game);
         }
 
         [HttpPost]
-        public IActionResult Edit(GameInputModel input)
+        public async Task<IActionResult> Edit(GameInputModel input)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.View(input);
             }
 
-            var id = this.gamesService.Update(input);
+            var id = await this.gamesService.Update(input);
             return this.RedirectToAction(nameof(Details), new { id });
+
         }
 
         [HttpPost]

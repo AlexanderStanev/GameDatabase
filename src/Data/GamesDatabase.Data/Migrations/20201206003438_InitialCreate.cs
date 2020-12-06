@@ -65,6 +65,26 @@ namespace GamesDatabase.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Games",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", maxLength: 36, nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", maxLength: 4096, nullable: false),
+                    Announced = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    OfficialWebsite = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Games", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Genres",
                 columns: table => new
                 {
@@ -189,34 +209,6 @@ namespace GamesDatabase.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Games",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", maxLength: 36, nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", maxLength: 4096, nullable: false),
-                    GameEngineId = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: true),
-                    GameEngineId1 = table.Column<int>(type: "int", nullable: true),
-                    Announced = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    OfficialWebsite = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Games", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Games_GameEngines_GameEngineId1",
-                        column: x => x.GameEngineId1,
-                        principalTable: "GameEngines",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Developers",
                 columns: table => new
                 {
@@ -243,61 +235,27 @@ namespace GamesDatabase.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GameGenre",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", maxLength: 36, nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    GameId = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
-                    GameId1 = table.Column<int>(type: "int", nullable: true),
-                    GenreId = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
-                    GenreId1 = table.Column<int>(type: "int", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GameGenre", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_GameGenre_Games_GameId1",
-                        column: x => x.GameId1,
-                        principalTable: "Games",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_GameGenre_Genres_GenreId1",
-                        column: x => x.GenreId1,
-                        principalTable: "Genres",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Images",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", maxLength: 36, nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
                     ImageType = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    GameId = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
-                    GameId1 = table.Column<int>(type: "int", nullable: true),
-                    Path = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false)
+                    Path = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GameId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Images", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Images_Games_GameId1",
-                        column: x => x.GameId1,
+                        name: "FK_Images_Games_GameId",
+                        column: x => x.GameId,
                         principalTable: "Games",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -413,23 +371,53 @@ namespace GamesDatabase.Data.Migrations
                 name: "Videos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", maxLength: 36, nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    GameId = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
-                    GameId1 = table.Column<int>(type: "int", nullable: true),
-                    Path = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false)
+                    Path = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GameId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Videos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Videos_Games_GameId1",
+                        name: "FK_Videos_Games_GameId",
+                        column: x => x.GameId,
+                        principalTable: "Games",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GameGenre",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", maxLength: 36, nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GameId = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
+                    GameId1 = table.Column<int>(type: "int", nullable: true),
+                    GenreId = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
+                    GenreId1 = table.Column<int>(type: "int", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GameGenre", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GameGenre_Games_GameId1",
                         column: x => x.GameId1,
                         principalTable: "Games",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_GameGenre_Genres_GenreId1",
+                        column: x => x.GenreId1,
+                        principalTable: "Genres",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -523,14 +511,9 @@ namespace GamesDatabase.Data.Migrations
                 column: "GenreId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Games_GameEngineId1",
-                table: "Games",
-                column: "GameEngineId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Images_GameId1",
+                name: "IX_Images_GameId",
                 table: "Images",
-                column: "GameId1");
+                column: "GameId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Platforms_GameId",
@@ -568,9 +551,9 @@ namespace GamesDatabase.Data.Migrations
                 column: "GameId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Videos_GameId1",
+                name: "IX_Videos_GameId",
                 table: "Videos",
-                column: "GameId1");
+                column: "GameId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -592,6 +575,9 @@ namespace GamesDatabase.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Developers");
+
+            migrationBuilder.DropTable(
+                name: "GameEngines");
 
             migrationBuilder.DropTable(
                 name: "GameGenre");
@@ -628,9 +614,6 @@ namespace GamesDatabase.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Games");
-
-            migrationBuilder.DropTable(
-                name: "GameEngines");
         }
     }
 }

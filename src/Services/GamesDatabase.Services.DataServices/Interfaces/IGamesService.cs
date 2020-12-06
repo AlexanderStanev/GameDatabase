@@ -17,7 +17,7 @@ namespace GamesDatabase.Services.DataServices.Interfaces
 
         IEnumerable<TViewModel> GetAllGames<TViewModel>(int page, int itemsPerPage);
 
-        Task<int> Create(GameInputModel input);
+        Task<int> Create(GameInputModel input, string rootPath);
 
         Task<int> Update(GameInputModel input);
 

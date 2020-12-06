@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -10,11 +11,14 @@ using GamesDatabase.Services.DataServices.Interfaces;
 using GamesDatabase.Services.Mapping;
 using GamesDatabase.Web.Models.InputModels;
 using GamesDatabase.Web.Models.ViewModels;
+using Microsoft.AspNetCore.Http;
 
 namespace GamesDatabase.Services.DataServices.Services
 {
     public class GamesService : IGamesService
     {
+        private readonly string[] allowedExtensions = new[] { "jpg", "png", "gif" };
+
         private readonly IDeletableEntityRepository<Game> gamesRepository;
         private readonly IGenresService genresService;
 
@@ -73,30 +77,83 @@ namespace GamesDatabase.Services.DataServices.Services
                                   .Count();
         }
 
-        public async Task<int> Create(GameInputModel input)
+        public async Task<int> Create(GameInputModel input, string rootPath)
         {
             var game = AutoMapperConfig.MapperInstance.Map<Game>(input);
 
             await gamesRepository.AddAsync(game);
             await gamesRepository.SaveChangesAsync();
 
+            if (input.MediaFiles.Any())
+            {
+                // TODO: Implement uploading of videos as well
+                game.Images = await SaveImageFiles(input.MediaFiles, game.Id, rootPath);
+                await gamesRepository.SaveChangesAsync();
+            }
+
             return game.Id;
+        }
+
+        private async Task<List<Image>> SaveImageFiles(IEnumerable<IFormFile> mediaFiles, int gameId, string rootPath)
+        {
+            var images = new List<Image>();
+
+            var commonPath = $"/images/games/{gameId}";
+            var directoryPath = $"{rootPath}/{commonPath}";
+            Directory.CreateDirectory(directoryPath);
+
+            var firstImage = true;
+            foreach (var image in mediaFiles)
+            {
+                var extension = Path.GetExtension(image.FileName).TrimStart('.');
+                if (!this.allowedExtensions.Any(x => extension.EndsWith(x)))
+                {
+                    throw new FormatException($"The extension - {extension} is not accepted");
+                }
+
+                var dbImage = new Image()
+                {
+                    GameId = gameId,
+                };
+
+                // TODO: Implement better image type logic
+                if (firstImage)
+                {
+                    dbImage.ImageType = ImageType.Cover;
+                    firstImage = false;
+                }
+                else
+                {
+                    dbImage.ImageType = ImageType.Normal;
+                }
+
+                dbImage.Path = $"{commonPath}/{dbImage.Id}.{extension}";
+                images.Add(dbImage);
+
+                var fullPath = rootPath + dbImage.Path;
+                using Stream fileStream = new FileStream(fullPath, FileMode.Create);
+                await image.CopyToAsync(fileStream);
+            }
+
+            return images;
         }
 
         public async Task<int> Update(GameInputModel input)
         {
-            var game = await gamesRepository.GetByIdWithDeletedAsync(input.Id);
+            var game = gamesRepository.AllWithDeleted().FirstOrDefault(x => x.Id == input.Id);
             if (game == null)
             {
                 throw new InvalidOperationException("The game could not be found");
             }
 
-            game = AutoMapperConfig.MapperInstance.Map<Game>(input);
+            game.Description = input.Description;
+            game.Title = input.Title;
+            game.OfficialWebsite = input.OfficialWebsite;
 
-            // Todo currently thorws 404.11 
+            var id = game.Id;
 
             await gamesRepository.SaveChangesAsync();
-            return game.Id;
+            return input.Id;
         }
 
         public async Task Delete(int id)

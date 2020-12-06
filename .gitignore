@@ -3,6 +3,56 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Common image extensions (case insensitive)
+**.[tT][iI][fF]
+**.[tT][iI][fF][fF]
+**.[gG][iI][fF]
+**.[jJ][pP][eE][gG]
+**.[jJ][pP][gG]
+**.[jJ][iI][fF]
+**.[jJ][fF][iI][fF]
+**.[jJ][pP]2
+**.[jJ][pP][xX]
+**.[jJ]2[kK]
+**.[jJ]2[cC]
+**.[fF][pP][xX]
+**.[pP][cC][dD]
+**.[pP][nN][gG]
+**.[pP][sS][dD]
+**.[xX][cC][fF]
+
+# Common video extensions (case insensitive)
+**.[wW][eE][bB][mM]
+**.[mM][kK][vV]
+**.[fF][lL][vV]
+**.[vV][oO][bB]
+**.[oO][gG][vV]
+**.[oO][gG][gG]
+**.[dD][rR][cC]
+**.[mM][oO][vV]
+**.[qQ][tT]
+**.[mM][nN][gG]
+**.[aA][vV][iI]
+**.[wW][mM][vV]
+**.[yY][uU][vV]
+**.[rR][mM]
+**.[rR][mM][vV][bB]
+**.[mM][pP]4
+**.[mM]4[pP]
+**.[mM]4[vV]
+**.[mM][pP][gG]
+**.[mM][pP]2
+**.[mM][pP][eE][gG]
+**.[mM][pP][eE]
+**.[mM][pP][vV]
+**.[mM]2[vV]
+**.[sS][vV][iI]
+**.3[gG][pP]
+**.3[gG]2
+**.[mM][xX][fF]
+**.[rR][oO][qQ]
+**.[nN][sS][vV]
+
 # User-specific files
 *.suo
 *.user

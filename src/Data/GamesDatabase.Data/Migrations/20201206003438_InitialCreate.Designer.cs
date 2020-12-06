@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamesDatabase.Data.Migrations
 {
     [DbContext(typeof(GamesDatabaseContext))]
-    [Migration("20201129110249_InitialCreate")]
+    [Migration("20201206003438_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -178,13 +178,6 @@ namespace GamesDatabase.Data.Migrations
                         .HasMaxLength(4096)
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("GameEngineId")
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
-
-                    b.Property<int?>("GameEngineId1")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -202,8 +195,6 @@ namespace GamesDatabase.Data.Migrations
                         .HasColumnType("nvarchar(32)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GameEngineId1");
 
                     b.ToTable("Games");
                 });
@@ -325,11 +316,9 @@ namespace GamesDatabase.Data.Migrations
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Image", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("nvarchar(36)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -337,12 +326,7 @@ namespace GamesDatabase.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("GameId")
-                        .IsRequired()
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
-
-                    b.Property<int?>("GameId1")
+                    b.Property<int>("GameId")
                         .HasColumnType("int");
 
                     b.Property<int>("ImageType")
@@ -356,12 +340,11 @@ namespace GamesDatabase.Data.Migrations
 
                     b.Property<string>("Path")
                         .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameId1");
+                    b.HasIndex("GameId");
 
                     b.ToTable("Images");
                 });
@@ -590,11 +573,9 @@ namespace GamesDatabase.Data.Migrations
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Video", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("nvarchar(36)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -602,12 +583,7 @@ namespace GamesDatabase.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("GameId")
-                        .IsRequired()
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
-
-                    b.Property<int?>("GameId1")
+                    b.Property<int>("GameId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
@@ -618,12 +594,11 @@ namespace GamesDatabase.Data.Migrations
 
                     b.Property<string>("Path")
                         .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameId1");
+                    b.HasIndex("GameId");
 
                     b.ToTable("Videos");
                 });
@@ -739,15 +714,6 @@ namespace GamesDatabase.Data.Migrations
                         .HasForeignKey("GameId");
                 });
 
-            modelBuilder.Entity("GamesDatabase.Data.Models.Game", b =>
-                {
-                    b.HasOne("GamesDatabase.Data.Models.GameEngine", "GameEngine")
-                        .WithMany()
-                        .HasForeignKey("GameEngineId1");
-
-                    b.Navigation("GameEngine");
-                });
-
             modelBuilder.Entity("GamesDatabase.Data.Models.GameGenre", b =>
                 {
                     b.HasOne("GamesDatabase.Data.Models.Game", "Game")
@@ -767,7 +733,9 @@ namespace GamesDatabase.Data.Migrations
                 {
                     b.HasOne("GamesDatabase.Data.Models.Game", "Game")
                         .WithMany("Images")
-                        .HasForeignKey("GameId1");
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Game");
                 });
@@ -827,7 +795,9 @@ namespace GamesDatabase.Data.Migrations
                 {
                     b.HasOne("GamesDatabase.Data.Models.Game", "Game")
                         .WithMany("Videos")
-                        .HasForeignKey("GameId1");
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Game");
                 });

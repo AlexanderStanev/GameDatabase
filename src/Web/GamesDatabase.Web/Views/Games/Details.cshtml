@@ -1,16 +1,47 @@
 ﻿@model GamesDatabase.Web.Models.ViewModels.DetailedGameViewModel
 
 @{
-    ViewData["Title"] = "View";
+    ViewData["Title"] = @Model.Title;
 }
 
-<div class="align-content-center container">
-    <h2>@Model.Title</h2>
+<div class="container">
 
+    <h1 class="my-4">
+        @Model.Title
+    </h1>
 
     <div class="row">
-        <div class="col-md-4">
-             <img class="img-fluid card-img" src="https://images.igdb.com/igdb/image/upload/t_cover_big/co2hm2.jpg"/>
+
+        <div class="col-md-8">
+            <img class="img-fluid" src="@Model.CoverImage" alt="Cover Image">
         </div>
+
+        <div class="col-md-4">
+            <h3 class="my-3">Description</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim.</p>
+            <h3 class="my-3">Genres</h3>
+            <ul>
+                <li>Lorem Ipsum</li>
+                <li>Dolor Sit Amet</li>
+                <li>Consectetur</li>
+                <li>Adipiscing Elit</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <h3 class="my-4">More Pictures and Videos</h3>
+
+    <div class="row">
+
+        @foreach (var image in Model.Images)
+        {
+            <div class="col-md-3 col-sm-6 mb-4">
+                <a href="#">
+                    <img class="img-fluid" src="@image" alt="">
+                </a>
+            </div>
+        }
+
     </div>
 </div>
