@@ -19,14 +19,12 @@ namespace GamesDatabase.Web.Models.ViewModels
 
         public string CoverImage { get; set; }
 
-        public IEnumerable<string> Images { get; set; }
+        public string[] Images { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Game, DetailedGameViewModel>()
-                .ForMember(vm => vm.CoverImage, opt => opt.MapFrom(g => g.Images.FirstOrDefault(x => x.ImageType == ImageType.Cover).Path));
-
-            configuration.CreateMap<Game, DetailedGameViewModel>()
+                .ForMember(vm => vm.CoverImage, opt => opt.MapFrom(g => g.Images.Where(x => x.ImageType == ImageType.Cover).Select(x => x.Path).FirstOrDefault()))
                 .ForMember(vm => vm.Images, opt => opt.MapFrom(g => g.Images.Where(x => x.ImageType == ImageType.Normal).Select(x => x.Path)));
         }
     }
