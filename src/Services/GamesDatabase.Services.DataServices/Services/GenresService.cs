@@ -8,6 +8,7 @@ using GamesDatabase.Services.DataServices.Interfaces;
 using GamesDatabase.Services.Mapping;
 using GamesDatabase.Web.Models.InputModels;
 using GamesDatabase.Web.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesDatabase.Services.DataServices.Services
 {
@@ -50,6 +51,11 @@ namespace GamesDatabase.Services.DataServices.Services
         public int GetCount()
         {
             return genresRepository.All().Count();
+        }
+
+        public IEnumerable<SelectListItem> GetAllGenresAsOptions()
+        {
+            return genresRepository.All().Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
         }
     }
 }

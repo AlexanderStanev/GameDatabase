@@ -16,14 +16,17 @@
     {
         private readonly IDeletableEntityRepository<Game> gamesRepository;
         private readonly IGamesService gamesService;
+        private readonly IGenresService genresService;
         private readonly IWebHostEnvironment environment;
 
         public GamesController(IDeletableEntityRepository<Game> gamesRepository,
             IGamesService gamesService,
+            IGenresService genresService,
             IWebHostEnvironment environment)
         {
             this.gamesRepository = gamesRepository;
             this.gamesService = gamesService;
+            this.genresService = genresService;
             this.environment = environment;
         }
 
@@ -48,7 +51,8 @@
 
         public IActionResult Create()
         {
-            return this.View();
+            var genres = genresService.GetAllGenresAsOptions();
+            return this.View(new GameInputModel() { GenreOptions = genres });
         }
 
         [HttpPost]

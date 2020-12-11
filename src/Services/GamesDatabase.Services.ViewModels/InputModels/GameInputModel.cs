@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesDatabase.Web.Models.InputModels
 {
@@ -22,6 +23,9 @@ namespace GamesDatabase.Web.Models.InputModels
         [MaxLength(4000)]
         public string Description { get; set; }
 
+        [Required]
+        public int[] GenreIds { get; set; }
+
         [DataType(DataType.Date)]
         public DateTime? Announced { get; set; }
 
@@ -32,5 +36,7 @@ namespace GamesDatabase.Web.Models.InputModels
 
         [Display(Description = "Upload Media Files")]
         public List<IFormFile> MediaFiles { get; set; }
+
+        public IEnumerable<SelectListItem> GenreOptions { get; set; }
     }
 }

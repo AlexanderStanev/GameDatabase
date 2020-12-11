@@ -1,5 +1,6 @@
 ﻿using GamesDatabase.Web.Models.InputModels;
 using GamesDatabase.Web.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,5 +16,6 @@ namespace GamesDatabase.Services.DataServices.Interfaces
 
         int GetCount();
 
+        IEnumerable<SelectListItem> GetAllGenresAsOptions();
     }
 }
