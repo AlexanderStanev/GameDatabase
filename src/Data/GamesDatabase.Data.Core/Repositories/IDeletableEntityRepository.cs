@@ -1,6 +1,6 @@
-﻿namespace GameDatabase.Data.Common.Repositories
+﻿namespace GameDatabase.Data.Core.Repositories
 {
-    using GamesDatabase.Data.Core;
+    using GameDatabase.Data.Core.Models;
     using System.Linq;
     using System.Threading.Tasks;
 

@@ -10,7 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common.csproj" />
     <ProjectReference Include="..\..\Data\GamesDatabase.Data.Models\GamesDatabase.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\GamesDatabase.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\GamesDatabase.Services.Mapping\GamesDatabase.Services.Mapping.csproj" />
   </ItemGroup>
 

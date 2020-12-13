@@ -12,5 +12,7 @@
 
         public const int DefaultItemsPerPage = 24;
 
+        // TODO: Try to use this for the image attribute - GameInputModel
+        public static readonly string[] AllowedExtensions = { "jpg", "png", "gif" };
     }
 }

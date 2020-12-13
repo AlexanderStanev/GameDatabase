@@ -1,4 +1,4 @@
-﻿using GameDatabase.Data.Common.Models;
+﻿using GameDatabase.Data.Core.Models;
 using GamesDatabase.Data.Core;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -29,9 +29,6 @@ namespace GamesDatabase.Data.Models
         [Required]
         [MaxLength(4096)]
         public string Content { get; set; }
-
-        [Required]
-        public DateTime CreatedOn { get; set; }
 
         public DateTime? EditedOn { get; set; }
     }

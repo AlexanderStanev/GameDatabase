@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GamesDatabase.Web.Models.ViewModels
+namespace GamesDatabase.Web.Models.ViewModels.Games
 {
     public class DetailedGameViewModel : IMapFrom<Game>, IHaveCustomMappings
     {
@@ -15,11 +15,13 @@ namespace GamesDatabase.Web.Models.ViewModels
 
         public DateTime? Announced { get; set; }
 
-        public string OfficialWebsite { get; set; }
-
         public string CoverImage { get; set; }
 
         public string[] Images { get; set; }
+
+        public string OfficialWebsite { get; set; }
+
+        //public IEnumerable<GenreViewModel> Genres { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)
         {

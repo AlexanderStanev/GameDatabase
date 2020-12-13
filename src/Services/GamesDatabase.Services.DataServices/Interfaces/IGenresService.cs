@@ -16,6 +16,8 @@ namespace GamesDatabase.Services.DataServices.Interfaces
 
         int GetCount();
 
-        IEnumerable<SelectListItem> GetAllGenresAsOptions();
+        IEnumerable<SelectListItem> GetAllGenresAsOptions(int[] selectedIds);
+
+        Task RelateGameWithGenres(int id, int[] genreIds);
     }
 }

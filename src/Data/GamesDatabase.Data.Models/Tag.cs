@@ -1,4 +1,4 @@
-﻿using GameDatabase.Data.Common.Models;
+﻿using GameDatabase.Data.Core.Models;
 using GamesDatabase.Data.Core;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

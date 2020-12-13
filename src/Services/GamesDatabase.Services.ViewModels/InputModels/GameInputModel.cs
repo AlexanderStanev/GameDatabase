@@ -4,12 +4,15 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using GamesDatabase.Web.Infrastructure.Attributes;
+using Common;
+using AutoMapper;
+using System.Linq;
 
 namespace GamesDatabase.Web.Models.InputModels
 {
-    public class GameInputModel : IMapTo<Game>, IMapFrom<Game>
+    public class GameInputModel : IMapTo<Game>, IMapFrom<Game>, IHaveCustomMappings
     {
         public int Id { get; set; }
 
@@ -35,8 +38,18 @@ namespace GamesDatabase.Web.Models.InputModels
         public string OfficialWebsite { get; set; }
 
         [Display(Description = "Upload Media Files")]
+        [Required(ErrorMessage = "Please select a file.")]
+        [DataType(DataType.Upload)]
+        [MaxFileSize(5 * 1024 * 1024)]
+        [AllowedExtensions(new string[] { "jpg", "png", "gif" })]
         public List<IFormFile> MediaFiles { get; set; }
 
         public IEnumerable<SelectListItem> GenreOptions { get; set; }
+
+        public void CreateMappings(IProfileExpression configuration)
+        {
+            configuration.CreateMap<Game, GameInputModel>()
+                          .ForMember(vm => vm.GenreIds, opt => opt.MapFrom(g => g.GameGenre.Select(x => x.Id)));
+        }
     }
 }

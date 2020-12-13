@@ -1,4 +1,4 @@
-﻿namespace GamesDatabase.Data.Core
+﻿namespace GameDatabase.Data.Core.Models
 {
     using System;
 

@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using GameDatabase.Data.Common.Repositories;
+using GameDatabase.Data.Core.Repositories;
 using GamesDatabase.Data.Core;
 using GamesDatabase.Data.Models;
 using GamesDatabase.Services.DataServices.Interfaces;
@@ -17,17 +17,19 @@ namespace GamesDatabase.Services.DataServices.Services
 {
     public class GamesService : IGamesService
     {
-        private readonly string[] allowedExtensions = new[] { "jpg", "png", "gif" };
-
         private readonly IDeletableEntityRepository<Game> gamesRepository;
         private readonly IGenresService genresService;
+        private readonly IImageService imageService;
+        //private readonly GamesDatabaseContext
 
         public GamesService(IDeletableEntityRepository<Game> gamesRepository,
-            IGenresService genresService)
+            IGenresService genresService,
+            IImageService imageService)
 
         {
             this.gamesRepository = gamesRepository;
             this.genresService = genresService;
+            this.imageService = imageService;
         }
 
         public TViewModel GetGameById<TViewModel>(int id)
@@ -84,75 +86,31 @@ namespace GamesDatabase.Services.DataServices.Services
             await gamesRepository.AddAsync(game);
             await gamesRepository.SaveChangesAsync();
 
+            await genresService.RelateGameWithGenres(game.Id, input.GenreIds);
+
             if (input.MediaFiles.Any())
             {
                 // TODO: Implement uploading of videos as well
-                game.Images = await SaveImageFiles(input.MediaFiles, game.Id, rootPath);
+                game.Images = await imageService.SaveImageFiles(input.MediaFiles, game.Id, rootPath);
                 await gamesRepository.SaveChangesAsync();
             }
 
             return game.Id;
         }
 
-        private async Task<List<Image>> SaveImageFiles(IEnumerable<IFormFile> mediaFiles, int gameId, string rootPath)
-        {
-            var images = new List<Image>();
-
-            var commonPath = $"/images/games/{gameId}";
-            var directoryPath = $"{rootPath}/{commonPath}";
-            Directory.CreateDirectory(directoryPath);
-
-            var firstImage = true;
-            foreach (var image in mediaFiles)
-            {
-                var extension = Path.GetExtension(image.FileName).TrimStart('.');
-                if (!this.allowedExtensions.Any(x => extension.EndsWith(x)))
-                {
-                    throw new FormatException($"The extension - {extension} is not accepted");
-                }
-
-                var dbImage = new Image()
-                {
-                    GameId = gameId,
-                };
-
-                // TODO: Implement better image type logic
-                if (firstImage)
-                {
-                    dbImage.ImageType = ImageType.Cover;
-                    firstImage = false;
-                }
-                else
-                {
-                    dbImage.ImageType = ImageType.Normal;
-                }
-
-                dbImage.Path = $"{commonPath}/{dbImage.Id}.{extension}";
-                images.Add(dbImage);
-
-                var fullPath = rootPath + dbImage.Path;
-                using Stream fileStream = new FileStream(fullPath, FileMode.Create);
-                await image.CopyToAsync(fileStream);
-            }
-
-            return images;
-        }
-
         public async Task<int> Update(GameInputModel input)
         {
-            var game = gamesRepository.AllWithDeleted().FirstOrDefault(x => x.Id == input.Id);
+            var game = gamesRepository.AllAsNoTrackingWithDeleted().FirstOrDefault(x => x.Id == input.Id);
             if (game == null)
             {
                 throw new InvalidOperationException("The game could not be found");
             }
 
-            game.Description = input.Description;
-            game.Title = input.Title;
-            game.OfficialWebsite = input.OfficialWebsite;
+            game = AutoMapperConfig.MapperInstance.Map<Game>(input);
 
-            var id = game.Id;
 
-            await gamesRepository.SaveChangesAsync();
+
+            await genresService.RelateGameWithGenres(game.Id, input.GenreIds);
             return input.Id;
         }
 

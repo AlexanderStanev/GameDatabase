@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GameDatabase.Data.Common.Repositories;
-using GamesDatabase.Data.Core;
+using GameDatabase.Data.Core.Repositories;
 using GamesDatabase.Data.Models;
 using GamesDatabase.Services.DataServices.Interfaces;
 using GamesDatabase.Services.Mapping;
 using GamesDatabase.Web.Models.InputModels;
-using GamesDatabase.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesDatabase.Services.DataServices.Services
@@ -53,9 +51,26 @@ namespace GamesDatabase.Services.DataServices.Services
             return genresRepository.All().Count();
         }
 
-        public IEnumerable<SelectListItem> GetAllGenresAsOptions()
+        public IEnumerable<SelectListItem> GetAllGenresAsOptions(int[] selectedIds)
         {
-            return genresRepository.All().Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
+            return genresRepository.All().Select(x => new SelectListItem(x.Name, x.Id.ToString(), selectedIds != null && selectedIds.Contains(x.Id))).ToList();
+        }
+
+        public async Task RelateGameWithGenres(int gameId, int[] genreIds)
+        {
+            var genres = genresRepository.All().Where(x => genreIds.Contains(x.Id)).ToList();
+            foreach (var genre in genres)
+            {
+                var gameGenre = new GameGenre()
+                {
+                    GameId = gameId,
+                    GenreId = genre.Id,
+                };
+
+                genre.GameGenres.Add(gameGenre);
+            }
+
+            await genresRepository.SaveChangesAsync();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using GameDatabase.Data.Common.Models;
+﻿using GameDatabase.Data.Core.Models;
 using GamesDatabase.Data.Core;
 using System;
 using System.Collections.Generic;
@@ -18,6 +18,7 @@ namespace GamesDatabase.Data.Models
         [Required]
         [MaxLength(128)]
         public string Country { get; set; }
+
 
         // public IEnumerable<Game> BestGames { get; set; }
     }

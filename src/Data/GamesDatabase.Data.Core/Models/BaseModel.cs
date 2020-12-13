@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace GamesDatabase.Data.Core
+namespace GameDatabase.Data.Core.Models
 {
     public abstract class BaseModel<TKey> : IAuditInfo
     {

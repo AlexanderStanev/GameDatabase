@@ -1,4 +1,4 @@
-﻿using GameDatabase.Data.Common.Models;
+﻿using GameDatabase.Data.Core.Models;
 using GamesDatabase.Data.Core;
 using System;
 using System.Collections.Generic;
@@ -8,6 +8,11 @@ namespace GamesDatabase.Data.Models
 {
     public class Genre : BaseDeletableModel<int>
     {
+        public Genre()
+        {
+            this.GameGenres = new HashSet<GameGenre>();
+        }
+
         [Required]
         [MaxLength(32)]
         public string Name { get; set; }
@@ -16,6 +21,6 @@ namespace GamesDatabase.Data.Models
         [MaxLength(256)]
         public string Description { get; set; }
 
-        public virtual ICollection<GameGenre> GameGenres { get; set; }
+        public ICollection<GameGenre> GameGenres { get; set; }
     }
 }

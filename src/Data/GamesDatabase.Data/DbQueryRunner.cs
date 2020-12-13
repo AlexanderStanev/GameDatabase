@@ -3,7 +3,7 @@
     using System;
     using System.Threading.Tasks;
 
-    using GameDatabase.Data.Common;
+    using GameDatabase.Data.Core;
     using GamesDatabase.Data;
     using Microsoft.EntityFrameworkCore;
 

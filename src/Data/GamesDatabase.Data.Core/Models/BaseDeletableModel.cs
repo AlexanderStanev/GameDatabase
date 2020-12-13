@@ -1,6 +1,5 @@
-﻿namespace GameDatabase.Data.Common.Models
+﻿namespace GameDatabase.Data.Core.Models
 {
-    using GamesDatabase.Data.Core;
     using System;
 
     public abstract class BaseDeletableModel<TKey> : BaseModel<TKey>, IDeletableEntity

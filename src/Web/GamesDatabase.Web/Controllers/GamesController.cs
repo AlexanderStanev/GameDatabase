@@ -1,15 +1,12 @@
 ﻿namespace GamesDatabase.Web.Controllers
 {
-    using GameDatabase.Data.Common.Repositories;
+    using GameDatabase.Data.Core.Repositories;
     using GamesDatabase.Data.Models;
     using GamesDatabase.Services.DataServices.Interfaces;
     using GamesDatabase.Web.Models.InputModels;
-    using GamesDatabase.Web.Models.ViewModels;
+    using GamesDatabase.Web.Models.ViewModels.Games;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
-    using System;
-    using System.Linq;
     using System.Threading.Tasks;
 
     public class GamesController : BaseController
@@ -51,8 +48,7 @@
 
         public IActionResult Create()
         {
-            var genres = genresService.GetAllGenresAsOptions();
-            return this.View(new GameInputModel() { GenreOptions = genres });
+            return this.View();
         }
 
         [HttpPost]
@@ -63,9 +59,7 @@
                 return this.View(input);
             }
 
-            // Validate images format and size
             var rootPath = this.environment.WebRootPath;
-
             var id = await this.gamesService.Create(input, rootPath);
             return this.RedirectToAction(nameof(Details), new { id });
         }
@@ -86,7 +80,6 @@
 
             var id = await this.gamesService.Update(input);
             return this.RedirectToAction(nameof(Details), new { id });
-
         }
 
         [HttpPost]

@@ -4,12 +4,12 @@
     using System.Threading.Tasks;
     using AutoMapper;
     using GameDatabase.Data;
-    using GameDatabase.Data.Common;
-    using GameDatabase.Data.Common.Repositories;
+    using GameDatabase.Data.Core;
+    using GameDatabase.Data.Core.Repositories;
     using GamesDatabase.Data;
     using GamesDatabase.Data.Core;
-    using GamesDatabase.Data.Core.Repositories;
     using GamesDatabase.Data.Models;
+    using GamesDatabase.Data.Repositories;
     using GamesDatabase.Data.Seeding;
     using GamesDatabase.Services.DataServices.Interfaces;
     using GamesDatabase.Services.DataServices.Services;
@@ -68,6 +68,7 @@
             // Application services
             services.AddTransient<IGamesService, GamesService>();
             services.AddTransient<IGenresService, GenresService>();
+            services.AddTransient<IImageService, ImageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

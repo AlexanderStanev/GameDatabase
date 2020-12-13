@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamesDatabase.Data.Migrations
 {
     [DbContext(typeof(GamesDatabaseContext))]
-    [Migration("20201206003438_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20201212171802_InitialMigartion")]
+    partial class InitialMigartion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -178,6 +178,9 @@ namespace GamesDatabase.Data.Migrations
                         .HasMaxLength(4096)
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("GameEngineId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -195,6 +198,8 @@ namespace GamesDatabase.Data.Migrations
                         .HasColumnType("nvarchar(32)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GameEngineId");
 
                     b.ToTable("Games");
                 });
@@ -248,20 +253,10 @@ namespace GamesDatabase.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("GameId")
-                        .IsRequired()
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
-
-                    b.Property<int?>("GameId1")
+                    b.Property<int>("GameId")
                         .HasColumnType("int");
 
-                    b.Property<string>("GenreId")
-                        .IsRequired()
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
-
-                    b.Property<int?>("GenreId1")
+                    b.Property<int>("GenreId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
@@ -272,9 +267,9 @@ namespace GamesDatabase.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameId1");
+                    b.HasIndex("GameId");
 
-                    b.HasIndex("GenreId1");
+                    b.HasIndex("GenreId");
 
                     b.ToTable("GameGenre");
                 });
@@ -425,59 +420,6 @@ namespace GamesDatabase.Data.Migrations
                     b.HasIndex("GameId");
 
                     b.ToTable("Publishers");
-                });
-
-            modelBuilder.Entity("GamesDatabase.Data.Models.Release", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(36)
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("GameId")
-                        .IsRequired()
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
-
-                    b.Property<int?>("GameId1")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PlatformId")
-                        .IsRequired()
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
-
-                    b.Property<int?>("PlatformId1")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ReleaseDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Version")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GameId1");
-
-                    b.HasIndex("PlatformId1");
-
-                    b.ToTable("Releases");
                 });
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Review", b =>
@@ -714,15 +656,28 @@ namespace GamesDatabase.Data.Migrations
                         .HasForeignKey("GameId");
                 });
 
+            modelBuilder.Entity("GamesDatabase.Data.Models.Game", b =>
+                {
+                    b.HasOne("GamesDatabase.Data.Models.GameEngine", "GameEngine")
+                        .WithMany("Games")
+                        .HasForeignKey("GameEngineId");
+
+                    b.Navigation("GameEngine");
+                });
+
             modelBuilder.Entity("GamesDatabase.Data.Models.GameGenre", b =>
                 {
                     b.HasOne("GamesDatabase.Data.Models.Game", "Game")
                         .WithMany("GameGenres")
-                        .HasForeignKey("GameId1");
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("GamesDatabase.Data.Models.Genre", "Genre")
                         .WithMany("GameGenres")
-                        .HasForeignKey("GenreId1");
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Game");
 
@@ -752,21 +707,6 @@ namespace GamesDatabase.Data.Migrations
                     b.HasOne("GamesDatabase.Data.Models.Game", null)
                         .WithMany("Publishers")
                         .HasForeignKey("GameId");
-                });
-
-            modelBuilder.Entity("GamesDatabase.Data.Models.Release", b =>
-                {
-                    b.HasOne("GamesDatabase.Data.Models.Game", "Game")
-                        .WithMany("Releases")
-                        .HasForeignKey("GameId1");
-
-                    b.HasOne("GamesDatabase.Data.Models.Platform", "Platform")
-                        .WithMany()
-                        .HasForeignKey("PlatformId1");
-
-                    b.Navigation("Game");
-
-                    b.Navigation("Platform");
                 });
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Review", b =>
@@ -865,13 +805,16 @@ namespace GamesDatabase.Data.Migrations
 
                     b.Navigation("Publishers");
 
-                    b.Navigation("Releases");
-
                     b.Navigation("Reviews");
 
                     b.Navigation("Tags");
 
                     b.Navigation("Videos");
+                });
+
+            modelBuilder.Entity("GamesDatabase.Data.Models.GameEngine", b =>
+                {
+                    b.Navigation("Games");
                 });
 
             modelBuilder.Entity("GamesDatabase.Data.Models.Genre", b =>

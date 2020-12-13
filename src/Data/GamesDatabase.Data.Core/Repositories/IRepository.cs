@@ -1,4 +1,4 @@
-﻿namespace GameDatabase.Data.Common.Repositories
+﻿namespace GameDatabase.Data.Core.Repositories
 {
     using System;
     using System.Linq;

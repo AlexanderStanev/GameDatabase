@@ -1,4 +1,4 @@
-﻿using GameDatabase.Data.Common.Models;
+﻿using GameDatabase.Data.Core.Models;
 using GamesDatabase.Data.Core;
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,14 @@ namespace GamesDatabase.Data.Models
 {
     public class Game : BaseDeletableModel<int>
     {
+        public Game()
+        {
+            this.GameGenre = new HashSet<GameGenre>();
+            this.Images = new HashSet<Image>();
+            this.Reviews = new HashSet<Review>();
+            this.Tags = new HashSet<Tag>();
+        }
+
         [Required]
         [MaxLength(32)]
         public string Title { get; set; }
@@ -17,13 +25,23 @@ namespace GamesDatabase.Data.Models
         [MaxLength(4096)]
         public string Description { get; set; }
 
-        public virtual ICollection<GameGenre> GameGenres { get; set; }
+        public ICollection<GameGenre> GameGenre { get; set; }
 
         public virtual ICollection<Image> Images { get; set; }
 
-        public virtual ICollection<Video> Videos { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
 
-        public virtual ICollection<Release> Releases { get; set; }
+        public virtual ICollection<Tag> Tags { get; set; }
+
+        public DateTime? Announced { get; set; }
+
+        [Required]
+        [MaxLength(2048)]
+        public string OfficialWebsite { get; set; }
+
+        // TODO: Might not be used
+
+        public virtual ICollection<Video> Videos { get; set; }
 
         public virtual ICollection<Developer> Developers { get; set; }
 
@@ -31,18 +49,8 @@ namespace GamesDatabase.Data.Models
 
         public virtual ICollection<Platform> Platforms { get; set; }
 
-        public virtual ICollection<Review> Reviews { get; set; }
+        public int? GameEngineId { get; set; }
 
-        public virtual ICollection<Tag> Tags { get; set; }
-
-        //public int GameEngineId { get; set; }
-
-        //public virtual GameEngine GameEngine { get; set; }
-
-        public DateTime? Announced { get; set; }
-
-        [Required]
-        [MaxLength(2048)]
-        public string OfficialWebsite { get; set; }
+        public virtual GameEngine GameEngine { get; set; }
     }
 }

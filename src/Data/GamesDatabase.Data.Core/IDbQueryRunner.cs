@@ -1,4 +1,4 @@
-﻿namespace GameDatabase.Data.Common
+﻿namespace GameDatabase.Data.Core
 {
     using System;
     using System.Threading.Tasks;

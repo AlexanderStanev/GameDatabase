@@ -1,10 +1,10 @@
-﻿namespace GamesDatabase.Data.Core.Repositories
+﻿namespace GamesDatabase.Data.Repositories
 
 {
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-    using GameDatabase.Data.Common.Repositories;
+    using GameDatabase.Data.Core.Repositories;
     using Microsoft.EntityFrameworkCore;
 
     public class EfRepository<TEntity> : IRepository<TEntity>

@@ -1,4 +1,4 @@
-﻿namespace GamesDatabase.Data.Core
+﻿namespace GamesDatabase.Data
 {
     using System;
     using System.Collections.Generic;
