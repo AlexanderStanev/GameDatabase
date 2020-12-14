@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamesDatabase.Data.Migrations
 {
     [DbContext(typeof(GamesDatabaseContext))]
-    [Migration("20201212171802_InitialMigartion")]
-    partial class InitialMigartion
+    [Migration("20201213193835_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -668,7 +668,7 @@ namespace GamesDatabase.Data.Migrations
             modelBuilder.Entity("GamesDatabase.Data.Models.GameGenre", b =>
                 {
                     b.HasOne("GamesDatabase.Data.Models.Game", "Game")
-                        .WithMany("GameGenres")
+                        .WithMany("GameGenre")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -797,7 +797,7 @@ namespace GamesDatabase.Data.Migrations
                 {
                     b.Navigation("Developers");
 
-                    b.Navigation("GameGenres");
+                    b.Navigation("GameGenre");
 
                     b.Navigation("Images");
 

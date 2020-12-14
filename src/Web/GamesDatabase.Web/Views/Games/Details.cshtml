@@ -10,7 +10,26 @@
         @Model.Title
     </h1>
 
-    <div class="row">
+    @if (User.IsInRole(Common.GlobalConstants.AdministratorRoleName))
+    {
+        <a class="btn btn-dark" asp-area="Administration" asp-controller="Games" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+
+        <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</a>
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header"><h5 class="modal-title">Delete</h5></div>
+                    <div class="modal-body">Are you sure you want to delete the game <strong>@Model.Title</strong>?</div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <form method="post" asp-area="Administration" asp-controller="Games" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger" onclick="submit()">Delete</form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="row py-4">
 
         <div class="col-md-4 text-center">
             <img class="" src="@Model.CoverImage" height="500" alt="Cover Image">

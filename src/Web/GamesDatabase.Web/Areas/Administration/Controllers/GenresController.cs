@@ -1,4 +1,4 @@
-﻿namespace GamesDatabase.Web.Controllers
+﻿namespace GamesDatabase.Web.Areas.Administration.Controllers
 {
     using GamesDatabase.Services.DataServices.Interfaces;
     using GamesDatabase.Web.Models.InputModels;
@@ -6,7 +6,7 @@
     using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
 
-    public class GenresController : BaseController
+    public class GenresController : AdministrationBaseController
     {
         private readonly IGamesService gamesService;
         private readonly IGenresService genresService;
@@ -23,12 +23,12 @@
             return this.View(genres);
         }
 
-        public async Task<IActionResult> Details(string id)
+        public IActionResult Details(string id)
         {
             return this.View(id);
         }
 
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             return this.View();
         }
@@ -45,22 +45,22 @@
             return this.RedirectToAction(nameof(this.All));
         }
 
-        public async Task<IActionResult> Edit(string id)
+        public IActionResult Edit(int id)
         {
-            return this.View(id);
+            var genre = this.genresService.GetGenreById<GenreInputModel>(id);
+            return this.View(genre);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit()
+        public IActionResult Edit()
         {
-
             var id = "";
             // TODO: Genre view model needed
             return this.RedirectToAction(nameof(this.Details), new { id });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete()
+        public IActionResult Delete()
         {
             return this.RedirectToAction(nameof(this.All));
         }

@@ -8,13 +8,6 @@
     },
 
     {
-      "username": "Moderator",
-      "email": "Moderator@gmail.com",
-      "password": "Moderator123",
-      "role": "Moderator"
-    },
-
-    {
       "username": "Gamer",
       "email": "Gamer@gmail.com",
       "password": "Gamer123",

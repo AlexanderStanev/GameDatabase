@@ -4,8 +4,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GamesDatabase.Web.Models.InputModels
 {
-    public class GenreInputModel : IMapTo<Genre>
+    public class GenreInputModel : IMapTo<Genre>, IMapFrom<Genre>
     {
+        public int Id { get; set; }
+
         [Required]
         [MinLength(2)]
         [MaxLength(30)]

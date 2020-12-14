@@ -16,7 +16,6 @@ namespace GamesDatabase.Data.Seeding
             var roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
 
             await SeedRoleAsync(roleManager, Common.GlobalConstants.AdministratorRoleName);
-            await SeedRoleAsync(roleManager, Common.GlobalConstants.ModeratorRoleName);
             await SeedRoleAsync(roleManager, Common.GlobalConstants.GamerRoleName);
         }
 

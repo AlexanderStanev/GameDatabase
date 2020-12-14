@@ -666,7 +666,7 @@ namespace GamesDatabase.Data.Migrations
             modelBuilder.Entity("GamesDatabase.Data.Models.GameGenre", b =>
                 {
                     b.HasOne("GamesDatabase.Data.Models.Game", "Game")
-                        .WithMany("GameGenres")
+                        .WithMany("GameGenre")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -795,7 +795,7 @@ namespace GamesDatabase.Data.Migrations
                 {
                     b.Navigation("Developers");
 
-                    b.Navigation("GameGenres");
+                    b.Navigation("GameGenre");
 
                     b.Navigation("Images");
 

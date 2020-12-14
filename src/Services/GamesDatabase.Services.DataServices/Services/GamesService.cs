@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using GameDatabase.Data.Core.Repositories;
-using GamesDatabase.Data.Core;
 using GamesDatabase.Data.Models;
 using GamesDatabase.Services.DataServices.Interfaces;
 using GamesDatabase.Services.Mapping;
 using GamesDatabase.Web.Models.InputModels;
-using GamesDatabase.Web.Models.ViewModels;
-using Microsoft.AspNetCore.Http;
 
 namespace GamesDatabase.Services.DataServices.Services
 {
@@ -20,7 +15,6 @@ namespace GamesDatabase.Services.DataServices.Services
         private readonly IDeletableEntityRepository<Game> gamesRepository;
         private readonly IGenresService genresService;
         private readonly IImageService imageService;
-        //private readonly GamesDatabaseContext
 
         public GamesService(IDeletableEntityRepository<Game> gamesRepository,
             IGenresService genresService,
@@ -75,8 +69,7 @@ namespace GamesDatabase.Services.DataServices.Services
 
         public int GetCount()
         {
-            return gamesRepository.AllAsNoTracking()
-                                  .Count();
+            return gamesRepository.AllAsNoTracking().Count();
         }
 
         public async Task<int> Create(GameInputModel input, string rootPath)
@@ -107,10 +100,11 @@ namespace GamesDatabase.Services.DataServices.Services
             }
 
             game = AutoMapperConfig.MapperInstance.Map<Game>(input);
+            gamesRepository.Update(game);
+            await gamesRepository.SaveChangesAsync();
 
-
-
-            await genresService.RelateGameWithGenres(game.Id, input.GenreIds);
+            // TODO: Fix Update of Genres
+            //await genresService.RelateGameWithGenres(game.Id, input.GenreIds);
             return input.Id;
         }
 
@@ -123,6 +117,7 @@ namespace GamesDatabase.Services.DataServices.Services
             }
 
             gamesRepository.Delete(game);
+            await gamesRepository.SaveChangesAsync();
         }
     }
 }

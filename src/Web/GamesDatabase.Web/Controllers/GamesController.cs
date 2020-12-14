@@ -5,6 +5,7 @@
     using GamesDatabase.Services.DataServices.Interfaces;
     using GamesDatabase.Web.Models.InputModels;
     using GamesDatabase.Web.Models.ViewModels.Games;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
@@ -30,8 +31,16 @@
         [HttpGet("/")]
         public IActionResult Index()
         {
-            var games = gamesService.GetLatestReleasedGames<DetailedGameViewModel>(6);
-            return this.View(games);
+            var latestReleasedGames = gamesService.GetLatestReleasedGames<SimpleGameViewModel>(6);
+            var randomGames = gamesService.GetRandomGames<SimpleGameViewModel>(6);
+
+            var indexViewModel = new IndexGameViewModel()
+            {
+                LatestReleased = latestReleasedGames,
+                Random = randomGames,
+            };
+
+            return this.View(indexViewModel);
         }
 
         public IActionResult All(int page = 1)
@@ -64,31 +73,6 @@
             return this.RedirectToAction(nameof(Details), new { id });
         }
 
-        public IActionResult Edit(int id)
-        {
-            var game = this.gamesService.GetGameById<GameInputModel>(id);
-            return this.View(game);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(GameInputModel input)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(input);
-            }
-
-            var id = await this.gamesService.Update(input);
-            return this.RedirectToAction(nameof(Details), new { id });
-        }
-
-        [HttpPost]
-        public IActionResult Delete(int id)
-        {
-            this.gamesService.Delete(id);
-            return this.RedirectToAction(nameof(All));
-        }
-
         public IActionResult Details(int id)
         {
             var game = this.gamesService.GetGameById<DetailedGameViewModel>(id);
@@ -97,7 +81,7 @@
 
         public IActionResult Search()
         {
-            var games = gamesService.GetLatestReleasedGames<DetailedGameViewModel>(6);
+            var games = gamesService.GetLatestReleasedGames<SimpleGameViewModel>(6);
             return this.View(games);
         }
     }
