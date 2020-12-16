@@ -4,8 +4,9 @@
 {
     <div class="col-md-2">
         @* TODO: Onclick it should redirect to the details page of that game *@
-        <div class="card mb-4 shadow-sm">
-            <img class="card-img card-" src="@game.CoverImage" alt="Cover Image" style="height: 200px; width: 100%; display: block;" asp-action="ByGenreId">
+        <div class="card mb-4 shadow-sm" style="height: 260pt">
+            @* TODO: Resizing here is really bad and should be minimal. Additional validation logic for the cover image should be added *@
+            <img class="card-img bg-dark" src="@game.CoverImage" alt="Cover Image" style="height: 200px;">
             <div class="card-body">
                 <a class="card-link text-dark" asp-area="" asp-controller="Games" asp-action="Details" asp-route-id="@game.Id">@game.Title</a>
                 <div class=" card-text py-1">Genres:</div>

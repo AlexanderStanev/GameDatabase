@@ -1,160 +1,97 @@
 ﻿namespace GamesDatabase.Web.Controllers
 {
+    using GamesDatabase.Data.Models;
+    using GamesDatabase.Services.DataServices.Interfaces;
+    using GamesDatabase.Web.Models.InputModels;
+    using GamesDatabase.Web.Models.ViewModels.Reviews;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using GamesDatabase.Data;
-    using GamesDatabase.Data.Models;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
-    using Microsoft.EntityFrameworkCore;
 
+    [ApiController]
+    [Route("api/[controller]")]
     public class ReviewsController : BaseController
     {
-        private readonly GamesDatabaseContext context;
+        private readonly IReviewsService reviewsService;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public ReviewsController(GamesDatabaseContext context)
+        public ReviewsController(IReviewsService reviewsService,
+            UserManager<ApplicationUser> userManager)
         {
-            this.context = context;
+            this.reviewsService = reviewsService;
+            this.userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            var gamesDatabaseContext = this.context.Reviews.Include(r => r.Author).Include(r => r.Game);
-            return this.View(await gamesDatabaseContext.ToListAsync());
-        }
-
-        public async Task<IActionResult> Details(int id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var review = await context.Reviews
-                .Include(r => r.Author)
-                .Include(r => r.Game)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (review == null)
-            {
-                return NotFound();
-            }
-
-            return View(review);
-        }
-
-        public IActionResult Create()
-        {
-            ViewData["AuthorId"] = new SelectList(context.ApplicationUsers, "Id", "Id");
-            ViewData["GameId"] = new SelectList(context.Games, "Id", "Id");
-            return View();
-        }
-
+        [Authorize]
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GameId,AuthorId,Rating,Title,Content,CreatedOn,EditedOn,Id")] Review review)
+        public async Task<ActionResult> SubmitReview(ReviewInputModel inputModel)
         {
-            if (ModelState.IsValid)
+            var userId = userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId) || userId == Guid.Empty.ToString())
             {
-                context.Add(review);
-                await context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return BadRequest("User could not be found.");
             }
 
-            ViewData["AuthorId"] = new SelectList(context.ApplicationUsers, "Id", "Id", review.AuthorId);
-            ViewData["GameId"] = new SelectList(context.Games, "Id", "Id", review.GameId);
-            return View(review);
+            inputModel.AuthorId = userId;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var reviewId = reviewsService.GetIdByUserAndGame(userId, inputModel.GameId);
+            if (reviewId.HasValue)
+            {
+                inputModel.Id = reviewId.Value;
+                await reviewsService.Update(inputModel);
+            }
+            else
+            {
+                await reviewsService.Create(inputModel);
+            }
+
+            return Ok();
         }
 
-        // GET: Administration/Reviews/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        //[Authorize]
+        //[HttpDelete]
+        //public async Task<ActionResult> RemoveReview()
+        //{
+        //    var userId = userManager.GetUserId(User);
+        //    if (string.IsNullOrEmpty(userId) || userId == Guid.Empty.ToString())
+        //    {
+        //        return BadRequest("User could not be found.");
+        //    }
+        //}
+
+        public ActionResult<IEnumerable<ReviewViewModel>> GetReviews(int page)
         {
-            if (id == null)
+            var userId = userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId) || userId == Guid.Empty.ToString())
             {
-                return NotFound();
+                return BadRequest("User could not be found.");
             }
 
-            var review = await context.Reviews.FindAsync(id);
-            if (review == null)
+            var gameId = 1;
+            var currentUserReview = reviewsService.GetByUserAndGame<ReviewViewModel>(userId, gameId);
+            if (currentUserReview != null)
             {
-                return NotFound();
-            }
-            ViewData["AuthorId"] = new SelectList(context.ApplicationUsers, "Id", "Id", review.AuthorId);
-            ViewData["GameId"] = new SelectList(context.Games, "Id", "Id", review.GameId);
-            return View(review);
-        }
-
-        // POST: Administration/Reviews/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GameId,AuthorId,Rating,Title,Content,CreatedOn,EditedOn,Id")] Review review)
-        {
-            if (id != review.Id)
-            {
-                return NotFound();
+                currentUserReview.IsCurrentUserReview = true;
             }
 
-            if (ModelState.IsValid)
+            var reviews = new List<ReviewViewModel>
             {
-                try
-                {
-                    context.Update(review);
-                    await context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ReviewExists(review.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["AuthorId"] = new SelectList(context.ApplicationUsers, "Id", "Id", review.AuthorId);
-            ViewData["GameId"] = new SelectList(context.Games, "Id", "Id", review.GameId);
-            return View(review);
-        }
+                currentUserReview
+            };
 
-        // GET: Administration/Reviews/Delete/5
-        public async Task<IActionResult> Delete(int id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var otherUsersReviews = reviewsService.GetAllExceptForTheGivenUser<ReviewViewModel>(userId, page, Common.GlobalConstants.DefaultItemsPerPage);
+            reviews.AddRange(otherUsersReviews);
 
-            var review = await context.Reviews
-                .Include(r => r.Author)
-                .Include(r => r.Game)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (review == null)
-            {
-                return NotFound();
-            }
-
-            return View(review);
-        }
-
-        // POST: Administration/Reviews/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            var review = await context.Reviews.FindAsync(id);
-            context.Reviews.Remove(review);
-            await context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ReviewExists(int id)
-        {
-            return context.Reviews.Any(e => e.Id == id);
+            return reviews;
         }
     }
 }

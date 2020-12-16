@@ -8,23 +8,17 @@ namespace GamesDatabase.Data.Models
     public class Review : BaseDeletableModel<int>
     {
         [Required]
-        [MaxLength(36)]
-        public string GameId { get; set; }
+        public int GameId { get; set; }
 
         public virtual Game Game { get; set; }
 
-        //[Required]
-        //[MaxLength(36)]
+        [Required]
         public string AuthorId { get; set; }
 
         public virtual ApplicationUser Author { get; set; }
 
         [Required]
-        public byte Rating { get; set; }
-
-        [Required]
-        [MaxLength(64)]
-        public string Title { get; set; }
+        public int Rating { get; set; }
 
         [Required]
         [MaxLength(4096)]

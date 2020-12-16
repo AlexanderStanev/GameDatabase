@@ -9,20 +9,20 @@ namespace GamesDatabase.Services.DataServices.Interfaces
     {
         TViewModel GetGameById<TViewModel>(int id);
 
-        IEnumerable<TViewModel> GetRandomGames<TViewModel>(int count);
+        IEnumerable<TViewModel> GetRandom<TViewModel>(int count);
 
-        IEnumerable<TViewModel> GetAllGamesByGenreId<TViewModel>(int id);
+        IEnumerable<TViewModel> GetAllByGenreId<TViewModel>(int id);
 
-        IEnumerable<TViewModel> GetLatestReleasedGames<TViewModel>(int count);
+        IEnumerable<TViewModel> GetLatestReleased<TViewModel>(int count);
 
-        IEnumerable<TViewModel> GetAllGames<TViewModel>(int page, int itemsPerPage);
+        IEnumerable<TViewModel> GetAll<TViewModel>(int page, int itemsPerPage);
+
+        int GetCount();
 
         Task<int> Create(GameInputModel input, string rootPath);
 
         Task<int> Update(GameInputModel input);
 
         Task Delete(int id);
-
-        int GetCount();
     }
 }

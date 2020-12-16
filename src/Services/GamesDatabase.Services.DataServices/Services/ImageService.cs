@@ -11,11 +11,6 @@ namespace GamesDatabase.Services.DataServices.Services
 {
     public class ImageService : IImageService
     {
-        public ImageService()
-        {
-
-        }
-
         public async Task<List<Image>> SaveImageFiles(IEnumerable<IFormFile> mediaFiles, int gameId, string rootPath)
         {
             // TODO: Move to Image service
@@ -25,7 +20,7 @@ namespace GamesDatabase.Services.DataServices.Services
             var directoryPath = $"{rootPath}/{commonPath}";
             Directory.CreateDirectory(directoryPath);
 
-            var firstImage = true;
+            var coverImageIsSet = false;
             foreach (var image in mediaFiles)
             {
                 var extension = Path.GetExtension(image.FileName).TrimStart('.');
@@ -35,10 +30,10 @@ namespace GamesDatabase.Services.DataServices.Services
                 };
 
                 // TODO: Implement better image type logic
-                if (firstImage)
+                if (!coverImageIsSet && IsImageIsInPortraitMode(image))
                 {
                     dbImage.ImageType = ImageType.Cover;
-                    firstImage = false;
+                    coverImageIsSet = true;
                 }
                 else
                 {
@@ -54,6 +49,17 @@ namespace GamesDatabase.Services.DataServices.Services
             }
 
             return images;
+        }
+
+        private bool IsImageIsInPortraitMode(IFormFile file)
+        {
+            using var image = SixLabors.ImageSharp.Image.Load(file.OpenReadStream());
+            if (image.Height > image.Width)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

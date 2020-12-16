@@ -2,7 +2,7 @@
 {
     using GamesDatabase.Services.DataServices.Interfaces;
     using GamesDatabase.Web.Models.InputModels;
-    using GamesDatabase.Web.Models.ViewModels;
+    using GamesDatabase.Web.Models.ViewModels.Genres;
     using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
 

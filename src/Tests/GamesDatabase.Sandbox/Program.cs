@@ -17,8 +17,16 @@ namespace GamesDatabase.Sandbox
     {
         public static void Main(string[] args)
         {
+            object currentUserReview = null;
+
+            var reviews = new List<object>
+            {
+                currentUserReview
+            };
+
+
             //    Console.OutputEncoding = Encoding.UTF8;
-            Console.WriteLine($"{typeof(Program).Namespace} ({string.Join(" ", args)}) starts working...");
+            //Console.WriteLine($"{typeof(Program).Namespace} ({string.Join(" ", args)}) starts working...");
             //var serviceCollection = new ServiceCollection();
             //ConfigureServices(serviceCollection);
             //IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider(true);

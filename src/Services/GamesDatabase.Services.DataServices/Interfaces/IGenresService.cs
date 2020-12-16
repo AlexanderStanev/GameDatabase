@@ -12,12 +12,12 @@ namespace GamesDatabase.Services.DataServices.Interfaces
 
         IEnumerable<TViewModel> GetAllGenres<TViewModel>();
 
-        Task<int> Create(GenreInputModel input);
-
-        int GetCount();
-
         IEnumerable<SelectListItem> GetAllGenresAsOptions(int[] selectedIds);
 
         Task RelateGameWithGenres(int id, int[] genreIds);
+
+        int GetCount();
+
+        Task<int> Create(GenreInputModel input);
     }
 }

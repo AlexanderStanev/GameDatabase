@@ -35,7 +35,7 @@ namespace GamesDatabase.Services.DataServices.Services
             return game;
         }
 
-        public IEnumerable<TViewModel> GetRandomGames<TViewModel>(int count)
+        public IEnumerable<TViewModel> GetRandom<TViewModel>(int count)
         {
             var games = gamesRepository.AllAsNoTracking()
                                        .OrderBy(x => Guid.NewGuid())
@@ -45,12 +45,12 @@ namespace GamesDatabase.Services.DataServices.Services
             return games;
         }
 
-        public IEnumerable<TViewModel> GetAllGamesByGenreId<TViewModel>(int id)
+        public IEnumerable<TViewModel> GetAllByGenreId<TViewModel>(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<TViewModel> GetLatestReleasedGames<TViewModel>(int count)
+        public IEnumerable<TViewModel> GetLatestReleased<TViewModel>(int count)
         {
             return gamesRepository.AllAsNoTracking()
                                   //.OrderByDescending(x => x.Releases)
@@ -58,7 +58,7 @@ namespace GamesDatabase.Services.DataServices.Services
                                   .To<TViewModel>();
         }
 
-        public IEnumerable<TViewModel> GetAllGames<TViewModel>(int page, int itemsPerPage = 12)
+        public IEnumerable<TViewModel> GetAll<TViewModel>(int page, int itemsPerPage = 12)
         {
             return gamesRepository.AllAsNoTracking()
                                   .OrderByDescending(x => x.Id)
@@ -100,6 +100,7 @@ namespace GamesDatabase.Services.DataServices.Services
             }
 
             game = AutoMapperConfig.MapperInstance.Map<Game>(input);
+
             gamesRepository.Update(game);
             await gamesRepository.SaveChangesAsync();
 

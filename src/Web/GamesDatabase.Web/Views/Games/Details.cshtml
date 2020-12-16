@@ -1,7 +1,12 @@
-﻿@model GamesDatabase.Web.Models.ViewModels.Games.DetailedGameViewModel
+﻿@using Microsoft.AspNetCore.Antiforgery
+
+@inject IAntiforgery antiforgery
+
+@model GamesDatabase.Web.Models.ViewModels.Games.DetailedGameViewModel
 
 @{
     ViewData["Title"] = @Model.Title;
+    var tokenSet = antiforgery.GetAndStoreTokens(Context);
 }
 
 <div class="container">
@@ -32,51 +37,129 @@
     <div class="row py-4">
 
         <div class="col-md-4 text-center">
-            <img class="" src="@Model.CoverImage" height="500" alt="Cover Image">
+            <img class="img-fluid" src="@Model.CoverImage" alt="Cover Image">
         </div>
 
         <div class="col-md-8">
             <h3 class="my-3">Description</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim.</p>
+            <p>@Model.Description</p>
             <h3 class="my-3">Genres</h3>
             <ul>
-                <li>Lorem Ipsum</li>
-                <li>Dolor Sit Amet</li>
-                <li>Consectetur</li>
-                <li>Adipiscing Elit</li>
+                @foreach (var genre in Model.Genres)
+                {
+                    <li>
+                        <a class="text-dark" asp-area="" asp-controller="Search" asp-action="ByGenreId" asp-route-id="@genre.Id" title="@genre.Description">@genre.Name</a>
+                    </li>
+                }
             </ul>
         </div>
 
     </div>
 
-    <h3 class="my-4">More Pictures and Videos</h3>
+    @if (Model.Images.Length > 0)
+    {
+        <hr>
+        <h3 class="my-3">More Pictures</h3>
+        <partial name="_CarouselPartial.cshtml" model="@Model.Images" />
+    }
 
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    @*<h3 class="my-4">Comments</h3>
+        <div class="container">
+            <div class="row">
 
-        <ol class="carousel-indicators">
-            @for (int i = 0; i < @Model.Images.Length; i++)
-            {
-                <li data-target="#carouselExampleIndicators" data-slide-to="@i" class="@(i == 0 ? "active" : "")"> </li>
-            }
-        </ol>
-
-        <div class="carousel-inner row text-center bg-dark">
-            @for (int i = 0; i < @Model.Images.Length; i++)
-            {
-                <div class="carousel-item @(i == 0 ? "active" : "")">
-                    <img src="@Model.Images[i]" class="" height="600" alt="...">
+                <div class="col-md-4">
+                    UserName
                 </div>
-            }
+
+                <div class="col-md-2">
+                    Rating: 0/10
+                </div>
+            </div>
+
+            <div>
+                Comment: kaoisdjaoisjdoaisjd
+            </div>
+        </div>*@
+
+    <hr>
+
+    <h3 class="my-3">Reviews</h3>
+    <div class="container text-break">
+        <div class="row">
+            <div class="message-wrap">
+
+                <div class="send-wrap">
+                    <span class="star-fill" data-vote="1"><i class="fas fa-star"></i></span>
+                    <span class="star-fill" data-vote="2"><i class="fas fa-star"></i></span>
+                    <span class="star-fill" data-vote="3"><i class="fas fa-star"></i></span>
+                    <span class="star-fill" data-vote="4"><i class="fas fa-star"></i></span>
+                    <span class="star-fill" data-vote="5"><i class="fas fa-star"></i></span>
+                    @*<li><span id="averageVoteValue">0</span><span> / 5</span> </li>*@
+                </div>
+                <div class="send-wrap py-2">
+                    <textarea class="form-control send-message" id="reviewContent" rows="3" placeholder="What do you think about the game?"></textarea>
+                </div>
+                <div class="btn-panel">
+                    <a onclick="submitReview()" class=" btn send-message-btn pull-right" role="button"><i class="fa fa-plus"></i> Submit</a>
+                </div>
+
+                <hr>
+
+                <div class="msg-wrap bg-light py-4">
+
+                    <div class="media msg">
+                        <a class="pull-left" href="#">
+                            <img class="media-object" data-src="holder.js/64x64" alt="64x64" style="width: 32px; height: 32px;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAACqUlEQVR4Xu2Y60tiURTFl48STFJMwkQjUTDtixq+Av93P6iBJFTgg1JL8QWBGT4QfDX7gDIyNE3nEBO6D0Rh9+5z9rprr19dTa/XW2KHl4YFYAfwCHAG7HAGgkOQKcAUYAowBZgCO6wAY5AxyBhkDDIGdxgC/M8QY5AxyBhkDDIGGYM7rIAyBgeDAYrFIkajEYxGIwKBAA4PDzckpd+322243W54PJ5P5f6Omh9tqiTAfD5HNpuFVqvFyckJms0m9vf3EY/H1/u9vb0hn89jsVj8kwDfUfNviisJ8PLygru7O4TDYVgsFtDh9Xo9NBrNes9cLgeTybThgKenJ1SrVXGf1WoVDup2u4jFYhiPx1I1P7XVBxcoCVCr1UBfTqcTrVYLe3t7OD8/x/HxsdiOPqNGo9Eo0un02gHkBhJmuVzC7/fj5uYGXq8XZ2dnop5Mzf8iwMPDAxqNBmw2GxwOBx4fHzGdTpFMJkVzNB7UGAmSSqU2RoDmnETQ6XQiOyKRiHCOSk0ZEZQcUKlU8Pz8LA5vNptRr9eFCJQBFHq//szG5eWlGA1ywOnpqQhBapoWPfl+vw+fzweXyyU+U635VRGUBOh0OigUCggGg8IFK/teXV3h/v4ew+Hwj/OQU4gUq/w4ODgQrkkkEmKEVGp+tXm6XkkAOngmk4HBYBAjQA6gEKRmyOL05GnR99vbW9jtdjEGdP319bUIR8oA+pnG5OLiQoghU5OElFlKAtCGr6+vKJfLmEwm64aosd/XbDbbyIBSqSSeNKU+HXzlnFAohKOjI6maMs0rO0B20590n7IDflIzMmdhAfiNEL8R4jdC/EZIJj235R6mAFOAKcAUYApsS6LL9MEUYAowBZgCTAGZ9NyWe5gCTAGmAFOAKbAtiS7TB1Ng1ynwDkxRe58vH3FfAAAAAElFTkSuQmCC">
+                        </a>
+                        <div class="media-body px-2">
+                            <h5 class="media-heading">Naimish Sakhpara</h5>
+                            <h6 class="pull-right">Rated 0 / 5 at <span class="pull-right time">12:10am</span></h6>
+                            <small class="flex-md-wrap">
+                                DrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansdu
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
-
-        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-
     </div>
+
 </div>
+
+@section Scripts {
+    <script>
+        var rating = 0;
+
+        $("span[data-vote]").each(function (el) {
+            $(this).click(function () {
+                rating = $(this).attr("data-vote");
+                alert("new rating is: " + rating);
+            })
+        })
+
+        function submitReview() {
+            var gameId = @Model.Id;
+            var content = $("#reviewContent").val();
+            var data = { gameId, content, rating };
+                $.ajax({
+                    type: "POST",
+                    url: "/api/Reviews",
+                    data: JSON.stringify(data),
+                    headers: {
+                        '@tokenSet.HeaderName' : '@tokenSet.RequestToken'
+                    },
+                    success: function (data) {
+                        //$('#averageVoteValue').html(data.averageVote.toFixed(1));
+                        alert("YES");
+                    },
+                    error: function (data) {
+                        alert(" NOOOOOOO");
+                    },
+                    contentType: 'application/json',
+                });
+        }
+
+    </script>
+}

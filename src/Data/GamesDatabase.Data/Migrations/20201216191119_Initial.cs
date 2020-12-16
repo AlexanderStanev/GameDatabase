@@ -351,11 +351,10 @@ namespace GamesDatabase.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", maxLength: 36, nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    GameId = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
-                    GameId1 = table.Column<int>(type: "int", nullable: true),
-                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Rating = table.Column<byte>(type: "tinyint", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    GameId = table.Column<int>(type: "int", nullable: false),
+                    AuthorId = table.Column<int>(type: "int", nullable: false),
+                    AuthorId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Rating = table.Column<int>(type: "int", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", maxLength: 4096, nullable: false),
                     EditedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -367,17 +366,17 @@ namespace GamesDatabase.Data.Migrations
                 {
                     table.PrimaryKey("PK_Reviews", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reviews_AspNetUsers_AuthorId",
-                        column: x => x.AuthorId,
+                        name: "FK_Reviews_AspNetUsers_AuthorId1",
+                        column: x => x.AuthorId1,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Reviews_Games_GameId1",
-                        column: x => x.GameId1,
+                        name: "FK_Reviews_Games_GameId",
+                        column: x => x.GameId,
                         principalTable: "Games",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -502,14 +501,14 @@ namespace GamesDatabase.Data.Migrations
                 column: "GameId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_AuthorId",
+                name: "IX_Reviews_AuthorId1",
                 table: "Reviews",
-                column: "AuthorId");
+                column: "AuthorId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_GameId1",
+                name: "IX_Reviews_GameId",
                 table: "Reviews",
-                column: "GameId1");
+                column: "GameId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tags_GameId",

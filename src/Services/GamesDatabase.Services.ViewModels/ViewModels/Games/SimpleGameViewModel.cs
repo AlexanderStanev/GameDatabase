@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using GamesDatabase.Data.Models;
 using GamesDatabase.Services.Mapping;
+using GamesDatabase.Web.Models.ViewModels.Genres;
 using System;
 using System.Collections.Generic;
 using System.Linq;

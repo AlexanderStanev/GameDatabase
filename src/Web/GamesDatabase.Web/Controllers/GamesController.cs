@@ -31,8 +31,8 @@
         [HttpGet("/")]
         public IActionResult Index()
         {
-            var latestReleasedGames = gamesService.GetLatestReleasedGames<SimpleGameViewModel>(6);
-            var randomGames = gamesService.GetRandomGames<SimpleGameViewModel>(6);
+            var latestReleasedGames = gamesService.GetLatestReleased<SimpleGameViewModel>(6);
+            var randomGames = gamesService.GetRandom<SimpleGameViewModel>(6);
 
             var indexViewModel = new IndexGameViewModel()
             {
@@ -51,7 +51,7 @@
             }
 
             const int ItemsPerPage = 12;
-            var games = gamesService.GetAllGames<SimpleGameViewModel>(page, ItemsPerPage);
+            var games = gamesService.GetAll<SimpleGameViewModel>(page, ItemsPerPage);
             return this.View(games);
         }
 
@@ -81,7 +81,7 @@
 
         public IActionResult Search()
         {
-            var games = gamesService.GetLatestReleasedGames<SimpleGameViewModel>(6);
+            var games = gamesService.GetLatestReleased<SimpleGameViewModel>(6);
             return this.View(games);
         }
     }
