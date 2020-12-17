@@ -57,6 +57,8 @@
             return Ok();
         }
 
+        // TODO: Remove Review functionality
+
         //[Authorize]
         //[HttpDelete]
         //public async Task<ActionResult> RemoveReview()
@@ -68,30 +70,31 @@
         //    }
         //}
 
-        public ActionResult<IEnumerable<ReviewViewModel>> GetReviews(int page)
+        public ActionResult<GetReviewsResponseViewModel> GetReviews(int page, int gameId)
         {
+            if (gameId < 1 || page < 1)
+            {
+                return BadRequest("Invalid game or page parameter.");
+            }
+
+            var reviews = reviewsService.GetAll<ReviewViewModel>(page, Common.GlobalConstants.DefaultItemsPerPage);
+            if (!reviews.Any())
+            {
+                return Ok("No reviews found.");
+            }
+
             var userId = userManager.GetUserId(User);
-            if (string.IsNullOrEmpty(userId) || userId == Guid.Empty.ToString())
-            {
-                return BadRequest("User could not be found.");
-            }
-
-            var gameId = 1;
             var currentUserReview = reviewsService.GetByUserAndGame<ReviewViewModel>(userId, gameId);
-            if (currentUserReview != null)
-            {
-                currentUserReview.IsCurrentUserReview = true;
-            }
 
-            var reviews = new List<ReviewViewModel>
+            var averageRating = reviewsService.GetAverageRatingOfGame(gameId);
+            var reponse = new GetReviewsResponseViewModel()
             {
-                currentUserReview
+                Reviews = reviews,
+                AverageRating = averageRating,
+                CurrentUserReview = currentUserReview,
             };
 
-            var otherUsersReviews = reviewsService.GetAllExceptForTheGivenUser<ReviewViewModel>(userId, page, Common.GlobalConstants.DefaultItemsPerPage);
-            reviews.AddRange(otherUsersReviews);
-
-            return reviews;
+            return reponse;
         }
     }
 }

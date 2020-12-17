@@ -22,27 +22,27 @@ namespace GamesDatabase.Services.DataServices.Services
         public TViewModel GetByUserAndGame<TViewModel>(string currentUserId, int gameId)
         {
             return reviewsRepository.AllAsNoTracking()
-                                    .Where(x => x.AuthorId != currentUserId && x.GameId == gameId)
-                                    .To<TViewModel>()
-                                    .FirstOrDefault();
+                .Where(x => x.AuthorId == currentUserId && x.GameId == gameId)
+                .To<TViewModel>()
+                .FirstOrDefault();
         }
 
-        public IEnumerable<TViewModel> GetAllExceptForTheGivenUser<TViewModel>(string currentUserId, int page, int itemsPerPage)
+        public IEnumerable<TViewModel> GetAll<TViewModel>(int page, int itemsPerPage)
         {
             return reviewsRepository.AllAsNoTracking()
-                                    .Where(x => x.AuthorId != currentUserId)
-                                    .OrderByDescending(x => x.Id)
-                                    .Skip((page - 1) * itemsPerPage)
-                                    .Take(itemsPerPage)
-                                    .To<TViewModel>();
+                .OrderByDescending(x => x.Id)
+                .Skip((page - 1) * itemsPerPage)
+                .Take(itemsPerPage)
+                .To<TViewModel>()
+                .ToList();
         }
 
-        public double GetAverageRatingOfGame<TViewModel>(int gameId)
+        public double GetAverageRatingOfGame(int gameId)
         {
             return reviewsRepository.All()
-                                    .Where(x => x.GameId == gameId)
-                                    .Select(x => x.Rating)
-                                    .Average();
+                .Where(x => x.GameId == gameId)
+                .Select(x => x.Rating)
+                .Average();
         }
 
         public int? GetIdByUserAndGame(string userId, int gameId)
@@ -78,7 +78,6 @@ namespace GamesDatabase.Services.DataServices.Services
             }
 
             review = AutoMapperConfig.MapperInstance.Map<Review>(input);
-            review.EditedOn = DateTime.UtcNow;
 
             reviewsRepository.Update(review);
             await reviewsRepository.SaveChangesAsync();

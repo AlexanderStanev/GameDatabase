@@ -36,14 +36,15 @@
 
     <div class="row py-4">
 
-        <div class="col-md-4 text-center">
+        <div class="col-md-6 text-center">
             <img class="img-fluid" src="@Model.CoverImage" alt="Cover Image">
         </div>
 
-        <div class="col-md-8">
-            <h3 class="my-3">Description</h3>
+        <div class="col-md-6">
+            <h5 class="my-2">Rating: <span id="averageRating">0</span> / 5</h5>
+            <h5 class="my-3">Description</h5>
             <p>@Model.Description</p>
-            <h3 class="my-3">Genres</h3>
+            <h5 class="my-3">Genres</h5>
             <ul>
                 @foreach (var genre in Model.Genres)
                 {
@@ -63,29 +64,11 @@
         <partial name="_CarouselPartial.cshtml" model="@Model.Images" />
     }
 
-    @*<h3 class="my-4">Comments</h3>
-        <div class="container">
-            <div class="row">
-
-                <div class="col-md-4">
-                    UserName
-                </div>
-
-                <div class="col-md-2">
-                    Rating: 0/10
-                </div>
-            </div>
-
-            <div>
-                Comment: kaoisdjaoisjdoaisjd
-            </div>
-        </div>*@
-
     <hr>
 
     <h3 class="my-3">Reviews</h3>
     <div class="container text-break">
-        <div class="row">
+        <div class="">
             <div class="message-wrap">
 
                 <div class="send-wrap">
@@ -94,31 +77,20 @@
                     <span class="star-fill" data-vote="3"><i class="fas fa-star"></i></span>
                     <span class="star-fill" data-vote="4"><i class="fas fa-star"></i></span>
                     <span class="star-fill" data-vote="5"><i class="fas fa-star"></i></span>
-                    @*<li><span id="averageVoteValue">0</span><span> / 5</span> </li>*@
                 </div>
+
                 <div class="send-wrap py-2">
                     <textarea class="form-control send-message" id="reviewContent" rows="3" placeholder="What do you think about the game?"></textarea>
                 </div>
+
                 <div class="btn-panel">
-                    <a onclick="submitReview()" class=" btn send-message-btn pull-right" role="button"><i class="fa fa-plus"></i> Submit</a>
+                    <a onclick="submitReview()" id="submitButton" class=" btn send-message-btn pull-right" role="button">Submit</a>
                 </div>
 
                 <hr>
 
-                <div class="msg-wrap bg-light py-4">
+                <div class="msg-wrap py-2" id="displayReviews">
 
-                    <div class="media msg">
-                        <a class="pull-left" href="#">
-                            <img class="media-object" data-src="holder.js/64x64" alt="64x64" style="width: 32px; height: 32px;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAACqUlEQVR4Xu2Y60tiURTFl48STFJMwkQjUTDtixq+Av93P6iBJFTgg1JL8QWBGT4QfDX7gDIyNE3nEBO6D0Rh9+5z9rprr19dTa/XW2KHl4YFYAfwCHAG7HAGgkOQKcAUYAowBZgCO6wAY5AxyBhkDDIGdxgC/M8QY5AxyBhkDDIGGYM7rIAyBgeDAYrFIkajEYxGIwKBAA4PDzckpd+322243W54PJ5P5f6Omh9tqiTAfD5HNpuFVqvFyckJms0m9vf3EY/H1/u9vb0hn89jsVj8kwDfUfNviisJ8PLygru7O4TDYVgsFtDh9Xo9NBrNes9cLgeTybThgKenJ1SrVXGf1WoVDup2u4jFYhiPx1I1P7XVBxcoCVCr1UBfTqcTrVYLe3t7OD8/x/HxsdiOPqNGo9Eo0un02gHkBhJmuVzC7/fj5uYGXq8XZ2dnop5Mzf8iwMPDAxqNBmw2GxwOBx4fHzGdTpFMJkVzNB7UGAmSSqU2RoDmnETQ6XQiOyKRiHCOSk0ZEZQcUKlU8Pz8LA5vNptRr9eFCJQBFHq//szG5eWlGA1ywOnpqQhBapoWPfl+vw+fzweXyyU+U635VRGUBOh0OigUCggGg8IFK/teXV3h/v4ew+Hwj/OQU4gUq/w4ODgQrkkkEmKEVGp+tXm6XkkAOngmk4HBYBAjQA6gEKRmyOL05GnR99vbW9jtdjEGdP319bUIR8oA+pnG5OLiQoghU5OElFlKAtCGr6+vKJfLmEwm64aosd/XbDbbyIBSqSSeNKU+HXzlnFAohKOjI6maMs0rO0B20590n7IDflIzMmdhAfiNEL8R4jdC/EZIJj235R6mAFOAKcAUYApsS6LL9MEUYAowBZgCTAGZ9NyWe5gCTAGmAFOAKbAtiS7TB1Ng1ynwDkxRe58vH3FfAAAAAElFTkSuQmCC">
-                        </a>
-                        <div class="media-body px-2">
-                            <h5 class="media-heading">Naimish Sakhpara</h5>
-                            <h6 class="pull-right">Rated 0 / 5 at <span class="pull-right time">12:10am</span></h6>
-                            <small class="flex-md-wrap">
-                                DrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansduDrundrunduasnduansdu
-                            </small>
-                        </div>
-                    </div>
                 </div>
 
             </div>
@@ -130,17 +102,31 @@
 
 @section Scripts {
     <script>
+        var gameId = @Model.Id;
         var rating = 0;
+        var page = 1;
+        var averageRating = 0;
 
-        $("span[data-vote]").each(function (el) {
+        retrieveReviews();
+
+        $("span[data-vote]").each(function () {
             $(this).click(function () {
                 rating = $(this).attr("data-vote");
-                alert("new rating is: " + rating);
-            })
+                setRating(rating);
+            });
         })
 
+        function setRating(rating) {
+            $("span[data-vote]").each(function () {
+                if ($(this).attr("data-vote") <= rating) {
+                    this.style.color = "orange";
+                } else {
+                    this.style.removeProperty("color");
+                }
+            });
+        }
+
         function submitReview() {
-            var gameId = @Model.Id;
             var content = $("#reviewContent").val();
             var data = { gameId, content, rating };
                 $.ajax({
@@ -151,14 +137,60 @@
                         '@tokenSet.HeaderName' : '@tokenSet.RequestToken'
                     },
                     success: function (data) {
-                        //$('#averageVoteValue').html(data.averageVote.toFixed(1));
-                        alert("YES");
+                        retrieveReviews();
+
                     },
                     error: function (data) {
-                        alert(" NOOOOOOO");
+                        alert("Post submitReview failed");
                     },
                     contentType: 'application/json',
                 });
+        }
+
+        function retrieveReviews() {
+            $.ajax({
+                type: "GET",
+                url: "/api/Reviews",
+                data: {
+                    page, gameId
+                },
+                success: function (data) {
+                    reviews = data.reviews;
+                    averageRating = data.averageRating;
+                    currentUserReview = data.currentUserReview;
+
+                    displayReviews(reviews);
+                    updateCurrentData(averageRating, currentUserReview);
+                },
+                error: function (data) {
+                    alert("Get retrieveReviews failed");
+                },
+            });
+        }
+
+        function displayReviews(reviews) {
+            $("#displayReviews").empty();
+            reviews.forEach(review =>
+                $("#displayReviews").append(`
+                    <div class="media msg send-message py-2 border bg-light">
+                        <div class="media-body px-4">
+                            <h5 class="media-heading">${review.authorUserName}</h5>
+                            <div class="pull-right">Rated ${review.rating} / 5 at <span class="pull-right time">${review.createdOn}</span></div>
+                            <small class="flex-md-wrap">${review.content}</small>
+                        </div>
+                    </div>
+                `)
+            );
+        }
+
+        function updateCurrentData(averageRating, currentUserReview) {
+            if (currentUserReview != null) {
+                $("#reviewContent").text(currentUserReview.content);
+                $("#submitButton").text("Update");
+                setRating(currentUserReview.rating);
+            }
+
+            $("#averageRating").text(averageRating.toFixed(1));
         }
 
     </script>

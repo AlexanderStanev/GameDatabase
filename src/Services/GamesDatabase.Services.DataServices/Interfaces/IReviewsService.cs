@@ -8,9 +8,9 @@ namespace GamesDatabase.Services.DataServices.Interfaces
     {
         TViewModel GetByUserAndGame<TViewModel>(string userId, int gameId);
 
-        IEnumerable<TViewModel> GetAllExceptForTheGivenUser<TViewModel>(string userId, int page, int itemsPerPage);
+        IEnumerable<TViewModel> GetAll<TViewModel>(int page, int itemsPerPage);
 
-        double GetAverageRatingOfGame<TViewModel>(int gameId);
+        double GetAverageRatingOfGame(int gameId);
 
         int? GetIdByUserAndGame(string userId, int gameId);
 

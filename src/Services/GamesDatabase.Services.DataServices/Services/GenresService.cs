@@ -22,9 +22,9 @@ namespace GamesDatabase.Services.DataServices.Services
         public TViewModel GetGenreById<TViewModel>(int id)
         {
             return genresRepository.All()
-                                   .Where(x => x.Id == id)
-                                   .To<TViewModel>()
-                                   .SingleOrDefault();
+                .Where(x => x.Id == id)
+                .To<TViewModel>()
+                .SingleOrDefault();
         }
 
         public IEnumerable<TViewModel> GetAllGenres<TViewModel>()
@@ -53,12 +53,17 @@ namespace GamesDatabase.Services.DataServices.Services
 
         public IEnumerable<SelectListItem> GetAllGenresAsOptions(int[] selectedIds)
         {
-            return genresRepository.All().Select(x => new SelectListItem(x.Name, x.Id.ToString(), selectedIds != null && selectedIds.Contains(x.Id))).ToList();
+            return genresRepository.All()
+                .Select(x => new SelectListItem(x.Name, x.Id.ToString(), selectedIds != null && selectedIds.Contains(x.Id)))
+                .ToList();
         }
 
         public async Task RelateGameWithGenres(int gameId, int[] genreIds)
         {
-            var genres = genresRepository.All().Where(x => genreIds.Contains(x.Id)).ToList();
+            var genres = genresRepository.All()
+                .Where(x => genreIds.Contains(x.Id))
+                .ToList();
+
             foreach (var genre in genres)
             {
                 var gameGenre = new GameGenre()

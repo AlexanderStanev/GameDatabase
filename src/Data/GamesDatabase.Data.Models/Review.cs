@@ -23,7 +23,5 @@ namespace GamesDatabase.Data.Models
         [Required]
         [MaxLength(4096)]
         public string Content { get; set; }
-
-        public DateTime? EditedOn { get; set; }
     }
 }

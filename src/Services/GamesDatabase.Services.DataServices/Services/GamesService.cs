@@ -38,10 +38,11 @@ namespace GamesDatabase.Services.DataServices.Services
         public IEnumerable<TViewModel> GetRandom<TViewModel>(int count)
         {
             var games = gamesRepository.AllAsNoTracking()
-                                       .OrderBy(x => Guid.NewGuid())
-                                       .To<TViewModel>()
-                                       .Take(count)
-                                       .ToList();
+                .OrderBy(x => Guid.NewGuid())
+                .To<TViewModel>()
+                .Take(count)
+                .ToList();
+
             return games;
         }
 
@@ -53,18 +54,20 @@ namespace GamesDatabase.Services.DataServices.Services
         public IEnumerable<TViewModel> GetLatestReleased<TViewModel>(int count)
         {
             return gamesRepository.AllAsNoTracking()
-                                  //.OrderByDescending(x => x.Releases)
-                                  .Take(count)
-                                  .To<TViewModel>();
+                //.OrderByDescending(x => x.Releases)
+                .Take(count)
+                .To<TViewModel>()
+                .ToList();
         }
 
         public IEnumerable<TViewModel> GetAll<TViewModel>(int page, int itemsPerPage = 12)
         {
             return gamesRepository.AllAsNoTracking()
-                                  .OrderByDescending(x => x.Id)
-                                  .Skip((page - 1) * itemsPerPage)
-                                  .Take(itemsPerPage)
-                                  .To<TViewModel>();
+                .OrderByDescending(x => x.Id)
+                .Skip((page - 1) * itemsPerPage)
+                .Take(itemsPerPage)
+                .To<TViewModel>()
+                .ToList();
         }
 
         public int GetCount()
