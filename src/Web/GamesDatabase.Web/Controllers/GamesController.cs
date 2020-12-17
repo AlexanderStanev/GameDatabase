@@ -8,6 +8,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public class GamesController : BaseController
@@ -43,15 +44,14 @@
             return this.View(indexViewModel);
         }
 
-        public IActionResult All(int page = 1)
+        public IActionResult Browse(string title, int[] genreIds, int page = 1)
         {
             if (page <= 0)
             {
                 return this.NotFound();
             }
 
-            const int ItemsPerPage = 12;
-            var games = gamesService.GetAll<SimpleGameViewModel>(page, ItemsPerPage);
+            var games = gamesService.GetAll<SimpleGameViewModel>(title, genreIds, page, Common.GlobalConstants.DefaultItemsPerPage);
             return this.View(games);
         }
 

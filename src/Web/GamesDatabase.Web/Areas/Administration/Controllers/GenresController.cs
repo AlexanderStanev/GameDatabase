@@ -17,16 +17,11 @@
             this.genresService = genresService;
         }
 
-        public IActionResult All()
+        public IActionResult All()                                                 
         {
-            var genres = genresService.GetAllGenres<GenreViewModel>();
-            return this.View(genres);
-        }
-
-        public IActionResult Details(string id)
-        {
-            return this.View(id);
-        }
+             var genres = genresService.GetAllGenres<GenreViewModel>();
+             return this.View(genres);
+        }     
 
         public IActionResult Create()
         {
@@ -52,11 +47,15 @@
         }
 
         [HttpPost]
-        public IActionResult Edit()
+        public async Task<IActionResult> Edit(GenreInputModel input)
         {
-            var id = "";
-            // TODO: Genre view model needed
-            return this.RedirectToAction(nameof(this.Details), new { id });
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+
+            var id = await this.genresService.Update(input);
+            return this.RedirectToAction(nameof(this.All));
         }
 
         [HttpPost]

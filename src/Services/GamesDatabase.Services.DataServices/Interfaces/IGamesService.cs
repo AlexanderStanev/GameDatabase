@@ -11,11 +11,9 @@ namespace GamesDatabase.Services.DataServices.Interfaces
 
         IEnumerable<TViewModel> GetRandom<TViewModel>(int count);
 
-        IEnumerable<TViewModel> GetAllByGenreId<TViewModel>(int id);
-
         IEnumerable<TViewModel> GetLatestReleased<TViewModel>(int count);
 
-        IEnumerable<TViewModel> GetAll<TViewModel>(int page, int itemsPerPage);
+        IEnumerable<TViewModel> GetAll<TViewModel>(string title, int[] genreIds, int page, int itemsPerPage);
 
         int GetCount();
 

@@ -19,5 +19,9 @@ namespace GamesDatabase.Services.DataServices.Interfaces
         int GetCount();
 
         Task<int> Create(GenreInputModel input);
+
+        Task<int> Update(GenreInputModel input);
+
+        Task Delete(int id);
     }
 }

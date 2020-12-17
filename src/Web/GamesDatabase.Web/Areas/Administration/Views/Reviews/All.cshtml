@@ -1,0 +1,27 @@
+﻿@model IEnumerable<GamesDatabase.Web.Models.ViewModels.Reviews.ReviewViewModel>
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Game</th>
+                <th scope="col">Content</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Author</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var review in Model)
+                {
+                        <tr>
+                            <td>@review.GameTitle</td>
+                            <td>@review.Content</td>
+                            <td>@review.Rating</td>
+                            <td>@review.AuthorUserName</td>
+                        </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

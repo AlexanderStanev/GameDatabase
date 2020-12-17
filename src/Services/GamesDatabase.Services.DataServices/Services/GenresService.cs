@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameDatabase.Data.Core.Repositories;
@@ -44,6 +45,34 @@ namespace GamesDatabase.Services.DataServices.Services
             await genresRepository.SaveChangesAsync();
 
             return genre.Id;
+        }
+
+        public async Task<int> Update(GenreInputModel input)
+        {
+            var genre = genresRepository.AllAsNoTrackingWithDeleted().FirstOrDefault(x => x.Id == input.Id);
+            if (genre == null)
+            {
+                throw new InvalidOperationException("The genre could not be found");
+            }
+
+            genre = AutoMapperConfig.MapperInstance.Map<Genre>(input);
+
+            genresRepository.Update(genre);
+            await genresRepository.SaveChangesAsync();
+
+            return input.Id;
+        }
+
+        public async Task Delete(int id)
+        {
+            var genre = await genresRepository.GetByIdWithDeletedAsync(id);
+            if (genre == null)
+            {
+                throw new InvalidOperationException("The genre could not be found");
+            }
+
+            genresRepository.Delete(genre);
+            await genresRepository.SaveChangesAsync();
         }
 
         public int GetCount()

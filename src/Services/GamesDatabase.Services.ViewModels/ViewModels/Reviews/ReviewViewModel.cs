@@ -9,6 +9,8 @@ namespace GamesDatabase.Web.Models.ViewModels.Reviews
 {
     public class ReviewViewModel : IMapFrom<Review>
     {
+        public string GameTitle { get; set; }
+
         public string AuthorUserName { get; set; }
 
         public int Rating { get; set; }

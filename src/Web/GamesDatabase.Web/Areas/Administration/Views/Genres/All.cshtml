@@ -10,13 +10,14 @@
         </thead>
         <tbody>
             @{
-
                 foreach (var genre in Model)
                 {
-                    <tr>
-                        <td>@genre.Name</td>
-                        <td>@genre.Description</td>
-                    </tr>
+                        <tr>
+                            <td>@genre.Name</td>
+                            <td>@genre.Description</td>
+                            <td><a class="text-dark" asp-area="Administration" asp-controller="Genres" asp-action="Edit" title="Edit Genre">Edit</a></td>
+                            <td><a class="text-dark" asp-area="Administration" asp-controller="Genres" asp-action="Delete" title="Delete Genre">Delete</a></td>
+                        </tr>
                 }
             }
         </tbody>

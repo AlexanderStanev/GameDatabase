@@ -37,33 +37,36 @@ namespace GamesDatabase.Services.DataServices.Services
 
         public IEnumerable<TViewModel> GetRandom<TViewModel>(int count)
         {
-            var games = gamesRepository.AllAsNoTracking()
+            return gamesRepository.AllAsNoTracking()
                 .OrderBy(x => Guid.NewGuid())
                 .To<TViewModel>()
                 .Take(count)
                 .ToList();
-
-            return games;
-        }
-
-        public IEnumerable<TViewModel> GetAllByGenreId<TViewModel>(int id)
-        {
-            throw new NotImplementedException();
         }
 
         public IEnumerable<TViewModel> GetLatestReleased<TViewModel>(int count)
         {
             return gamesRepository.AllAsNoTracking()
-                //.OrderByDescending(x => x.Releases)
+                //.OrderByDescending(x => x.Released)
                 .Take(count)
                 .To<TViewModel>()
                 .ToList();
         }
 
-        public IEnumerable<TViewModel> GetAll<TViewModel>(int page, int itemsPerPage = 12)
+        public IEnumerable<TViewModel> GetAll<TViewModel>(string title, int[] genreIds, int page, int itemsPerPage)
         {
-            return gamesRepository.AllAsNoTracking()
-                .OrderByDescending(x => x.Id)
+            var games = gamesRepository.AllAsNoTracking();
+            foreach (var genreId in genreIds)
+            {
+                games = games.Where(x => x.GameGenre.Select(x => x.GenreId).Contains(genreId));
+            }
+
+            if (title != null)
+            {
+                games = games.Where(x => x.Title.Contains(title));
+            }
+
+            return games.OrderByDescending(x => x.Id)
                 .Skip((page - 1) * itemsPerPage)
                 .Take(itemsPerPage)
                 .To<TViewModel>()
