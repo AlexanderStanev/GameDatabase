@@ -34,10 +34,10 @@ namespace GamesDatabase.Web.Models.InputModels
 
         [Required]
         [MaxLength(2048)]
-        [Display(Description = "Official Website")]
+        [Display(Name = "Official Website")]
         public string OfficialWebsite { get; set; }
 
-        [Display(Description = "Upload Media Files")]
+        [Display(Name = "Upload Media Files")]
         [Required(ErrorMessage = "Please select a file.")]
         [DataType(DataType.Upload)]
         [MaxFileSize(5 * 1024 * 1024)]

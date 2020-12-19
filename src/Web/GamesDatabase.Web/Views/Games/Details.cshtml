@@ -7,6 +7,7 @@
 @{
     ViewData["Title"] = @Model.Title;
     var tokenSet = antiforgery.GetAndStoreTokens(Context);
+    var releasedOn = Model.Released.HasValue ? Model.Released.Value.ToShortDateString() : "Unknown";
 }
 
 <div class="container">
@@ -36,14 +37,13 @@
 
     <div class="row py-4">
 
-        <div class="col-md-6 text-center">
+        <div class="col-md-3 text-center">
             <img class="img-fluid" src="@Model.CoverImage" alt="Cover Image">
         </div>
 
-        <div class="col-md-6">
-            <h5 class="my-2">Rating: <span id="averageRating">0</span> / 5</h5>
-            <h5 class="my-3">Description</h5>
-            <p>@Model.Description</p>
+        <div class="col-md-9">
+            <h5 class="my-3">Rating: <span id="averageRating">0</span> / 5</h5>
+            <h5 class="my-3">Released:  @releasedOn  </h5>
             <h5 class="my-3">Genres</h5>
             <ul>
                 @foreach (var genre in Model.Genres)
@@ -53,6 +53,9 @@
                     </li>
                 }
             </ul>
+            <h5 class="my-3">Description</h5>
+            <p>@Model.Description</p>
+
         </div>
 
     </div>
@@ -71,27 +74,27 @@
         <div class="">
             <div class="message-wrap">
 
-                <div class="send-wrap">
-                    <span class="star-fill" data-vote="1"><i class="fas fa-star"></i></span>
-                    <span class="star-fill" data-vote="2"><i class="fas fa-star"></i></span>
-                    <span class="star-fill" data-vote="3"><i class="fas fa-star"></i></span>
-                    <span class="star-fill" data-vote="4"><i class="fas fa-star"></i></span>
-                    <span class="star-fill" data-vote="5"><i class="fas fa-star"></i></span>
+                <div class="@(User.Identity.IsAuthenticated ? "visible" : "invisible")">
+                    <div class="send-wrap">
+                        <span class="star-fill" data-vote="1"><i class="fas fa-star"></i></span>
+                        <span class="star-fill" data-vote="2"><i class="fas fa-star"></i></span>
+                        <span class="star-fill" data-vote="3"><i class="fas fa-star"></i></span>
+                        <span class="star-fill" data-vote="4"><i class="fas fa-star"></i></span>
+                        <span class="star-fill" data-vote="5"><i class="fas fa-star"></i></span>
+                    </div>
+
+                    <div class="send-wrap py-2">
+                        <textarea class="form-control send-message" id="reviewContent" rows="3" placeholder="What do you think about the game?"></textarea>
+                    </div>
+
+                    <div class="btn-panel">
+                        <a onclick="submitReview()" id="submitButton" class=" btn send-message-btn pull-right" role="button">Submit</a>
+                    </div>
+
+                    <hr>
                 </div>
 
-                <div class="send-wrap py-2">
-                    <textarea class="form-control send-message" id="reviewContent" rows="3" placeholder="What do you think about the game?"></textarea>
-                </div>
-
-                <div class="btn-panel">
-                    <a onclick="submitReview()" id="submitButton" class=" btn send-message-btn pull-right" role="button">Submit</a>
-                </div>
-
-                <hr>
-
-                <div class="msg-wrap py-2" id="displayReviews">
-
-                </div>
+                <div class="msg-wrap py-2" id="displayReviews"></div>
 
             </div>
 

@@ -4,6 +4,7 @@ using GamesDatabase.Services.Mapping;
 using GamesDatabase.Web.Models.ViewModels.Genres;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace GamesDatabase.Web.Models.ViewModels.Games
@@ -18,15 +19,14 @@ namespace GamesDatabase.Web.Models.ViewModels.Games
 
         public IEnumerable<GenreViewModel> Genres { get; set; }
 
-        public DateTime? Announced { get; set; }
+        public DateTime? Released { get; set; }
 
         public string CoverImage { get; set; }
 
         public string[] Images { get; set; }
 
+        [Display(Name = "Official Website")]
         public string OfficialWebsite { get; set; }
-
-        //public IEnumerable<GenreViewModel> Genres { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)
         {
