@@ -15,8 +15,23 @@
                         <tr>
                             <td>@genre.Name</td>
                             <td>@genre.Description</td>
-                            <td><a class="text-dark" asp-area="Administration" asp-controller="Genres" asp-action="Edit" title="Edit Genre">Edit</a></td>
-                            <td><a class="text-dark" asp-area="Administration" asp-controller="Genres" asp-action="Delete" title="Delete Genre">Delete</a></td>
+                            <td><a class="text-dark" asp-area="Administration" asp-controller="Genres" asp-action="Edit" asp-route-id="@genre.Id" title="Edit Genre">Edit</a></td>
+                            <td>
+                                <a href="#" class="text-dark" data-toggle="modal" data-target="#deleteModal">Delete</a>
+                                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header"><h5 class="modal-title">Delete</h5></div>
+                                            <div class="modal-body">Are you sure you want to delete the genre <strong>@genre.Name</strong>?</div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <form method="post" asp-area="Administration" asp-controller="Genres" asp-action="Delete" asp-route-id="@genre.Id" class="btn btn-danger" onclick="submit()">Delete</form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
                         </tr>
                 }
             }

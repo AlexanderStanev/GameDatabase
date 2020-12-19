@@ -35,6 +35,8 @@ namespace GamesDatabase.Data
 
         public DbSet<Tag> Tags { get; set; }
 
+        public DbSet<ContactForm> ContactForms { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

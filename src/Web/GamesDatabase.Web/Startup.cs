@@ -63,7 +63,9 @@
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<Game>), typeof(EfDeletableEntityRepository<Game>));
             services.AddScoped(typeof(IDeletableEntityRepository<Genre>), typeof(EfDeletableEntityRepository<Genre>));
+            services.AddScoped(typeof(IDeletableEntityRepository<GameGenre>), typeof(EfDeletableEntityRepository<GameGenre>));
             services.AddScoped(typeof(IDeletableEntityRepository<Review>), typeof(EfDeletableEntityRepository<Review>));
+            services.AddScoped(typeof(IDeletableEntityRepository<ContactForm>), typeof(EfDeletableEntityRepository<ContactForm>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
@@ -71,6 +73,7 @@
             services.AddTransient<IGenresService, GenresService>();
             services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IReviewsService, ReviewsService>();
+            services.AddTransient<IContactFormService, ContactFormService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

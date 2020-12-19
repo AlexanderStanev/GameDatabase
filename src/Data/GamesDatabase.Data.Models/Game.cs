@@ -18,7 +18,7 @@ namespace GamesDatabase.Data.Models
         }
 
         [Required]
-        [MaxLength(32)]
+        [MaxLength(64)]
         public string Title { get; set; }
 
         [Required]
@@ -33,7 +33,7 @@ namespace GamesDatabase.Data.Models
 
         public virtual ICollection<Tag> Tags { get; set; }
 
-        public DateTime? Announced { get; set; }
+        public DateTime? Released { get; set; }
 
         [Required]
         [MaxLength(2048)]

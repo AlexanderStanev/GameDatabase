@@ -59,8 +59,9 @@
         }
 
         [HttpPost]
-        public IActionResult Delete()
+        public async Task<IActionResult> Delete(int id)
         {
+            await this.genresService.Delete(id);
             return this.RedirectToAction(nameof(this.All));
         }
     }
