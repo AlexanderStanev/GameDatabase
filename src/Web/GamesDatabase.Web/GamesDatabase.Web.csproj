@@ -39,6 +39,7 @@
     <ProjectReference Include="..\..\Data\GamesDatabase.Data\GamesDatabase.Data.csproj" />
     <ProjectReference Include="..\..\Services\GamesDatabase.Services.DataServices\GamesDatabase.Services.DataServices.csproj" />
     <ProjectReference Include="..\..\Services\GamesDatabase.Services.Mapping\GamesDatabase.Services.Mapping.csproj" />
+    <ProjectReference Include="..\..\Services\GamesDatabase.Services.Messaging\GamesDatabase.Services.Messaging.csproj" />
     <ProjectReference Include="..\..\Services\GamesDatabase.Services.ViewModels\GamesDatabase.Web.Models.csproj" />
   </ItemGroup>
 

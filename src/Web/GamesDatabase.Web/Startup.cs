@@ -14,6 +14,7 @@
     using GamesDatabase.Services.DataServices.Interfaces;
     using GamesDatabase.Services.DataServices.Services;
     using GamesDatabase.Services.Mapping;
+    using GamesDatabase.Services.Messaging;
     using GamesDatabase.Web.Models.ViewModels;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -74,6 +75,7 @@
             services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IReviewsService, ReviewsService>();
             services.AddTransient<IContactFormService, ContactFormService>();
+            services.AddTransient<IEmailSender>(x => new SendGridEmailSender(this.configuration["SendGrid:ApiKey"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

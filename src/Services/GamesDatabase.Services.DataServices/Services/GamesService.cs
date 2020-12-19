@@ -47,7 +47,7 @@ namespace GamesDatabase.Services.DataServices.Services
         public IEnumerable<TViewModel> GetLatestReleased<TViewModel>(int count)
         {
             return gamesRepository.AllAsNoTracking()
-                //.OrderByDescending(x => x.Released)
+                .OrderByDescending(x => x.Released)
                 .Take(count)
                 .To<TViewModel>()
                 .ToList();

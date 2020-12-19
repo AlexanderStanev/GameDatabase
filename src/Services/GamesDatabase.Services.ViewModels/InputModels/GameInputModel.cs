@@ -30,7 +30,7 @@ namespace GamesDatabase.Web.Models.InputModels
         public int[] GenreIds { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime? Announced { get; set; }
+        public DateTime? Released { get; set; }
 
         [Required]
         [MaxLength(2048)]

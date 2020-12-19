@@ -1,19 +1,24 @@
 ﻿namespace GamesDatabase.Web.Controllers
 {
     using System.Diagnostics;
+    using System.Text;
     using System.Threading.Tasks;
     using GamesDatabase.Services.DataServices.Interfaces;
+    using GamesDatabase.Services.Messaging;
     using GamesDatabase.Web.Models.InputModels;
     using GamesDatabase.Web.Models.ViewModels;
     using Microsoft.AspNetCore.Mvc;
 
     public class HomeController : BaseController
     {
-        private IContactFormService homeService;
+        private readonly IContactFormService homeService;
+        private readonly IEmailSender emailSender;
 
-        public HomeController(IContactFormService homeService)
+        public HomeController(IContactFormService homeService,
+            IEmailSender emailSender)
         {
             this.homeService = homeService;
+            this.emailSender = emailSender;
         }
 
         public IActionResult Index()
@@ -35,6 +40,12 @@
             }
 
             var id = await this.homeService.Create(input);
+
+            var html = new StringBuilder();
+            var name = string.IsNullOrEmpty(input.Name) ? "Anonymous" : input.Name;
+            html.AppendLine($"<p>{input.Description}</p>");
+            await this.emailSender.SendEmailAsync(input.Email, name, "xelaxStanev@gmail.com", input.Title, html.ToString());
+
             return this.RedirectToAction(nameof(Index));
         }
 
