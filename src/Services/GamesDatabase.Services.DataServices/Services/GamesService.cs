@@ -56,9 +56,12 @@ namespace GamesDatabase.Services.DataServices.Services
         public IEnumerable<TViewModel> GetAll<TViewModel>(string title, int[] genreIds, int page, int itemsPerPage)
         {
             var games = gamesRepository.AllAsNoTracking();
-            foreach (var genreId in genreIds)
+            if (genreIds != null)
             {
-                games = games.Where(x => x.GameGenre.Select(x => x.GenreId).Contains(genreId));
+                foreach (var genreId in genreIds)
+                {
+                    games = games.Where(x => x.GameGenre.Select(x => x.GenreId).Contains(genreId));
+                }
             }
 
             if (title != null)

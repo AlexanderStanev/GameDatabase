@@ -37,12 +37,25 @@ namespace GamesDatabase.Services.DataServices.Services
                 .ToList();
         }
 
+        public IEnumerable<TViewModel> GetAllByGameId<TViewModel>(int gameId, int page, int itemsPerPage)
+        {
+            return reviewsRepository.AllAsNoTracking()
+                .Where(x => x.GameId == gameId)
+                .OrderByDescending(x => x.Id)
+                .Skip((page - 1) * itemsPerPage)
+                .Take(itemsPerPage)
+                .To<TViewModel>()
+                .ToList();
+        }
+
         public double GetAverageRatingOfGame(int gameId)
         {
-            return reviewsRepository.All()
+            var games = reviewsRepository.All()
                 .Where(x => x.GameId == gameId)
                 .Select(x => x.Rating)
-                .Average();
+                .ToList();
+
+            return games.Count > 0 ? games.Average() : 0;
         }
 
         public int? GetIdByUserAndGame(string userId, int gameId)

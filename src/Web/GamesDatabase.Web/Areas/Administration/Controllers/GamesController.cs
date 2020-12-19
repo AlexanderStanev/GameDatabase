@@ -36,7 +36,7 @@ namespace GamesDatabase.Web.Areas.Administration.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await this.gamesService.Delete(id);
-            return this.RedirectToAction("All", new { area = "" });
+            return this.RedirectToAction("Browse", new { area = "" });
         }
     }
 }

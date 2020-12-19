@@ -107,14 +107,16 @@
         var page = 1;
         var averageRating = 0;
 
-        retrieveReviews();
+        $(document).ready(function () {
+            retrieveReviews();
 
-        $("span[data-vote]").each(function () {
-            $(this).click(function () {
-                rating = $(this).attr("data-vote");
-                setRating(rating);
-            });
-        })
+            $("span[data-vote]").each(function () {
+                $(this).click(function () {
+                    rating = $(this).attr("data-vote");
+                    setRating(rating);
+                });
+            })
+        });
 
         function setRating(rating) {
             $("span[data-vote]").each(function () {

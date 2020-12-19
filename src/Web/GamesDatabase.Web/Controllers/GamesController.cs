@@ -44,15 +44,22 @@
             return this.View(indexViewModel);
         }
 
-        public IActionResult Browse(string title, int[] genreIds, int page = 1)
+        public IActionResult Browse(BrowseGameViewModel input, int page = 1)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+
             if (page <= 0)
             {
                 return this.NotFound();
             }
 
-            var games = gamesService.GetAll<SimpleGameViewModel>(title, genreIds, page, Common.GlobalConstants.DefaultItemsPerPage);
-            return this.View(games);
+            var games = gamesService.GetAll<SimpleGameViewModel>(input?.Title, input?.GenreIds, page, Common.GlobalConstants.DefaultItemsPerPage);
+            input.GamesFound = games;
+
+            return this.View(input);
         }
 
         public IActionResult Create()

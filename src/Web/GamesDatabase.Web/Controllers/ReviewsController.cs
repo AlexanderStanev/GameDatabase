@@ -77,7 +77,7 @@
                 return BadRequest("Invalid game or page parameter.");
             }
 
-            var reviews = reviewsService.GetAll<ReviewViewModel>(page, Common.GlobalConstants.DefaultItemsPerPage);
+            var reviews = reviewsService.GetAllByGameId<ReviewViewModel>(gameId, page, Common.GlobalConstants.DefaultItemsPerPage);
             if (!reviews.Any())
             {
                 return Ok("No reviews found.");

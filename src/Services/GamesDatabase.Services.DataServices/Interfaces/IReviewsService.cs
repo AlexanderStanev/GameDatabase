@@ -8,6 +8,8 @@ namespace GamesDatabase.Services.DataServices.Interfaces
     {
         TViewModel GetByUserAndGame<TViewModel>(string userId, int gameId);
 
+        IEnumerable<TViewModel> GetAllByGameId<TViewModel>(int gameId, int page, int itemsPerPage);
+
         IEnumerable<TViewModel> GetAll<TViewModel>(int page, int itemsPerPage);
 
         double GetAverageRatingOfGame(int gameId);

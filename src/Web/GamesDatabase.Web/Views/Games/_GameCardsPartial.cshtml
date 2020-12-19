@@ -14,7 +14,7 @@
                     <small class="text-muted">
                         @foreach (var genre in game.Genres)
                         {
-                            <a class="text-dark" asp-area="" asp-controller="Search" asp-action="ByGenreId" asp-route-id="@genre.Id" title="@genre.Description">@genre.Name</a>
+                            <a class="text-dark" asp-area="" asp-controller="Games" asp-action="Browse" asp-route-genreIds="@genre.Id" title="@genre.Description">@genre.Name</a>
                         }
                     </small>
                 </div>

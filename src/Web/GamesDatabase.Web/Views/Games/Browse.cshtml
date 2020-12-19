@@ -1,38 +1,70 @@
-﻿@model IEnumerable<GamesDatabase.Web.Models.ViewModels.Games.SimpleGameViewModel>
+﻿@using GamesDatabase.Services.DataServices.Interfaces
+@using GamesDatabase.Web.Models.InputModels
+@inject IGenresService GenresService
+
+@model GamesDatabase.Web.Models.ViewModels.Games.BrowseGameViewModel
 
 @{
     ViewData["Title"] = "Browse";
+    var genresOptions = GenresService.GetAllGenresAsOptions(Model?.GenreIds);
 }
+
+<form asp-action="Browse" method="get" class="no-border">
+    <div class="row">
+        <div class="form-group col-md-7 py-3">
+            <label asp-for="@Model.Title" class="control-label"></label>
+            <input asp-for="@Model.Title" class="form-control">
+        </div>
+
+        <div class="form-group col-md-3 py-3">
+            <label asp-for="@Model.GenreIds" class="control-label col"></label>
+            <select asp-for="@Model.GenreIds" asp-items="@genresOptions" class="selectpicker control-label col" data-live-search="true"></select>
+        </div>
+
+        <div class="form-group col-md-2 py-3">
+            @* TODO: Fix button alignment *@
+            <input type="submit" value="Search" class="btn btn-primary col" />
+        </div>
+    </div>
+</form>
 
 <div class="container">
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">Image</th>
+                <th scope="col"></th>
                 <th scope="col">Title</th>
                 <th scope="col">Genre</th>
-                <th scope="col">Rating</th>
-                <th scope="col">Reviews</th>
-                <th scope="col">Announced</th>
-                <th scope="col">First Released</th>
+                @*<th scope="col">Rating</th>
+                    <th scope="col">Reviews</th>
+                    <th scope="col">Announced</th>
+                    <th scope="col">Released</th>*@
             </tr>
         </thead>
         <tbody>
             @{
-                foreach (var game in Model)
+                foreach (var game in Model.GamesFound)
                 {
                     <tr>
+                        <td><img class="img-thumbnail img-fluid w-25" src="@game.CoverImage" /></td>
+                        <td><a class="card-link text-dark" asp-area="" asp-controller="Games" asp-action="Details" asp-route-id="@game.Id">@game.Title</a></td>
                         <td>
-                            <img class="img-thumbnail img-fluid w-25" src="https://static.raru.co.za/cover/2014/06/29/1784728-l.jpg?v=1404044687" />
+                            @foreach (var genre in game.Genres)
+                            {
+                                <a class="text-dark" asp-area="" asp-controller="Games" asp-action="Browse" asp-route-genreIds="@genre.Id" title="@genre.Description">@genre.Name</a>
+                            }
                         </td>
-                        <td>@game.Title</td>
-                        <td>Should display Genre</td>
-                        @*<td>@game.Raiting</td>
-                            <td>@game.ReviewsCount</td>
-                            <td>@game.DateReleased.ToShortDateString()</td>*@
                     </tr>
                 }
             }
         </tbody>
     </table>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+        });
+    </script>
+}
